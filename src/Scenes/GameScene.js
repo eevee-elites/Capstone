@@ -7,6 +7,7 @@ export default class GameScene extends Phaser.Scene {
 		super('Game');
 		let man;
 		var anims;
+
 	}
 
 	preload() {
@@ -14,9 +15,15 @@ export default class GameScene extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
+		this.load.audio('bg', 'assets/bg.wav')
+		
 	}
 
 	create() {
+		 var music = this.sound.add('bg',true)
+		music.setLoop(true)
+		music.play()
+		music.setVolume(0.3)
 		this.man = this.physics.add
 			.existing(new Player(this, 400, 300, 'man'))
 			.setOrigin(0.5, 0.5);
