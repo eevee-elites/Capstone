@@ -1,4 +1,5 @@
 import 'phaser';
+import { Game } from 'phaser';
 import Player from '../Models/Player';
 
 export default class GameScene extends Phaser.Scene {
@@ -59,6 +60,12 @@ export default class GameScene extends Phaser.Scene {
 			frames: [{key: 'man', frame: 0}],
 			frameRate: 10,
 		});
+
+		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff)
+
+		this.man.setCollideWorldBounds(true)
+		this.physics.add.existing(testBox, true)
+		this.physics.add.collider(testBox, this.man)
 	}
 
 	update() {
