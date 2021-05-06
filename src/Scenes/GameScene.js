@@ -64,6 +64,8 @@ export default class GameScene extends Phaser.Scene {
 		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff)
 
 		this.man.setCollideWorldBounds(true)
+
+		//this adds collision to given object, and sets static to true so it can't be moved
 		this.physics.add.existing(testBox, true)
 		this.physics.add.collider(testBox, this.man)
 	}
