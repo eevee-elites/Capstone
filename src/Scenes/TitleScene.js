@@ -6,14 +6,19 @@ export default class TitleScene extends Phaser.Scene {
 	}
 
 	preload() {
-		// load images
-		this.load.image('title', 'assets/logo.png');
-		const button = new Button(400, 500, 'Start Game', this, () =>
-			this.scene.start('Game')
-		);
+		this.load.image('titleImage', 'assets/logo.png');
+		this.load.audio('titleMusic', 'assets/title.mp3');
 	}
 
 	create() {
-		this.add.image(400, 300, 'title');
+    this.add.image(400, 300, 'titleImage');
+		var music = this.sound.add('titleMusic',true)
+		music.setLoop(true)
+		music.setVolume(0.1)
+		 music.play()
+    
+		const startButton = new Button(400, 500, 'Start Game', this, () =>
+			this.scene.start('Game')
+		);
 	}
 }
