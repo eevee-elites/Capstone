@@ -1,11 +1,14 @@
 import 'phaser';
 import {Game} from 'phaser';
 import Player from '../Models/Player';
+import NPC from '../Models/NPC';
+import Animate from '../Models/Animate';
+import NPCAnimate from '../Models/NPCAnimate';
 
 export default class GameScene extends Phaser.Scene {
 	constructor() {
 		super('Game');
-		let man;
+		let man, pika;
 		var anims;
 	}
 
@@ -20,104 +23,25 @@ export default class GameScene extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
+		this.load.spritesheet('pika', 'assets/pika.png', {
+			frameWidth: 31,
+			frameHeight: 31,
+		});
 	}
 
 	create() {
-		this.man = this.physics.add
-			.existing(new Player(this, 400, 300, 'man'))
-			.setOrigin(0.5, 0.5);
+		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
+		this.man = this.physics.add.existing(new Player(this, 400, 300, 'man'));
 
-		var dialog = this.rexUI.add
-			.dialog({
-				x: 400,
-				y: 500,
-				height: 10,
-				width: 10,
+		this.pika = this.physics.add.existing(
+			new NPC(this, 100, 400, 'pika'),
+			true
+		);
+		this.pika.body.setSize(25, 25, true);
 
-				background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xddd7d6),
-				content: this.add.text(0, 0, 'Do you want to build a snow man?', {
-					fontSize: '24px',
-					color: '0x00000',
-				}),
-				actions: [createLabel(this, 'Yes'), createLabel(this, 'No')],
-				space: {
-					title: 25,
-					content: 25,
-					action: 15,
-
-					left: 20,
-					right: 20,
-					top: 20,
-					bottom: 20,
-				},
-
-				align: {
-					title: 'center', // 'center'|'left'|'right'
-					actions: 'left',
-				},
-
-				expand: {
-					content: false, // Content is a pure text object
-				},
-			})
-			.layout();
-
-		this.print = this.add.text(0, 0, '');
-		dialog
-			.on(
-				'button.click',
-				function (button, groupName, index) {
-					this.print.text += index + ': ' + button.text + '\n';
-					if (button.text === 'No') this.scene.start('Title'); // can say what to do in button
-				},
-				this
-			)
-			.on('button.over', function (button, groupName, index) {
-				button.getElement('background').setStrokeStyle(1, 0xffffff);
-			})
-			.on('button.out', function (button, groupName, index) {
-				button.getElement('background').setStrokeStyle();
-			});
-
-		this.anims.create({
-			key: 'left',
-			frames: this.anims.generateFrameNumbers('man', {
-				start: 4,
-				end: 7,
-			}),
-			frameRate: 10,
-		});
-
-		this.anims.create({
-			key: 'right',
-			frames: this.anims.generateFrameNumbers('man', {
-				start: 8,
-				end: 11,
-			}),
-			frameRate: 10,
-		});
-
-		this.anims.create({
-			key: 'up',
-			frames: this.anims.generateFrameNumbers('man', {
-				start: 12,
-				end: 15,
-			}),
-			frameRate: 10,
-		});
-		this.anims.create({
-			key: 'down',
-			frames: this.anims.generateFrameNumbers('man', {
-				start: 0,
-				end: 3,
-			}),
-			frameRate: 10,
-		});
-		this.anims.create({
-			key: 'still',
-			frames: [{key: 'man', frame: 0}],
-			frameRate: 10,
-		});
+		// hitBox.setInteractive();
+		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
+		NPCAnimate(this, 'pika', 2, 3, 3, -1);
 
 		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff);
 
@@ -125,10 +49,64 @@ export default class GameScene extends Phaser.Scene {
 
 		//this adds collision to given object, and sets static to true so it can't be moved
 		this.physics.add.existing(testBox, true);
+		this.physics.add.existing(hitBox, true);
+
 		this.physics.add.collider(testBox, this.man);
+		this.physics.add.collider(this.pika, this.man);
+		this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
+	}
+	sayHello(man, pika) {
+		let enter = this.input.keyboard.addKey('ENTER');
+		if (enter.isDown) {
+			const dialog = this.rexUI.add
+				.dialog({
+					x: 400,
+					y: 500,
+					height: 10,
+					width: 10,
+
+					background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xddd7d6),
+					content: this.add.text(0, 0, 'Do you want to build a snow man?', {
+						fontSize: '24px',
+						color: '0x00000',
+					}),
+					actions: [createLabel(this, 'Yes'), createLabel(this, 'No')],
+					space: {
+						title: 25,
+						content: 25,
+						action: 15,
+
+						left: 20,
+						right: 20,
+						top: 20,
+						bottom: 20,
+					},
+
+					align: {
+						title: 'center', // 'center'|'left'|'right'
+						actions: 'left',
+					},
+
+					expand: {
+						content: false, // Content is a pure text object
+					},
+				})
+				.layout();
+			this.print = this.add.text(0, 0, '');
+			dialog.on(
+				'button.click',
+				function (button, groupName, index) {
+					if (button.text === 'Yes') return dialog.destroy();
+					this.print.text += index + ': ' + button.text + '\n';
+					if (button.text === 'No') return this.scene.start('Title'); // can say what to do in button
+				},
+				this
+			);
+		}
 	}
 
 	update() {
+		this.pika.update(this.pika, 'pika');
 		this.man.update(this);
 	}
 }

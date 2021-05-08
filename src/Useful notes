@@ -1,0 +1,6 @@
+	//Make interactive
+		this.bird.setInteractive();
+		// let enter = this.input.keyboard.addKey('ENTER');
+		this.bird.on('pointerdown', function (e) {
+			console.log('Interact');
+		});

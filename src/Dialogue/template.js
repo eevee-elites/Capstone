@@ -1,47 +1,52 @@
 // stuff for dialogue. should be made into general file
-
-function preload() {
-	this.load.scenePlugin(
-		'rexuiplugin',
-		'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
-		'rexUI',
-		'rexUI'
-	);
-}
-function create() {
-	var dialog = this.rexUI.add
-		.dialog({
-			x: 400,
-			y: 500,
-			height: 10,
-			width: 10,
-
-			background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xddd7d6),
-
-			title: this.rexUI.add.label({
-				background: this.rexUI.add.roundRectangle(
-					400,
-					800,
-					100,
-					40,
-					20,
-					0x003c8f
-				),
-				text: this.add.text(0, 0, 'Ash:', {
-					fontSize: '24px',
-				}),
-				space: {
-					left: 15,
-					right: 15,
-					top: 10,
-					bottom: 10,
-				},
-			}),
-
-			content: this.add.text(0, 0, 'Do you want to build a snow man?', {
-				fontSize: '24px',
-				color: '0x00000',
-			}),
+import 'phaser'
+export default class Dialogue extends Phaser.Scene{
+	constructor() {
+		super('Dialogue')
+	}
+	// goes in preload
+	// preload() {
+		// this.load.scenePlugin(
+		// 	'rexuiplugin',
+		// 	'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+		// 	'rexUI',
+		// 	'rexUI'
+		// );
+	// }
+		create(key) {
+			var dialog = key.rexUI.add
+				.dialog({
+					x: 400,
+					y: 500,
+					height: 10,
+					width: 10,
+	
+					background: key.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xddd7d6),
+	
+					title: key.rexUI.add.label({
+						background: key.rexUI.add.roundRectangle(
+							400,
+							800,
+							100,
+							40,
+							20,
+							0x003c8f
+						),
+						text: key.add.text(0, 0, 'Ash:', {
+							fontSize: '24px',
+						}),
+						space: {
+							left: 15,
+							right: 15,
+							top: 10,
+							bottom: 10,
+						},
+					}),
+	
+					content: key.add.text(0, 0, 'Do you want to build a snow man?', {
+						fontSize: '24px',
+						color: '0x00000',
+					}),
 			actions: [createLabel(this, 'Yes'), createLabel(this, 'No')],
 			space: {
 				title: 25,
@@ -72,35 +77,36 @@ function create() {
 		.on(
 			'button.click',
 			function (button, groupName, index) {
-				this.print.text += index + ': ' + button.text + '\n';
-				// this.scene.start('Title'); can say what to do in button
+						key.print.text += index + ': ' + button.text + '\n';
+						// key.scene.start('Title'); can say what to do in button
+					},
+					key
+				)
+				.on('button.over', function (button, groupName, index) {
+					button.getElement('background').setStrokeStyle(1, 0xffffff);
+				})
+				.on('button.out', function (button, groupName, index) {
+					button.getElement('background').setStrokeStyle();
+				});
+		}
+	}
+	createLabel = function (scene, text) {
+		return scene.rexUI.add.label({
+			width: 40,
+			height: 40,
+
+			background: scene.rexUI.add.roundRectangle(10, 50, 10, 10, 30, 0x5e92f3),
+
+			text: scene.add.text(0, 0, text, {
+				fontSize: '24px',
+			}),
+
+			space: {
+				left: 80,
+				right: 80,
+				top: 10,
+				bottom: 10,
 			},
-			this
-		)
-		.on('button.over', function (button, groupName, index) {
-			button.getElement('background').setStrokeStyle(1, 0xffffff);
-		})
-		.on('button.out', function (button, groupName, index) {
-			button.getElement('background').setStrokeStyle();
 		});
+	}
 }
-//outside contructor
-var createLabel = function (scene, text) {
-	return scene.rexUI.add.label({
-		width: 40,
-		height: 40,
-
-		background: scene.rexUI.add.roundRectangle(10, 50, 10, 10, 30, 0x5e92f3),
-
-		text: scene.add.text(0, 0, text, {
-			fontSize: '24px',
-		}),
-
-		space: {
-			left: 80,
-			right: 80,
-			top: 10,
-			bottom: 10,
-		},
-	});
-};
