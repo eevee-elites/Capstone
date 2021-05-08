@@ -41,7 +41,7 @@ export default class GameScene extends Phaser.Scene {
 
 		// hitBox.setInteractive();
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		NPCAnimate(this, 'pika', 2, 3, 3, -1);
+		NPCAnimate(this, 'pika', 1, 2, 3, -1);
 
 		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff);
 
@@ -65,7 +65,7 @@ export default class GameScene extends Phaser.Scene {
 					height: 10,
 					width: 10,
 
-					background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0xddd7d6),
+					background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, 0xddd7d6),
 					content: this.add.text(0, 0, 'Do you want to build a snow man?', {
 						fontSize: '24px',
 						color: '0x00000',
@@ -115,7 +115,7 @@ var createLabel = function (scene, text) {
 		width: 40,
 		height: 40,
 
-		background: scene.rexUI.add.roundRectangle(10, 50, 10, 10, 30, 0x5e92f3),
+		background: scene.rexUI.add.roundRectangle(10, 50, 10, 0, 0, 0x5e92f3),
 
 		text: scene.add.text(0, 0, text, {
 			fontSize: '24px',
