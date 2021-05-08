@@ -41,7 +41,7 @@ export default class GameScene extends Phaser.Scene {
 
 		// hitBox.setInteractive();
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		NPCAnimate(this, 'pika', 1, 2, 3, -1);
+		NPCAnimate(this, 'pika', 2, 3, 6, -1);
 
 		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff);
 
