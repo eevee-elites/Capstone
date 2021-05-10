@@ -1,5 +1,5 @@
 import 'phaser';
-import { Game } from 'phaser';
+import {Game} from 'phaser';
 import Player from '../Models/Player';
 
 export default class GameScene extends Phaser.Scene {
@@ -7,7 +7,6 @@ export default class GameScene extends Phaser.Scene {
 		super('Game');
 		let man;
 		var anims;
-
 	}
 
 	preload() {
@@ -15,15 +14,16 @@ export default class GameScene extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
-		this.load.audio('bg', 'assets/bg.wav')
-		
+		this.load.audio('bg', 'assets/bg.wav');
+		this.load.image('star', 'assets/star.png');
 	}
 
 	create() {
-		 var music = this.sound.add('bg',true)
-		music.setLoop(true)
-		music.play()
-		music.setVolume(0.3)
+		this.stars = this.physics.add.sprite(100, 450, 'star');
+		var music = this.sound.add('bg', true);
+		music.setLoop(true);
+		music.play();
+		music.setVolume(0.3);
 		this.man = this.physics.add
 			.existing(new Player(this, 400, 300, 'man'))
 			.setOrigin(0.5, 0.5);
@@ -68,16 +68,20 @@ export default class GameScene extends Phaser.Scene {
 			frameRate: 10,
 		});
 
-		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff)
+		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff);
 
-		this.man.setCollideWorldBounds(true)
+		this.man.setCollideWorldBounds(true);
 
 		//this adds collision to given object, and sets static to true so it can't be moved
-		this.physics.add.existing(testBox, true)
-		this.physics.add.collider(testBox, this.man)
+		this.physics.add.existing(testBox, true);
+		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
+		this.physics.add.collider(testBox, this.man);
 	}
 
 	update() {
 		this.man.update(this);
 	}
+}
+function collectBox(man, item) {
+	item.disableBody(true, true);
 }
