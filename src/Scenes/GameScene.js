@@ -60,6 +60,7 @@ export default class GameScene extends Phaser.Scene {
 
 		this.physics.add.collider(testBox, this.man);
 		this.physics.add.collider(this.pika, this.man);
+		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
 		this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
 	}
 	sayHello(man, pika) {
@@ -113,6 +114,7 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	update() {
+		this.pika.update(this.pika, 'pika');
 		this.man.update(this);
 	}
 }
