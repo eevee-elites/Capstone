@@ -8,7 +8,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	update(keys) {
-		let cursors = keys.input.keyboard.createCursorKeys();
+		var cursors = keys.input.keyboard.createCursorKeys();
 		var keyObjW = keys.input.keyboard.addKey('W');
 		var keyObjA = keys.input.keyboard.addKey('A');
 		var keyObjS = keys.input.keyboard.addKey('S');
@@ -16,6 +16,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		if (cursors.left.isDown || keyObjA.isDown) {
 			this.setVelocityX(-160);
 			this.anims.play('left', true);
+			
 		} else if (cursors.right.isDown || keyObjD.isDown) {
 			this.setVelocityX(160);
 			this.anims.play('right', true);

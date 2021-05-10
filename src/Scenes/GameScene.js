@@ -32,7 +32,23 @@ export default class GameScene extends Phaser.Scene {
 	create() {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		this.man = this.physics.add.existing(new Player(this, 400, 300, 'man'));
+		this.load.audio('bg', 'assets/bg.wav');
+		var music = this.sound.add('bg', true);
+		music.setLoop(true);
+		music.play();
+		music.setVolume(0.3);
+		this.man = this.physics.add
+			.existing(new Player(this, 400, 300, 'man'))
+			.setOrigin(0.5, 0.5);
 
+		this.anims.create({
+			key: 'left',
+			frames: this.anims.generateFrameNumbers('man', {
+				start: 4,
+				end: 7,
+			}),
+			frameRate: 10,
+		});
 		this.pika = this.physics.add.existing(
 			new NPC(this, 100, 400, 'pika'),
 			true
