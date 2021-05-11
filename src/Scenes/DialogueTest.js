@@ -15,6 +15,7 @@ export default class DialogueTest extends Phaser.Scene {
     super("DialogueTest");
     let man, pika;
     var anims;
+    let textOpen = false;
   }
 
   preload() {
@@ -71,8 +72,9 @@ export default class DialogueTest extends Phaser.Scene {
 
   sayHello(man, pika) {
     let enter = this.input.keyboard.addKey('ENTER');
-    if (enter.isDown) {
+    if (enter.isDown && !this.textOpen) {
         console.log("interacted")
+        this.textOpen = true;
         createTextBox(this, 100, 400, {
             wrapWidth: 500,
             fixedWidth: 500,
@@ -122,24 +124,25 @@ var createTextBox = function (scene, x, y, config) {
 
   textBox
     .setInteractive()
-    .on(
-      "keydown_Enter",
-      function () {
-        var icon = this.getElement("action").setVisible(false);
-        this.resetChildVisibleState(icon);
-        if (this.isTyping) {
-          this.stop(true);
-        } else {
-          this.typeNextPage();
-        }
-      },
-      textBox
-    )
-    .on(
+        scene.input.keyboard.on('keydown-ENTER', function (event) {
+            // var icon = this.getElement('action').setVisible(false);
+            // this.resetChildVisibleState(icon);
+            if (this.isTyping) {
+                this.stop(true);
+            } else {
+                this.typeNextPage();
+            }
+        }, textBox)
+    textBox.setInteractive().on(
       "pageend",
       function () {
         if (this.isLastPage) {
-          return;
+            this.textOpen = false;
+            console.log("Last page");
+
+            if (!this.isTyping) {
+                textBox.visible = false;
+            }
         }
 
         var icon = this.getElement("action").setVisible(true);
