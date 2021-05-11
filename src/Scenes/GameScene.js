@@ -58,10 +58,13 @@ export default class GameScene extends Phaser.Scene {
 		this.physics.add.existing(testBox, true);
 		this.physics.add.existing(hitBox, true);
 
-		this.physics.add.collider(testBox, this.man);
+		this.physics.add.overlap(testBox, this.man, this.enterPuzzle1, null, this);
 		this.physics.add.collider(this.pika, this.man);
 		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
 		this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
+	}
+	enterPuzzle1() {
+		this.scene.start('Puzzle1');
 	}
 	sayHello(man, pika) {
 		let enter = this.input.keyboard.addKey('ENTER');
