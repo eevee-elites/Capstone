@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "start": "npm run build && webpack-dev-server --port= process.env.PORT || 8080",
+    "start": "npm run build && webpack-dev-server ",
     "heroku-postbuild": "npm run build"
   },
   "repository": {
@@ -24,7 +24,7 @@
     "webpack-dev-server": "^2.11.5"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
     "phaser": "^3.54.0"
   }
 }
