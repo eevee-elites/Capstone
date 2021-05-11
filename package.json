@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "webpack",
 		"start": "npm run build && nodemon server.js ",
-		"heroku-postbuild": "webpack --config webpack.prod.js",
+		"heroku-postbuild": "webpack --config webpack-dev-server",
 		"heroku-prebuild": "npm  install --dev"
 	},
 	"repository": {
