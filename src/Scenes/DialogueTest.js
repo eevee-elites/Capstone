@@ -141,7 +141,7 @@ var createTextBox = function (scene, x, y, config) {
             console.log("Last page");
 
             if (!this.isTyping) {
-                textBox.visible = false;
+                textBox.y = 700;
             }
         }
 
