@@ -21,174 +21,47 @@ export default class Puzzle1 extends Phaser.Scene {
 	}
 
 	create() {
-		let plat = this.add.rectangle(400, 300, 800, 600, 0x2f4f4f);
-		let testBox = this.add.rectangle(40, 10, 20, 10, 0xa93226);
+		//bg
+		this.add.rectangle(400, 300, 800, 600, 0xffffff);
+		//top and bottom wall
+		let wall1 = this.add.rectangle(400, 50, 800, 100, 0x2f4f4f);
+		let wall2 = this.add.rectangle(400, 550, 800, 100, 0x2f4f4f);
+		this.physics.add.existing(wall1, true);
+		this.physics.add.existing(wall2, true);
+		//carpet
+		this.add.rectangle(400, 300, 800, 350, 0x6c2a2a);
+		//reset, exit, star
+		let resetBox = this.add.rectangle(0, 200, 20, 20, 0xa93226);
 		let exitBox = this.add.rectangle(0, 400, 20, 20, 0xffffff);
-		this.stars = this.physics.add.sprite(760, 510, 'star');
+		this.add.rectangle(0, 400, 10, 10, 0x000000);
+		this.stars = this.physics.add.sprite(760, 410, 'star');
+		//music
 		var music = this.sound.add('bg', true);
 		music.setLoop(true);
 		music.play();
 		music.setVolume(0.3);
+		//player
 		this.man = this.physics.add
 			.existing(new Player(this, 50, 300, 'man'))
 			.setOrigin(0.5, 0.5);
-		this.puzzleBoxRow2 = this.physics.add.group({
-			key: 'table',
-			repeat: 4,
-			setXY: {x: 120, y: 80, stepY: 120},
-			collideWorldBounds: true,
-			immovable: true,
-		});
-		this.puzzleBoxRow1 = this.physics.add.group({
-			key: 'table',
-			repeat: 3,
-			setXY: {x: 180, y: 140, stepY: 120},
-			collideWorldBounds: true,
-			allowDrag: true,
-			dragX: 100000,
-			dragY: 100000,
-		});
-		this.puzzleBoxRow3 = this.physics.add.group({
-			key: 'table',
-			repeat: 4,
-			setXY: {x: 240, y: 80, stepY: 120},
-			collideWorldBounds: true,
-			immovable: true,
-		});
-		this.puzzleBoxRow4 = this.physics.add.group({
-			key: 'table',
-			repeat: 3,
-			setXY: {x: 300, y: 140, stepY: 120},
-			collideWorldBounds: true,
-			allowDrag: true,
-			dragX: 100000,
-			dragY: 100000,
-		});
-		this.puzzleBoxRow5 = this.physics.add.group({
-			key: 'table',
-			repeat: 4,
-			setXY: {x: 360, y: 80, stepY: 120},
-			collideWorldBounds: true,
-			immovable: true,
-		});
-		this.puzzleBoxRow6 = this.physics.add.group({
-			key: 'table',
-			repeat: 3,
-			setXY: {x: 420, y: 140, stepY: 120},
-			collideWorldBounds: true,
-			allowDrag: true,
-			dragX: 100000,
-			dragY: 100000,
-		});
-		this.puzzleBoxRow7 = this.physics.add.group({
-			key: 'table',
-			repeat: 4,
-			setXY: {x: 480, y: 80, stepY: 120},
-			collideWorldBounds: true,
-			immovable: true,
-		});
-		this.puzzleBoxRow8 = this.physics.add.group({
-			key: 'table',
-			repeat: 3,
-			setXY: {x: 540, y: 140, stepY: 120},
-			collideWorldBounds: true,
-			allowDrag: true,
-			dragX: 100000,
-			dragY: 100000,
-		});
-		this.puzzleBoxRow9 = this.physics.add.group({
-			key: 'table',
-			repeat: 4,
-			setXY: {x: 600, y: 80, stepY: 120},
-			collideWorldBounds: true,
-			immovable: true,
-		});
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		this.physics.add.existing(exitBox, true);
-		this.physics.add.overlap(this.man, exitBox, exitRoom, null, this);
 
+		//puzzle
+		makePuzzle(this);
+		//collisions
 		this.man.setCollideWorldBounds(true);
 
-		//this adds collision to given object, and sets static to true so it can't be moved
-		this.physics.add.existing(testBox, true);
+		//exit
+		this.physics.add.existing(exitBox, true);
+		this.physics.add.overlap(this.man, exitBox, exitRoom, null, this);
+		//collection
 		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
-
-		// this.physics.add.collider(this.puzzleBoxRow2, this.man);
-		this.physics.add.collider(this.puzzleBoxRow1, this.man);
-		this.physics.add.collider(this.puzzleBoxRow1, this.puzzleBoxRow2);
-		this.physics.add.collider(this.puzzleBoxRow2, this.puzzleBoxRow3);
-		this.physics.add.collider(this.puzzleBoxRow3, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow4,
-			this.puzzleBoxRow5,
-			this.puzzleBoxRow6,
-			this.puzzleBoxRow7,
-			this.puzzleBoxRow8,
-			this.puzzleBoxRow9,
-		]);
-		this.physics.add.collider(this.puzzleBoxRow4, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow3,
-			this.puzzleBoxRow5,
-			this.puzzleBoxRow6,
-			this.puzzleBoxRow7,
-			this.puzzleBoxRow8,
-			this.puzzleBoxRow9,
-		]);
-		this.physics.add.collider(this.puzzleBoxRow5, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow3,
-			this.puzzleBoxRow4,
-			this.puzzleBoxRow6,
-			this.puzzleBoxRow7,
-			this.puzzleBoxRow8,
-			this.puzzleBoxRow9,
-		]);
-		this.physics.add.collider(this.puzzleBoxRow6, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow3,
-			this.puzzleBoxRow4,
-			this.puzzleBoxRow5,
-			this.puzzleBoxRow7,
-			this.puzzleBoxRow8,
-			this.puzzleBoxRow9,
-		]);
-		this.physics.add.collider(this.puzzleBoxRow7, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow3,
-			this.puzzleBoxRow4,
-			this.puzzleBoxRow5,
-			this.puzzleBoxRow6,
-			this.puzzleBoxRow8,
-			this.puzzleBoxRow9,
-		]);
-		this.physics.add.collider(this.puzzleBoxRow8, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow3,
-			this.puzzleBoxRow4,
-			this.puzzleBoxRow5,
-			this.puzzleBoxRow6,
-			this.puzzleBoxRow7,
-			this.puzzleBoxRow9,
-		]);
-		this.physics.add.collider(this.puzzleBoxRow9, [
-			this.puzzleBoxRow1,
-			this.puzzleBoxRow2,
-			this.puzzleBoxRow3,
-			this.puzzleBoxRow4,
-			this.puzzleBoxRow5,
-			this.puzzleBoxRow6,
-			this.puzzleBoxRow7,
-			this.puzzleBoxRow8,
-		]);
-
-		this.physics.add.overlap(this.man, testBox, reset, null, this);
+		// reset
+		this.physics.add.existing(resetBox, true);
+		this.physics.add.overlap(this.man, resetBox, reset, null, this);
+		// wall
+		this.physics.add.collider(wall1, this.man);
+		this.physics.add.collider(wall2, this.man);
 	}
 	update() {
 		this.man.update(this);
@@ -202,6 +75,122 @@ function exitRoom() {
 }
 
 function reset() {
-	// location.reload()
 	this.scene.start('Puzzle1');
+}
+function makePuzzle(key) {
+	//puzzle
+	//row1
+	key.staticRow1 = key.physics.add.staticGroup({
+		key: 'table',
+		repeat: 2,
+		setXY: {x: 150, y: 120, stepY: 160},
+		immovable: true,
+	});
+	key.physics.add.collider(key.staticRow1, key.man);
+	key.movableRow1 = key.physics.add.group({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 150, y: 200, stepY: 160},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
+	//row 2
+	key.movableRow2Set1 = key.physics.add.group({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 250, y: 120, stepY: 80},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
+	key.movableRow2Set2 = key.physics.add.group({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 250, y: 360, stepY: 80},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
+	key.staticRow2B3 = key.physics.add.staticSprite(250, 280, 'table');
+	key.physics.add.collider(key.staticRow2B3, key.man);
+	// row 3
+	key.staticRow3 = key.physics.add.staticGroup({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 350, y: 280, stepY: 80},
+		immovable: true,
+	});
+	key.physics.add.collider(key.staticRow3, key.man);
+	key.movableRow3Set1 = key.physics.add.group({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 350, y: 120, stepY: 80},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
+	key.movableRow3B5 = key.physics.add.sprite(350, 440, 'table');
+	key.movableRow3B5.body.setDragX(10000);
+	//row 4
+	key.staticRow4 = key.physics.add.staticGroup({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 450, y: 200, stepY: 80},
+		immovable: true,
+	});
+	key.movableRow4B2 = key.physics.add.sprite(450, 120, 'table');
+	key.movableRow4B2.body.setDragX(10000);
+	key.physics.add.collider(key.staticRow4, key.man);
+	key.movableRow4Set1 = key.physics.add.group({
+		key: 'table',
+		repeat: 2,
+		setXY: {x: 450, y: 280, stepY: 80},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
+	//row5
+	key.movableRow5Set1 = key.physics.add.group({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 550, y: 120, stepY: 80},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
+	key.movableRow5B4 = key.physics.add.sprite(550, 360, 'table');
+	key.movableRow5B4.body.setDragX(10000);
+	key.staticRow5 = key.physics.add.staticGroup({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 550, y: 280, stepY: 160},
+		immovable: true,
+	});
+	key.physics.add.collider(key.staticRow5, key.man);
+	//row 6
+	key.staticRow6 = key.physics.add.staticGroup({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 650, y: 120, stepY: 80},
+		immovable: true,
+	});
+	key.staticRow6B3 = key.physics.add.staticSprite(650, 440, 'table');
+	key.physics.add.collider(key.staticRow6, key.man);
+	key.physics.add.collider(key.staticRow6B3, key.man);
+	key.movableRow6Set1 = key.physics.add.group({
+		key: 'table',
+		repeat: 1,
+		setXY: {x: 650, y: 280, stepY: 80},
+		collideWorldBounds: true,
+		allowDrag: true,
+		dragX: 10000,
+		dragY: 10000,
+	});
 }
