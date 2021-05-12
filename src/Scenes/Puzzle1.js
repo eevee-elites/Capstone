@@ -1,155 +1,207 @@
-import "phaser";
-import { Game } from "phaser";
-import Player from "../Models/Player";
+import 'phaser';
+import {Game} from 'phaser';
+import Player from '../Models/Player';
+import Animate from '../Models/Animate';
 
 export default class Puzzle1 extends Phaser.Scene {
-  constructor() {
-    super("Puzzle1");
-    let man;
-    var anims;
-  }
+	constructor() {
+		super('Puzzle1');
+		let man;
+		var anims;
+	}
 
-  preload() {
-    this.load.spritesheet("man", "assets/man.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-    this.load.audio("bg", "assets/bg.wav");
-    this.load.image("star", "assets/star.png");
-  }
+	preload() {
+		this.load.spritesheet('man', 'assets/man.png', {
+			frameWidth: 64,
+			frameHeight: 64,
+		});
+		this.load.audio('bg', 'assets/bg.wav');
+		this.load.image('star', 'assets/star.png');
+		this.load.image('table', 'assets/table.png');
+	}
 
-  create() {
-    let plat = this.add.rectangle(590, 400, 450, 310, 0x6e4340);
+	create() {
+		let plat = this.add.rectangle(400, 300, 800, 600, 0x2f4f4f);
+		let testBox = this.add.rectangle(40, 10, 20, 10, 0xa93226);
+		let exitBox = this.add.rectangle(0, 400, 20, 20, 0xffffff);
+		this.stars = this.physics.add.sprite(760, 510, 'star');
+		var music = this.sound.add('bg', true);
+		music.setLoop(true);
+		music.play();
+		music.setVolume(0.3);
+		this.man = this.physics.add
+			.existing(new Player(this, 50, 300, 'man'))
+			.setOrigin(0.5, 0.5);
+		this.puzzleBoxRow2 = this.physics.add.group({
+			key: 'table',
+			repeat: 4,
+			setXY: {x: 120, y: 80, stepY: 120},
+			collideWorldBounds: true,
+			immovable: true,
+		});
+		this.puzzleBoxRow1 = this.physics.add.group({
+			key: 'table',
+			repeat: 3,
+			setXY: {x: 180, y: 140, stepY: 120},
+			collideWorldBounds: true,
+			allowDrag: true,
+			dragX: 100000,
+			dragY: 100000,
+		});
+		this.puzzleBoxRow3 = this.physics.add.group({
+			key: 'table',
+			repeat: 4,
+			setXY: {x: 240, y: 80, stepY: 120},
+			collideWorldBounds: true,
+			immovable: true,
+		});
+		this.puzzleBoxRow4 = this.physics.add.group({
+			key: 'table',
+			repeat: 3,
+			setXY: {x: 300, y: 140, stepY: 120},
+			collideWorldBounds: true,
+			allowDrag: true,
+			dragX: 100000,
+			dragY: 100000,
+		});
+		this.puzzleBoxRow5 = this.physics.add.group({
+			key: 'table',
+			repeat: 4,
+			setXY: {x: 360, y: 80, stepY: 120},
+			collideWorldBounds: true,
+			immovable: true,
+		});
+		this.puzzleBoxRow6 = this.physics.add.group({
+			key: 'table',
+			repeat: 3,
+			setXY: {x: 420, y: 140, stepY: 120},
+			collideWorldBounds: true,
+			allowDrag: true,
+			dragX: 100000,
+			dragY: 100000,
+		});
+		this.puzzleBoxRow7 = this.physics.add.group({
+			key: 'table',
+			repeat: 4,
+			setXY: {x: 480, y: 80, stepY: 120},
+			collideWorldBounds: true,
+			immovable: true,
+		});
+		this.puzzleBoxRow8 = this.physics.add.group({
+			key: 'table',
+			repeat: 3,
+			setXY: {x: 540, y: 140, stepY: 120},
+			collideWorldBounds: true,
+			allowDrag: true,
+			dragX: 100000,
+			dragY: 100000,
+		});
+		this.puzzleBoxRow9 = this.physics.add.group({
+			key: 'table',
+			repeat: 4,
+			setXY: {x: 600, y: 80, stepY: 120},
+			collideWorldBounds: true,
+			immovable: true,
+		});
+		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
+		this.physics.add.existing(exitBox, true);
+		this.physics.add.overlap(this.man, exitBox, exitRoom, null, this);
 
-    this.stars = this.physics.add.sprite(100, 450, "star");
-    var music = this.sound.add("bg", true);
-    music.setLoop(true);
-    music.play();
-    music.setVolume(0.3);
-    this.man = this.physics.add
-      .existing(new Player(this, 400, 300, "man"))
-      .setOrigin(0.5, 0.5);
+		this.man.setCollideWorldBounds(true);
 
-    this.anims.create({
-      key: "left",
-      frames: this.anims.generateFrameNumbers("man", {
-        start: 4,
-        end: 7,
-      }),
-      frameRate: 10,
-    });
+		//this adds collision to given object, and sets static to true so it can't be moved
+		this.physics.add.existing(testBox, true);
+		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
 
-    this.anims.create({
-      key: "right",
-      frames: this.anims.generateFrameNumbers("man", {
-        start: 8,
-        end: 11,
-      }),
-      frameRate: 10,
-    });
+		// this.physics.add.collider(this.puzzleBoxRow2, this.man);
+		this.physics.add.collider(this.puzzleBoxRow1, this.man);
+		this.physics.add.collider(this.puzzleBoxRow1, this.puzzleBoxRow2);
+		this.physics.add.collider(this.puzzleBoxRow2, this.puzzleBoxRow3);
+		this.physics.add.collider(this.puzzleBoxRow3, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow4,
+			this.puzzleBoxRow5,
+			this.puzzleBoxRow6,
+			this.puzzleBoxRow7,
+			this.puzzleBoxRow8,
+			this.puzzleBoxRow9,
+		]);
+		this.physics.add.collider(this.puzzleBoxRow4, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow3,
+			this.puzzleBoxRow5,
+			this.puzzleBoxRow6,
+			this.puzzleBoxRow7,
+			this.puzzleBoxRow8,
+			this.puzzleBoxRow9,
+		]);
+		this.physics.add.collider(this.puzzleBoxRow5, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow3,
+			this.puzzleBoxRow4,
+			this.puzzleBoxRow6,
+			this.puzzleBoxRow7,
+			this.puzzleBoxRow8,
+			this.puzzleBoxRow9,
+		]);
+		this.physics.add.collider(this.puzzleBoxRow6, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow3,
+			this.puzzleBoxRow4,
+			this.puzzleBoxRow5,
+			this.puzzleBoxRow7,
+			this.puzzleBoxRow8,
+			this.puzzleBoxRow9,
+		]);
+		this.physics.add.collider(this.puzzleBoxRow7, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow3,
+			this.puzzleBoxRow4,
+			this.puzzleBoxRow5,
+			this.puzzleBoxRow6,
+			this.puzzleBoxRow8,
+			this.puzzleBoxRow9,
+		]);
+		this.physics.add.collider(this.puzzleBoxRow8, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow3,
+			this.puzzleBoxRow4,
+			this.puzzleBoxRow5,
+			this.puzzleBoxRow6,
+			this.puzzleBoxRow7,
+			this.puzzleBoxRow9,
+		]);
+		this.physics.add.collider(this.puzzleBoxRow9, [
+			this.puzzleBoxRow1,
+			this.puzzleBoxRow2,
+			this.puzzleBoxRow3,
+			this.puzzleBoxRow4,
+			this.puzzleBoxRow5,
+			this.puzzleBoxRow6,
+			this.puzzleBoxRow7,
+			this.puzzleBoxRow8,
+		]);
 
-    this.anims.create({
-      key: "up",
-      frames: this.anims.generateFrameNumbers("man", {
-        start: 12,
-        end: 15,
-      }),
-      frameRate: 10,
-    });
-    this.anims.create({
-      key: "down",
-      frames: this.anims.generateFrameNumbers("man", {
-        start: 0,
-        end: 3,
-      }),
-      frameRate: 10,
-    });
-    this.anims.create({
-      key: "still",
-      frames: [{ key: "man", frame: 0 }],
-      frameRate: 10,
-    });
-
-    let testBox = this.add.rectangle(100, 110, 100, 100, 0xffffff);
-    let puzzleBox = this.add.rectangle(500, 320, 45, 45, "0xa6cedd");
-    let puzzleBox2 = this.add.rectangle(500, 380, 45, 45, "0xa6cedd");
-    let puzzleBox3 = this.add.rectangle(500, 440, 45, 45, "0xa6cedd");
-    let puzzleBox4 = this.add.rectangle(560, 440, 45, 45, "0xa6cedd");
-    let puzzleBox5 = this.add.rectangle(560, 320, 45, 45, "0xa6cedd");
-    let puzzleBox6 = this.add.rectangle(620, 380, 45, 45, "0xa6cedd");
-    let border1 = this.add.rectangle(590, 230, 450, 50, "0xFf3efdd");
-    let border2 = this.add.rectangle(590, 530, 450, 50, "0xFf3efdd");
-
-    this.man.setCollideWorldBounds(true);
-
-    //this adds collision to given object, and sets static to true so it can't be moved
-    this.physics.add.existing(testBox, true);
-    this.physics.add.existing(puzzleBox, true);
-    this.physics.add.existing(puzzleBox2);
-    this.physics.add.existing(puzzleBox3, true);
-
-    this.physics.add.existing(puzzleBox4, true);
-    this.physics.add.existing(puzzleBox5);
-    this.physics.add.existing(puzzleBox6, true);
-    this.physics.add.existing(border1, true);
-    this.physics.add.existing(border2, true);
-
-    puzzleBox2.body.drag.setTo(10000);
-    puzzleBox5.body.drag.setTo(10000);
-
-    this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
-	this.physics.add.collider(testBox, this.man);
-    this.physics.add.collider(border1, this.man);
-    this.physics.add.collider(border2, this.man);
-
-    this.physics.add.collider([puzzleBox, puzzleBox2,puzzleBox3,puzzleBox4,puzzleBox5,puzzleBox6], this.man);
-    this.physics.add.collider(puzzleBox, testBox);
-
-    this.physics.add.collider(puzzleBox2, this.man);
-    this.physics.add.collider(puzzleBox3, this.man);
-    this.physics.add.collider(puzzleBox4, this.man);
-    this.physics.add.collider(puzzleBox5, this.man);
-    this.physics.add.collider(puzzleBox6, this.man);
-
-    this.physics.add.collider(puzzleBox);
-    this.physics.add.collider(puzzleBox, puzzleBox3);
-    this.physics.add.collider(puzzleBox, puzzleBox4);
-    this.physics.add.collider(puzzleBox, puzzleBox5);
-    this.physics.add.collider(puzzleBox, puzzleBox6);
-
-    this.physics.add.collider(puzzleBox2, puzzleBox3);
-    this.physics.add.collider(puzzleBox2, puzzleBox4);
-    this.physics.add.collider(puzzleBox2, puzzleBox5);
-    this.physics.add.collider(puzzleBox2, puzzleBox6);
-
-    this.physics.add.collider(puzzleBox3, puzzleBox4);
-    this.physics.add.collider(puzzleBox3, puzzleBox5);
-    this.physics.add.collider(puzzleBox3, puzzleBox6);
-
-    this.physics.add.collider(puzzleBox4, puzzleBox5);
-    this.physics.add.collider(puzzleBox4, puzzleBox6);
-
-    this.physics.add.collider(puzzleBox5, puzzleBox6);
-
-    this.physics.add.collider(border1, puzzleBox);
-    this.physics.add.collider(border1, puzzleBox2);
-    this.physics.add.collider(border1, puzzleBox3);
-    this.physics.add.collider(border1, puzzleBox4);
-    this.physics.add.collider(border1, puzzleBox5);
-    this.physics.add.collider(border1, puzzleBox6);
-
-    this.physics.add.collider(border2, puzzleBox);
-    this.physics.add.collider(border2, puzzleBox2);
-    this.physics.add.collider(border2, puzzleBox3);
-    this.physics.add.collider(border2, puzzleBox4);
-    this.physics.add.collider(border2, puzzleBox5);
-    this.physics.add.collider(border2, puzzleBox6);
-  }
-
-  update() {
-    this.man.update(this);
-  }
+		this.physics.add.overlap(this.man, testBox, reset, null, this);
+	}
+	update() {
+		this.man.update(this);
+	}
 }
 function collectBox(man, item) {
-  item.disableBody(true, true);
+	item.disableBody(true, true);
+}
+function exitRoom() {
+	this.scene.start('Game');
+}
+
+function reset() {
+	// location.reload()
+	this.scene.start('Puzzle1');
 }
