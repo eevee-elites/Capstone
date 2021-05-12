@@ -1,5 +1,4 @@
 import "phaser";
-import { Game } from "phaser";
 import Player from "../Models/Player";
 import NPC from "../Models/NPC";
 import Animate from "../Models/Animate";
@@ -68,6 +67,8 @@ export default class TesterScene extends Phaser.Scene {
     this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
   }
   sayHello(man, pika) {
+    let data = { man: this.man };
+
     let enter = this.input.keyboard.addKey("ENTER");
     if (enter.isDown) {
       const dialog = this.rexUI.add
@@ -108,7 +109,8 @@ export default class TesterScene extends Phaser.Scene {
       dialog.on(
         "button.click",
         function (button, groupName, index) {
-          if (button.text === "Yes") return this.scene.start("Game");
+          if (button.text === "Yes")
+            return this.scene.start("Tester2", { man: this.man });
           this.print.text += index + ": " + button.text + "\n";
           if (button.text === "No") return this.scene.start("Title"); // can say what to do in button
         },

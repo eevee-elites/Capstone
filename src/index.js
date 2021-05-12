@@ -8,6 +8,7 @@ import OptionsScene from "./Scenes/OptionsScene";
 import CreditsScene from "./Scenes/CreditsScene";
 import Puzzle1 from "./Scenes/Puzzle1";
 import TesterScene from "./Scenes/TesterScene";
+import Tester2 from "./Scenes/Tester2";
 
 class Game extends Phaser.Game {
   constructor() {
@@ -20,6 +21,8 @@ class Game extends Phaser.Game {
     this.scene.add("Credits", CreditsScene);
     this.scene.add("Game", GameScene);
     this.scene.add("Tester", TesterScene);
+    this.scene.add("Tester2", Tester2);
+
     this.scene.start("Tester");
   }
 }
