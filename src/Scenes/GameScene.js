@@ -120,7 +120,8 @@ export default class GameScene extends Phaser.Scene {
 }
 function collectBox(man, item) {
   item.disableBody(true, true);
-  console.log(item);
+  man.pickupItem(item.texture.key);
+  console.log(man.inventory);
 }
 var createLabel = function (scene, text) {
   return scene.rexUI.add.label({
