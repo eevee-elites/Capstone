@@ -70,7 +70,7 @@ export default class DialogueTest extends Phaser.Scene {
 
   update() {
     this.man.update(this);
-    this.npc.update(this.npc, "NPC");
+    // this.npc.update(this.npc, "NPC");
   }
 
   sayHello(man, pika) {
