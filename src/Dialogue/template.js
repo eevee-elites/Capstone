@@ -109,4 +109,3 @@ export default class Dialogue extends Phaser.Scene{
 			},
 		});
 	}
-}

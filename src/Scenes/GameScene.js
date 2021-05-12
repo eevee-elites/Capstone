@@ -8,7 +8,7 @@ import NPCAnimate from '../Models/NPCAnimate';
 export default class GameScene extends Phaser.Scene {
 	constructor() {
 		super('Game');
-		let man, pika;
+		let man, NPC;
 		var anims;
 	}
 
@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
-		this.load.spritesheet('pika', 'assets/pika.png', {
+		this.load.spritesheet('NPC', 'assets/NPC.png', {
 			frameWidth: 31,
 			frameHeight: 31,
 		});
@@ -35,7 +35,7 @@ export default class GameScene extends Phaser.Scene {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		this.man = this.physics.add.existing(new Player(this, 400, 300, 'man'));
 		this.pika = this.physics.add.existing(
-			new NPC(this, 100, 400, 'pika'),
+			new NPC(this, 100, 400, 'NPC'),
 			true
 		);
 		this.stars = this.physics.add.sprite(100, 450, 'star');
@@ -48,7 +48,7 @@ export default class GameScene extends Phaser.Scene {
 
 		// hitBox.setInteractive();
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		NPCAnimate(this, 'pika', 2, 3, 6, -1);
+		NPCAnimate(this, 'NPC', 2, 3, 6, -1);
 
 		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff);
 
