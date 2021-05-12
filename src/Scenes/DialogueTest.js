@@ -42,6 +42,7 @@ export default class DialogueTest extends Phaser.Scene {
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js",
       true
     );
+    this.load.image('nextPage', 'assets/next.png');
   }
 
   create() {
@@ -55,7 +56,7 @@ export default class DialogueTest extends Phaser.Scene {
       true
     );
 
-    this.npc.body.setSize(25, 25, true);
+    this.npc.body.setSize(30, 90, true);
 
     this.physics.add.existing(hitBox, true);
     this.physics.add.collider(this.npc, this.man);
@@ -107,8 +108,7 @@ var createTextBox = function (scene, x, y, config) {
       // text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
       text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
 
-      action: scene.add.image(0, 0, "NPC").setTint(COLOR_LIGHT),
-
+      action: scene.add.image(0, 0, 'nextPage').setTint(COLOR_LIGHT).setVisible(false),
       space: {
         left: 20,
         right: 20,
@@ -126,6 +126,8 @@ var createTextBox = function (scene, x, y, config) {
   scene.input.keyboard.on(
     "keydown-ENTER",
     function (event) {
+      var icon = this.getElement('action').setVisible(false);
+            this.resetChildVisibleState(icon);
       if (this.isTyping) {
         this.stop(true);
       }  else {
@@ -140,6 +142,8 @@ var createTextBox = function (scene, x, y, config) {
   textBox.setInteractive().on(
     "pageend",
     function () {
+      var icon = this.getElement('action').setVisible(true);
+      this.resetChildVisibleState(icon);
       if ( this.isLastPage) {
         scene.input.keyboard.on("keyup-ENTER", () => {
           textBox.setVisible(false);

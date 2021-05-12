@@ -10,6 +10,7 @@ export default class GameScene extends Phaser.Scene {
 		super('Game');
 		let man, NPC;
 		var anims;
+		var music;
 	}
 
 	preload() {
@@ -24,8 +25,8 @@ export default class GameScene extends Phaser.Scene {
 			frameHeight: 64,
 		});
 		this.load.spritesheet('NPC', 'assets/NPC.png', {
-			frameWidth: 31,
-			frameHeight: 31,
+			frameWidth: 80,
+			frameHeight: 130,
 		});
 		this.load.audio('bg', 'assets/bg.wav');
 		this.load.image('star', 'assets/star.png');
@@ -34,21 +35,22 @@ export default class GameScene extends Phaser.Scene {
 	create() {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		this.man = this.physics.add.existing(new Player(this, 400, 300, 'man'));
-		this.pika = this.physics.add.existing(
+		this.npc = this.physics.add.existing(
 			new NPC(this, 100, 400, 'NPC'),
 			true
 		);
-		this.stars = this.physics.add.sprite(100, 450, 'star');
-		var music = this.sound.add('bg', true);
-		music.setLoop(true);
-		music.play();
-		music.setVolume(0.3);
+		this.stars = this.physics.add.sprite(100, 460, 'star');
+		this.music = this.sound.add('bg', true);
+		this.music.play();
+		this.music.setLoop(true);
+		this.music.setVolume(0.3);
 
-		this.pika.body.setSize(25, 25, true);
+			
+		this.npc.body.setSize(30, 90, true);
 
 		// hitBox.setInteractive();
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		NPCAnimate(this, 'NPC', 2, 3, 6, -1);
+		// NPCAnimate(this, 'NPC', 2, 3, 6, -1);
 
 		let testBox = this.add.rectangle(100, 100, 100, 100, 0xffffff);
 
@@ -59,14 +61,14 @@ export default class GameScene extends Phaser.Scene {
 		this.physics.add.existing(hitBox, true);
 
 		this.physics.add.overlap(testBox, this.man, this.enterPuzzle1, null, this);
-		this.physics.add.collider(this.pika, this.man);
+		this.physics.add.collider(this.npc, this.man);
 		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
 		this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
 	}
 	enterPuzzle1() {
 		this.scene.start('Puzzle1');
 	}
-	sayHello(man, pika) {
+	sayHello(man, npc) {
 		let enter = this.input.keyboard.addKey('ENTER');
 		if (enter.isDown) {
 			const dialog = this.rexUI.add
@@ -109,7 +111,7 @@ export default class GameScene extends Phaser.Scene {
 				function (button, groupName, index) {
 					if (button.text === 'Yes') return dialog.destroy();
 					this.print.text += index + ': ' + button.text + '\n';
-					if (button.text === 'No') return this.scene.start('Title'); // can say what to do in button
+					if (button.text === 'No') {this.music.stop(); this.scene.start('Title'); } // can say what to do in button
 				},
 				this
 			);
@@ -117,7 +119,7 @@ export default class GameScene extends Phaser.Scene {
 	}
 
 	update() {
-		this.pika.update(this.pika, 'pika');
+		this.npc.update(this.npc, 'NPC');
 		this.man.update(this);
 	}
 }
