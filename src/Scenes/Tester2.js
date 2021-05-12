@@ -10,7 +10,7 @@ export default class Tester2 extends Phaser.Scene {
   }
   init(data) {
     console.log("init", data);
-    this.man = data.man;
+    // this.man.inventory = data.inventory;
   }
 
   preload() {
@@ -35,9 +35,9 @@ export default class Tester2 extends Phaser.Scene {
   }
 
   create(data) {
-    this.man = data.man;
     let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
-    // this.man = this.physics.add.existing(new Player(this, 400, 300, "man"));
+    this.man = this.physics.add.existing(new Player(this, 400, 300, "man"));
+    this.man.inventory = data.inventory;
     this.pika = this.physics.add.existing(
       new NPC(this, 100, 400, "pika"),
       true

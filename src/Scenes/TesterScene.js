@@ -67,8 +67,6 @@ export default class TesterScene extends Phaser.Scene {
     this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
   }
   sayHello(man, pika) {
-    let data = { man: this.man };
-
     let enter = this.input.keyboard.addKey("ENTER");
     if (enter.isDown) {
       const dialog = this.rexUI.add
@@ -110,7 +108,9 @@ export default class TesterScene extends Phaser.Scene {
         "button.click",
         function (button, groupName, index) {
           if (button.text === "Yes")
-            return this.scene.start("Tester2", { man: this.man });
+            return this.scene.start("Tester2", {
+              inventory: this.man.inventory,
+            });
           this.print.text += index + ": " + button.text + "\n";
           if (button.text === "No") return this.scene.start("Title"); // can say what to do in button
         },
