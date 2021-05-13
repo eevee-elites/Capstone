@@ -18,21 +18,36 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.load.audio('bg', 'assets/bg.wav');
 		this.load.image('star', 'assets/star.png');
 		this.load.image('table', 'assets/table.png');
+		this.load.image('tiles', '../assets/Puzzle1Room.png');
+		this.load.tilemapTiledJSON('map', '../assets/Puzzle1Room.json');
 	}
 
 	create() {
-		//bg
-		this.add.rectangle(400, 300, 800, 600, 0xffffff);
-		//top and bottom wall
-		let wall1 = this.add.rectangle(400, 50, 800, 100, 0x2f4f4f);
-		let wall2 = this.add.rectangle(400, 550, 800, 100, 0x2f4f4f);
-		this.physics.add.existing(wall1, true);
-		this.physics.add.existing(wall2, true);
-		//carpet
-		this.add.rectangle(400, 300, 800, 350, 0x6c2a2a);
-		//reset, exit, star
-		let resetBox = this.add.rectangle(0, 200, 20, 20, 0xa93226);
-		let exitBox = this.add.rectangle(0, 400, 20, 20, 0xffffff);
+		//exit
+		let exitBox = this.add.rectangle(20, 300, 20, 20, 0xffffff);
+		//map
+		const map = this.make.tilemap({key: 'map'});
+
+		const tileset = map.addTilesetImage('Room', 'tiles');
+
+		const belowLayer = map.createLayer('Below', tileset, 0, 0);
+		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
+
+		collidingLayer.setCollisionByProperty({collides: true});
+
+		//player
+		this.man = this.physics.add
+			.existing(new Player(this, 400, 300, 'man'))
+			.setOrigin(5.5, 0.5);
+
+		this.physics.add.collider(this.man, collidingLayer);
+
+		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
+
+		this.cameras.main.setBounds(48, 0, 800, 600);
+		this.cameras.main.startFollow(this.man);
+		let resetBox = this.add.rectangle(50, 200, 20, 20, 0xa93226);
+
 		this.add.rectangle(0, 400, 10, 10, 0x000000);
 		this.stars = this.physics.add.sprite(760, 410, 'star');
 		//music
@@ -40,11 +55,6 @@ export default class Puzzle1 extends Phaser.Scene {
 		music.setLoop(true);
 		music.play();
 		music.setVolume(0.3);
-		//player
-		this.man = this.physics.add
-			.existing(new Player(this, 50, 300, 'man'))
-			.setOrigin(0.5, 0.5);
-		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
 		//puzzle
 		makePuzzle(this);
@@ -59,9 +69,6 @@ export default class Puzzle1 extends Phaser.Scene {
 		// reset
 		this.physics.add.existing(resetBox, true);
 		this.physics.add.overlap(this.man, resetBox, reset, null, this);
-		// wall
-		this.physics.add.collider(wall1, this.man);
-		this.physics.add.collider(wall2, this.man);
 	}
 	update() {
 		this.man.update(this);
@@ -83,13 +90,13 @@ function makePuzzle(key) {
 	const staticRow1 = key.physics.add.staticGroup({
 		key: 'table',
 		repeat: 2,
-		setXY: {x: 150, y: 120, stepY: 160},
+		setXY: {x: 190, y: 120, stepY: 160},
 		immovable: true,
 	});
 	const movableRow1 = key.physics.add.group({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 150, y: 200, stepY: 160},
+		setXY: {x: 190, y: 200, stepY: 160},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
@@ -101,7 +108,7 @@ function makePuzzle(key) {
 	const movableRow2Set1 = key.physics.add.group({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 250, y: 120, stepY: 80},
+		setXY: {x: 290, y: 120, stepY: 80},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
@@ -110,13 +117,13 @@ function makePuzzle(key) {
 	const movableRow2Set2 = key.physics.add.group({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 250, y: 360, stepY: 80},
+		setXY: {x: 290, y: 360, stepY: 80},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
 		dragY: 10000,
 	});
-	const staticRow2B3 = key.physics.add.staticSprite(250, 280, 'table');
+	const staticRow2B3 = key.physics.add.staticSprite(290, 280, 'table');
 	key.physics.add.collider(movableRow2Set1, key.man);
 	key.physics.add.collider(movableRow2Set2, key.man);
 	key.physics.add.collider(staticRow2B3, key.man);
@@ -124,19 +131,19 @@ function makePuzzle(key) {
 	const staticRow3 = key.physics.add.staticGroup({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 350, y: 280, stepY: 80},
+		setXY: {x: 390, y: 280, stepY: 80},
 		immovable: true,
 	});
 	const movableRow3Set1 = key.physics.add.group({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 350, y: 120, stepY: 80},
+		setXY: {x: 390, y: 120, stepY: 80},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
 		dragY: 10000,
 	});
-	const movableRow3B5 = key.physics.add.sprite(350, 440, 'table');
+	const movableRow3B5 = key.physics.add.sprite(390, 440, 'table');
 	movableRow3B5.body.setDrag(10000, 10000);
 	key.physics.add.collider(staticRow3, key.man);
 	key.physics.add.collider(movableRow3Set1, key.man);
@@ -146,19 +153,19 @@ function makePuzzle(key) {
 	const staticRow4 = key.physics.add.staticGroup({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 450, y: 200, stepY: 80},
+		setXY: {x: 490, y: 200, stepY: 80},
 		immovable: true,
 	});
 	const movableRow4Set1 = key.physics.add.group({
 		key: 'table',
 		repeat: 2,
-		setXY: {x: 450, y: 280, stepY: 80},
+		setXY: {x: 490, y: 280, stepY: 80},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
 		dragY: 10000,
 	});
-	const movableRow4B2 = key.physics.add.sprite(450, 120, 'table');
+	const movableRow4B2 = key.physics.add.sprite(490, 120, 'table');
 	movableRow4B2.body.setDrag(10000, 10000);
 	key.physics.add.collider(staticRow4, key.man);
 	key.physics.add.collider(movableRow4B2, key.man);
@@ -167,7 +174,7 @@ function makePuzzle(key) {
 	const movableRow5Set1 = key.physics.add.group({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 550, y: 120, stepY: 240},
+		setXY: {x: 590, y: 120, stepY: 240},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
@@ -176,10 +183,10 @@ function makePuzzle(key) {
 	const staticRow5 = key.physics.add.staticGroup({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 550, y: 200, stepY: 240},
+		setXY: {x: 590, y: 200, stepY: 240},
 		immovable: true,
 	});
-	const movableRow5B3 = key.physics.add.sprite(550, 280, 'table');
+	const movableRow5B3 = key.physics.add.sprite(590, 280, 'table');
 	movableRow5B3.body.setDrag(10000, 10000);
 	key.physics.add.collider(movableRow5B3, key.man);
 	key.physics.add.collider(movableRow5Set1, key.man);
@@ -188,20 +195,28 @@ function makePuzzle(key) {
 	const staticRow6 = key.physics.add.staticGroup({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 650, y: 120, stepY: 80},
+		setXY: {x: 690, y: 120, stepY: 80},
 		immovable: true,
 	});
 	const movableRow6Set1 = key.physics.add.group({
 		key: 'table',
 		repeat: 1,
-		setXY: {x: 650, y: 280, stepY: 80},
+		setXY: {x: 690, y: 280, stepY: 80},
 		collideWorldBounds: true,
 		allowDrag: true,
 		dragX: 10000,
 		dragY: 10000,
 	});
-	const staticRow6B3 = key.physics.add.staticSprite(650, 440, 'table');
+	const staticRow6B3 = key.physics.add.staticSprite(690, 440, 'table');
 	key.physics.add.collider(staticRow6, key.man);
 	key.physics.add.collider(staticRow6B3, key.man);
 	key.physics.add.collider(movableRow6Set1, key.man);
+	//last row
+	const staticRow7 = key.physics.add.staticGroup({
+		key: 'table',
+		repeat: 5,
+		setXY: {x: 190, y: 520, stepX: 100},
+		immovable: true,
+	});
+	key.physics.add.collider(staticRow7, key.man);
 }
