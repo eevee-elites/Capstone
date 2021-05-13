@@ -3,6 +3,7 @@ import Player from '../Models/Player';
 import NPC from '../Models/NPC';
 import Animate from '../Models/Animate';
 import NPCAnimate from '../Models/NPCAnimate';
+import Inventory from '../Helper/Inventory';
 
 export default class TesterScene extends Phaser.Scene {
 	constructor() {
@@ -66,98 +67,33 @@ export default class TesterScene extends Phaser.Scene {
 		this.physics.add.overlap(this.man, this.cat, collectItem, null, this);
 
 		var scene = this,
-			dialog = undefined;
+			inventory = undefined;
 		this.input.keyboard.on(
 			'keydown-I',
 			function (pointer) {
 				var x = pointer.x,
 					y = pointer.y;
 
-				if (dialog === undefined) {
-					dialog = this.createDialog(
+				if (inventory === undefined) {
+					inventory = Inventory(
 						this,
 						x,
 						y,
 						this.man.inventory,
 						function (color) {
-							dialog.scaleDownDestroy(100);
-							dialog = undefined;
+							inventory.scaleDownDestroy(100);
+							inventory = undefined;
 						}
 					);
-				} else if (!dialog.isInTouching(pointer)) {
-					dialog.scaleDownDestroy(100);
-					dialog = undefined;
+				} else if (!inventory.isInTouching(pointer)) {
+					inventory.scaleDownDestroy(100);
+					inventory = undefined;
 				}
 			},
 			this
 		);
 	}
 
-	createDialog(scene, x, y, inventory, onClick) {
-		console.log('SCENE INVENTORY', inventory);
-		var dialog = scene.rexUI.add
-			.dialog({
-				x: 350,
-				y: 0,
-
-				background: scene.rexUI.add.roundRectangle(
-					0,
-					0,
-					100,
-					100,
-					20,
-					0xf57f17
-				),
-
-				title: scene.rexUI.add.label({
-					background: scene.rexUI.add.roundRectangle(
-						0,
-						0,
-						100,
-						40,
-						20,
-						0xbc5100
-					),
-					text: scene.add.text(0, 0, 'Inventory', {
-						fontSize: '20px',
-					}),
-					space: {
-						left: 15,
-						right: 15,
-						top: 10,
-						bottom: 10,
-					},
-				}),
-
-				actions: [
-					scene.add.image(0, 0, 10, 10, 'pizza'),
-					scene.add.image(0, 0, 10, 10, 'cat'),
-					scene.add.image(0, 0, 10, 10, 'star'),
-					// scene.rexUI.add.image( "pizza"),
-				],
-
-				actionsAlign: 'left',
-
-				space: {
-					title: 10,
-					action: 5,
-
-					left: 10,
-					right: 10,
-					top: 10,
-					bottom: 10,
-				},
-			})
-			.layout()
-			.pushIntoBounds()
-			.popUp(500);
-
-		dialog.on('button.click', function (button, groupName, index) {
-			onClick(button.fillColor);
-		});
-
-		return dialog;
-	}
 	update() {
 		this.pika.update(this.pika, 'pika');
 		this.man.update(this);
@@ -168,22 +104,3 @@ function collectItem(man, item) {
 	item.disableBody(true, true);
 	console.log(man.inventory);
 }
-var createLabel = function (scene, text) {
-	return scene.rexUI.add.label({
-		width: 40,
-		height: 40,
-
-		background: scene.rexUI.add.roundRectangle(10, 50, 10, 0, 0, 0x5e92f3),
-
-		text: scene.add.text(0, 0, text, {
-			fontSize: '24px',
-		}),
-
-		space: {
-			left: 80,
-			right: 80,
-			top: 10,
-			bottom: 10,
-		},
-	});
-};
