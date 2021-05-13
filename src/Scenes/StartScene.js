@@ -3,7 +3,6 @@ import Player from '../Models/Player';
 import NPC from '../Models/NPC';
 import Animate from '../Models/Animate';
 import NPCAnimate from '../Models/NPCAnimate';
-// import { TextBox } from 'phaser3-rex-plugins/templates/ui/ui-components.js';
 
 var content =
 	'test dialogue array blaksjdflkasjfalkdsjfalksd falsd fasdfkljasd flkad fasd flkasdjflaksd fa sdf asdlkfj asdkljf asdkljf';
