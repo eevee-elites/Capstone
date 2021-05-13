@@ -5,8 +5,31 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
 		this.scene = scene;
+		this.inventory = {
+			star: 0,
+			pizza: 0,
+			cat: 0,
+		};
 	}
-
+	// updates inventory when an item is picked up
+	pickupItem(item) {
+		switch (item) {
+			case 'star':
+				this.inventory.star += 1;
+				console.log('star colected');
+				break;
+			case 'pizza':
+				this.inventory.pizza += 1;
+				console.log('pizza colected');
+				break;
+			case 'cat':
+				this.inventory.cat += 1;
+				console.log('cat collected');
+				break;
+			default:
+				console.log('cant pick up item');
+		}
+	}
 	update(keys) {
 		var cursors = keys.input.keyboard.createCursorKeys();
 		var keyObjW = keys.input.keyboard.addKey('W');
@@ -16,7 +39,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		if (cursors.left.isDown || keyObjA.isDown) {
 			this.setVelocityX(-160);
 			this.anims.play('left', true);
-			
 		} else if (cursors.right.isDown || keyObjD.isDown) {
 			this.setVelocityX(160);
 			this.anims.play('right', true);
