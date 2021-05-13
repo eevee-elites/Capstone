@@ -44,7 +44,9 @@ export default class StartScene extends Phaser.Scene {
 		this.load.image('nextPage', 'assets/next.png');
 		this.load.image('tiles', '../assets/Room spritesheet.png');
 		this.load.tilemapTiledJSON('map', '../assets/HallwayRoom.json');
-	}
+		this.load.image('icon', 'assets/iconnpc.png');
+      
+  }
 
 	create() {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
@@ -123,12 +125,12 @@ var createTextBox = function (scene, x, y, config) {
 				.setStrokeStyle(2, COLOR_LIGHT)
 				.setVisible(true),
 
-			icon: scene.add.image(0, 0, 'pika'),
+			icon: scene.add.image(0, 0, 'icon'),
 
 			// text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
 
-			action: scene.add.image(0, 0, 'pika').setTint(COLOR_LIGHT),
+			action: scene.add.image(0, 0, 'nextPage').setTint(COLOR_LIGHT),
 
 			space: {
 				left: 20,
