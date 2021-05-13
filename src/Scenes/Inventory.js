@@ -18,15 +18,16 @@ export default class Inventory extends Phaser.Scene {
 			'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcirclemaskimageplugin.min.js',
 			true
 		);
-
+		this.load.image('cat', 'assets/cat.png');
+		this.load.image('star', 'assets/star.png');
 		this.load.image('pizza', 'assets/pizza.png');
 	}
 
 	create() {
 		var scene = this,
 			dialog = undefined;
-		this.input.on(
-			'pointerdown',
+		this.input.keyboard.on(
+			'keydown-I',
 			function (pointer) {
 				var x = pointer.x,
 					y = pointer.y;
@@ -80,13 +81,9 @@ export default class Inventory extends Phaser.Scene {
 				}),
 
 				actions: [
-					scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0xe91e63),
-					scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x673ab7),
-					scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x2196f3),
-					scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x00bcd4),
-					scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0xcddc39),
-					this.add.image(0, 0, 'pizza'),
-
+					scene.add.image(0, 0, 'pizza'),
+					scene.add.image(0, 0, 'cat'),
+					scene.add.image(0, 0, 'star'),
 					// scene.rexUI.add.image( "pizza"),
 				],
 
@@ -104,19 +101,11 @@ export default class Inventory extends Phaser.Scene {
 			})
 			.layout()
 			.pushIntoBounds()
-			//.drawBounds(this.add.graphics(), 0xff0000)
 			.popUp(500);
 
-		dialog
-			.on('button.click', function (button, groupName, index) {
-				onClick(button.fillColor);
-			})
-			.on('button.over', function (button, groupName, index) {
-				button.setStrokeStyle(2, 0xffffff);
-			})
-			.on('button.out', function (button, groupName, index) {
-				button.setStrokeStyle();
-			});
+		dialog.on('button.click', function (button, groupName, index) {
+			onClick(button.fillColor);
+		});
 
 		return dialog;
 	}
