@@ -43,6 +43,8 @@ export default class StartScene extends Phaser.Scene {
       true
     );
     this.load.image('nextPage', 'assets/next.png');
+    this.load.image('icon', 'assets/iconnpc.png');
+
   }
 
   create() {
@@ -102,7 +104,7 @@ var createTextBox = function (scene, x, y, config) {
 				.setStrokeStyle(2, COLOR_LIGHT)
 				.setVisible(true),
 
-			icon: scene.add.image(0, 0, 'NPC'),
+			icon: scene.add.image(0, 0, 'icon'),
 
 			// text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
