@@ -6,8 +6,6 @@ import Animate from '../Models/Animate';
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle1');
-		let man;
-		var anims;
 	}
 
 	preload() {
@@ -73,7 +71,7 @@ export default class Puzzle1 extends Phaser.Scene {
 	}
 	exitRoom() {
 		console.log(this.collect);
-		if (this.collect) return this.scene.start('DialogueTest');
+		if (this.collect) return this.scene.start('StartScene');
 	}
 	update() {
 		this.man.update(this);
