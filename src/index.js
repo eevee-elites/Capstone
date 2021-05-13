@@ -1,13 +1,13 @@
 import 'phaser';
 import config from './Config/config';
-import GameScene from './Scenes/GameScene';
+
 import BootScene from './Scenes/BootScene';
 import PreloaderScene from './Scenes/PreloaderScene';
 import TitleScene from './Scenes/TitleScene';
 import OptionsScene from './Scenes/OptionsScene';
 import CreditsScene from './Scenes/CreditsScene';
 import Puzzle1 from './Scenes/Puzzle1';
-import DialogueTest from './Scenes/DialogueTest'
+import StartScene from './Scenes/StartScene'
 
 class Game extends Phaser.Game {
 	constructor() {
@@ -18,9 +18,8 @@ class Game extends Phaser.Game {
 		this.scene.add('Title', TitleScene);
 		this.scene.add('Options', OptionsScene);
 		this.scene.add('Credits', CreditsScene);
-		this.scene.add('Game', GameScene);
-		this.scene.add('DialogueTest', DialogueTest)
-		this.scene.start('DialogueTest');
+		this.scene.add('StartScene', StartScene)
+		this.scene.start('Title');
 	}
 }
 

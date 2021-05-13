@@ -13,9 +13,9 @@ const COLOR_DARK = 0x260e04;
 let textOpen = false;
 let last = false
 
-export default class DialogueTest extends Phaser.Scene {
+export default class StartScene extends Phaser.Scene {
   constructor() {
-    super("DialogueTest");
+    super("StartScene");
     let man, npc;
     var anims;
   }
@@ -46,7 +46,7 @@ export default class DialogueTest extends Phaser.Scene {
   }
 
   create() {
-    let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
+    let hitBox = this.add.rectangle(100, 400, 100, 100, 0x000000);
     this.man = this.physics.add
       .existing(new Player(this, 400, 300, "man"))
       .setOrigin(0.5, 0.5);
