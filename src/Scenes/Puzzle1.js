@@ -50,10 +50,10 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.stars = this.physics.add.sprite(760, 410, 'star');
 		this.collect = false;
 		//music
-		var music = this.sound.add('bg', true);
-		music.setLoop(true);
-		music.play();
-		music.setVolume(0.3);
+		this.music = this.sound.add('bg', true);
+		this.music.setLoop(true);
+		this.music.play();
+		this.music.setVolume(0.3);
 
 		//puzzle
 		makePuzzle(this);
@@ -70,8 +70,10 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.physics.add.overlap(this.man, resetBox, reset, null, this);
 	}
 	exitRoom() {
-		console.log(this.collect);
-		if (this.collect) return this.scene.start('StartScene');
+		if (this.collect) {
+			this.music.stop();
+			return this.scene.start('StartScene');
+		}
 	}
 	update() {
 		this.man.update(this);
