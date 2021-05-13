@@ -1,1 +1,3 @@
 node_modules
+public/project.bundle.js
+public/assets/ui/.DS_Store
