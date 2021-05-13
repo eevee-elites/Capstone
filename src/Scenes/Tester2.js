@@ -20,6 +20,7 @@ export default class Tester2 extends Phaser.Scene {
       "rexUI",
       "rexUI"
     );
+    // added to preloader take out during cleanup
     this.load.spritesheet("man", "assets/man.png", {
       frameWidth: 64,
       frameHeight: 64,

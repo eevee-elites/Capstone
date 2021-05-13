@@ -11,7 +11,7 @@ const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 let textOpen = false;
-let last = false
+let last = false;
 
 export default class DialogueTest extends Phaser.Scene {
   constructor() {
@@ -21,6 +21,7 @@ export default class DialogueTest extends Phaser.Scene {
   }
 
   preload() {
+    // added to preloader take out for clean up
     this.load.spritesheet("man", "assets/man.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -31,6 +32,7 @@ export default class DialogueTest extends Phaser.Scene {
       frameHeight: 31,
     });
 
+    //leave rexui here do not move
     this.load.scenePlugin({
       key: "rexuiplugin",
       url: "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js",
@@ -74,8 +76,7 @@ export default class DialogueTest extends Phaser.Scene {
 
   sayHello(man, pika) {
     let enter = this.input.keyboard.addKey("ENTER");
-    if (enter.isDown && textOpen === false && last === false ) {
-
+    if (enter.isDown && textOpen === false && last === false) {
       textOpen = true;
       createTextBox(this, 100, 400, {
         wrapWidth: 500,
@@ -121,42 +122,34 @@ var createTextBox = function (scene, x, y, config) {
     .setOrigin(0)
     .layout();
 
-
-
   scene.input.keyboard.on(
     "keydown-ENTER",
     function (event) {
       if (this.isTyping) {
         this.stop(true);
-      }  else {
-
+      } else {
         this.typeNextPage();
       }
-       
     },
     textBox
   );
-  
+
   textBox.setInteractive().on(
     "pageend",
     function () {
-      if ( this.isLastPage) {
+      if (this.isLastPage) {
         scene.input.keyboard.on("keyup-ENTER", () => {
           textBox.setVisible(false);
-        last = false
-          
+          last = false;
         });
-         textOpen = !textOpen;
+        textOpen = !textOpen;
 
-        last = true
-
+        last = true;
       }
-
-    },                              
+    },
     textBox
-  )
+  );
   // setTimeout(() => {last = false;  textOpen = !textOpen;}, 1000)
-
 
   return textBox;
 };

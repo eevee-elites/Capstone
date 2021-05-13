@@ -8,6 +8,7 @@ export default class Inventory extends Phaser.Scene {
   }
 
   preload() {
+    // leave rexui in her do not move
     this.load.scenePlugin({
       key: "rexuiplugin",
       url: "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js",
@@ -19,6 +20,7 @@ export default class Inventory extends Phaser.Scene {
       true
     );
 
+    // already added to preloader be sure to take out for clean up
     this.load.image("pizza", "assets/pizza.png");
   }
 
