@@ -105,7 +105,6 @@ export default class DialogueTest extends Phaser.Scene {
 	}
 }
 function enterPuzzleRoom1() {
-	console.log('over');
 	this.scene.start('Puzzle1');
 }
 const GetValue = Phaser.Utils.Objects.GetValue;

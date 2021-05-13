@@ -18,17 +18,17 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.load.audio('bg', 'assets/bg.wav');
 		this.load.image('star', 'assets/star.png');
 		this.load.image('table', 'assets/table.png');
-		this.load.image('tiles', '../assets/Puzzle1Room.png');
-		this.load.tilemapTiledJSON('map', '../assets/Puzzle1Room.json');
+		this.load.image('tiles', '../assets/Room spritesheet2.png');
+		this.load.tilemapTiledJSON('PuzzleMap', '../assets/Puzzle1Room.json');
 	}
 
 	create() {
 		//exit
-		let exitBox = this.add.rectangle(20, 300, 20, 20, 0xffffff);
+		let exitBox = this.add.rectangle(20, 300, 50, 50, 0xffffff);
 		//map
-		const map = this.make.tilemap({key: 'map'});
+		const map = this.make.tilemap({key: 'PuzzleMap'});
 
-		const tileset = map.addTilesetImage('Room', 'tiles');
+		const tileset = map.addTilesetImage('PuzzleRoom', 'tiles');
 
 		const belowLayer = map.createLayer('Below', tileset, 0, 0);
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
@@ -46,10 +46,11 @@ export default class Puzzle1 extends Phaser.Scene {
 
 		this.cameras.main.setBounds(48, 0, 800, 600);
 		this.cameras.main.startFollow(this.man);
-		let resetBox = this.add.rectangle(50, 200, 20, 20, 0xa93226);
+		let resetBox = this.add.rectangle(60, 200, 20, 20, 0xa93226);
 
 		this.add.rectangle(0, 400, 10, 10, 0x000000);
 		this.stars = this.physics.add.sprite(760, 410, 'star');
+		this.collect = false;
 		//music
 		var music = this.sound.add('bg', true);
 		music.setLoop(true);
@@ -63,12 +64,16 @@ export default class Puzzle1 extends Phaser.Scene {
 
 		//exit
 		this.physics.add.existing(exitBox, true);
-		this.physics.add.overlap(this.man, exitBox, exitRoom, null, this);
+		this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
 		//collection
 		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
 		// reset
 		this.physics.add.existing(resetBox, true);
 		this.physics.add.overlap(this.man, resetBox, reset, null, this);
+	}
+	exitRoom() {
+		console.log(this.collect);
+		if (this.collect) return this.scene.start('DialogueTest');
 	}
 	update() {
 		this.man.update(this);
@@ -76,9 +81,7 @@ export default class Puzzle1 extends Phaser.Scene {
 }
 function collectBox(man, item) {
 	item.disableBody(true, true);
-}
-function exitRoom() {
-	this.scene.start('Game');
+	this.collect = true;
 }
 
 function reset() {
