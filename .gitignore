@@ -1,3 +1,7 @@
 node_modules
+<<<<<<< HEAD
+public/project.bundle.js
+=======
 public/project.bundle.js
 public/assets/ui/.DS_Store
+>>>>>>> a82929b11e8033900a49305cac61637517a1edec

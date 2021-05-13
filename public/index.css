@@ -1,3 +1,24 @@
 body {
-text-align: center;
+justify-content: center;
+ background-color: rgba(255, 255, 255, 0.31);
+ /* background-image: url('bg.png'); */
+
+/* background-repeat: no-repeat;
+background-size:50%;
+background:center;*/
+} 
+/* nav {
+    background-color: blueviolet;
+    margin: 8px;
+    padding:1px;
+    text-align: center;
+} */
+
+canvas{
+    margin-left: 10%;
+    margin-top: 60px;
+    border: 10px solid #29130a8e; 
+    /* border-image-source:url("https://i.pinimg.com/originals/c8/0d/a5/c80da5c67dd86c603442abbe506c17e4.png"); */
+ border-image-slice:42 42 42 42;
+border-radius: 20px 20px 20px;
 }
