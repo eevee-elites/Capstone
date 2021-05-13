@@ -202,6 +202,5 @@ function exitRoom() {
 }
 
 function reset() {
-	// location.reload()
 	this.scene.start('Puzzle1');
 }
