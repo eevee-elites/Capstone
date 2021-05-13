@@ -1,17 +1,17 @@
-import "phaser";
-import Player from "../Models/Player";
-import NPC from "../Models/NPC";
-import Animate from "../Models/Animate";
-import NPCAnimate from "../Models/NPCAnimate";
+import 'phaser';
+import Player from '../Models/Player';
+import NPC from '../Models/NPC';
+import Animate from '../Models/Animate';
+import NPCAnimate from '../Models/NPCAnimate';
 // import { TextBox } from 'phaser3-rex-plugins/templates/ui/ui-components.js';
 
 var content =
-  "Welcome to the beta test of Haunted Hopper! Your goal is to retrieve the key from the other room to set your friend free! Our developers hope you enjoy the game!";
+	'Welcome to the beta test of Haunted Hopper! Your goal is to retrieve the key from the other room to set your friend free! Our developers hope you enjoy the game!';
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 let textOpen = false;
-let last = false
+let last = false;
 
 export default class StartScene extends Phaser.Scene {
   constructor() {
@@ -86,107 +86,101 @@ export default class StartScene extends Phaser.Scene {
     }
   }
 }
-
 const GetValue = Phaser.Utils.Objects.GetValue;
 var createTextBox = function (scene, x, y, config) {
-  var wrapWidth = GetValue(config, "wrapWidth", 0);
-  var fixedWidth = GetValue(config, "fixedWidth", 0);
-  var fixedHeight = GetValue(config, "fixedHeight", 0);
+	var wrapWidth = GetValue(config, 'wrapWidth', 0);
+	var fixedWidth = GetValue(config, 'fixedWidth', 0);
+	var fixedHeight = GetValue(config, 'fixedHeight', 0);
 
-  var textBox = scene.rexUI.add
-    .textBox({
-      x: x,
-      y: y,
+	var textBox = scene.rexUI.add
+		.textBox({
+			x: x,
+			y: y,
 
-      background: scene.rexUI.add
-        .roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-        .setStrokeStyle(2, COLOR_LIGHT)
-        .setVisible(true),
+			background: scene.rexUI.add
+				.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
+				.setStrokeStyle(2, COLOR_LIGHT)
+				.setVisible(true),
 
-      icon: scene.add.image(0, 0, "NPC"),
+			icon: scene.add.image(0, 0, 'NPC'),
 
-      // text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
-      text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
+			// text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
+			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
 
-      action: scene.add.image(0, 0, 'nextPage').setTint(COLOR_LIGHT).setVisible(false),
-      space: {
-        left: 20,
-        right: 20,
-        top: 20,
-        bottom: 20,
-        icon: 10,
-        text: 10,
-      },
-    })
-    .setOrigin(0)
-    .layout();
+			action: scene.add
+				.image(0, 0, 'nextPage')
+				.setTint(COLOR_LIGHT)
+				.setVisible(false),
+			space: {
+				left: 20,
+				right: 20,
+				top: 20,
+				bottom: 20,
+				icon: 10,
+				text: 10,
+			},
+		})
+		.setOrigin(0)
+		.layout();
 
+	scene.input.keyboard.on(
+		'keydown-ENTER',
+		function (event) {
+			var icon = this.getElement('action').setVisible(false);
+			this.resetChildVisibleState(icon);
+			if (this.isTyping) {
+				this.stop(true);
+			} else {
+				this.typeNextPage();
+			}
+		},
+		textBox
+	);
 
+	textBox.setInteractive().on(
+		'pageend',
+		function () {
+			var icon = this.getElement('action').setVisible(true);
+			this.resetChildVisibleState(icon);
+			if (this.isLastPage) {
+				scene.input.keyboard.on('keyup-ENTER', () => {
+					textBox.setVisible(false);
+					last = false;
+				});
+				textOpen = !textOpen;
 
-  scene.input.keyboard.on(
-    "keydown-ENTER",
-    function (event) {
-      var icon = this.getElement('action').setVisible(false);
-            this.resetChildVisibleState(icon);
-      if (this.isTyping) {
-        this.stop(true);
-      }  else {
+				last = true;
+			}
+		},
+		textBox
+	);
+	// setTimeout(() => {last = false;  textOpen = !textOpen;}, 1000)
 
-        this.typeNextPage();
-      }
-       
-    },
-    textBox
-  );
-  
-  textBox.setInteractive().on(
-    "pageend",
-    function () {
-      var icon = this.getElement('action').setVisible(true);
-      this.resetChildVisibleState(icon);
-      if ( this.isLastPage) {
-        scene.input.keyboard.on("keyup-ENTER", () => {
-          textBox.setVisible(false);
-        last = false
-          
-        });
-         textOpen = !textOpen;
-
-        last = true
-
-      }
-
-    },                              
-    textBox
-  )
-  // setTimeout(() => {last = false;  textOpen = !textOpen;}, 1000)
-
-
-  return textBox;
+	return textBox;
 };
 
 var getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
-  return scene.add
-    .text(0, 0, "", {
-      fontSize: "20px",
-      wordWrap: {
-        width: wrapWidth,
-      },
-      maxLines: 3,
-    })
-    .setFixedSize(fixedWidth, fixedHeight);
+	return scene.add
+		.text(0, 0, '', {
+			fontSize: '20px',
+			wordWrap: {
+				width: wrapWidth,
+			},
+			maxLines: 3,
+		})
+		.setFixedSize(fixedWidth, fixedHeight);
 };
 
 var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
-  return scene.rexUI.add.BBCodeText(0, 0, "", {
-    fixedWidth: fixedWidth,
-    fixedHeight: fixedHeight,
+	return scene.rexUI.add.BBCodeText(0, 0, '', {
+		fixedWidth: fixedWidth,
+		fixedHeight: fixedHeight,
 
-    fontSize: "20px",
-    wrap: {
-      mode: "word",
-      width: wrapWidth,
-    },
-    maxLines: 3,
-  });
+		fontSize: '20px',
+		wrap: {
+			mode: 'word',
+			width: wrapWidth,
+		},
+		maxLines: 3,
+	});
 };
