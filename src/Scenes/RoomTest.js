@@ -41,8 +41,10 @@ export default class RoomTest extends Phaser.Scene {
 
         Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
-        this.cameras.main.setBounds(48, 0, 800, 600);
-        this.cameras.main.startFollow(this.man);
+
+        //Increasing the last two values will allow for more scrolling
+        this.cameras.main.setBounds(48, 0, 800, 700);
+        this.cameras.main.startFollow(this.man, true);
 
     }
 
