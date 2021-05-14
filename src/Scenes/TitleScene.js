@@ -20,7 +20,7 @@ export default class TitleScene extends Phaser.Scene {
     music.play();
 
     const startButton = new Button(400, 500, "Start Game", this, () => {
-      this.scene.start("StartScene");
+      this.scene.start("Puzzle2");
       music.stop();
       click.play();
     });
