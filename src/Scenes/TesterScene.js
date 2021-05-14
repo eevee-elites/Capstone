@@ -3,7 +3,6 @@ import Player from "../Models/Player";
 import NPC from "../Models/NPC";
 import Animate from "../Models/Animate";
 import NPCAnimate from "../Models/NPCAnimate";
-import Inventory from "../Helper/Inventory";
 
 export default class TesterScene extends Phaser.Scene {
   constructor() {
@@ -102,7 +101,7 @@ export default class TesterScene extends Phaser.Scene {
     this.input.once(
       Phaser.Input.Events.POINTER_DOWN,
       function () {
-        this.scene.switch("Inventory");
+        this.scene.switch("Inventory", { inventory: this.man.inventory });
       },
       this
     );
@@ -120,7 +119,7 @@ export default class TesterScene extends Phaser.Scene {
     input.once(
       Phaser.Input.Events.POINTER_DOWN,
       function () {
-        scene.switch("Inventory");
+        this.scene.switch("Inventory", { inventory: this.man.inventory });
       },
       this
     );
