@@ -19,7 +19,7 @@ export default class Inventory extends Phaser.Scene {
   create(data) {
     this.inventoryPassed = data.inventory;
     const myInventory = [];
-    console.log("data", data);
+    console.log(" inventory data", data);
 
     for (const key in this.inventoryPassed) {
       if (this.inventoryPassed[key] != 0) {
@@ -33,29 +33,45 @@ export default class Inventory extends Phaser.Scene {
       x += 100;
     });
 
-    this.add.image(200, 200, "cat");
+    this.add.text(350, 0, "INVENTORY");
 
     this.input.once(
       Phaser.Input.Events.POINTER_DOWN,
-      function (event) {
-        this.scene.switch("Tester");
+      function () {
+        this.scene.transition({
+          target: data.scene,
+          duration: 10,
+        });
       },
       this
     );
+
+    // this.input.once(
+    //   scene.input.keyboard.on(
+    //     "keydown-I",
+    //     function (event) {
+    //       this.scene.switch("Tester");
+    //     },
+    //     this
+    //   )
+    // );
 
     this.events.on(
       Phaser.Scenes.Events.WAKE,
       function () {
-        this.wake(this.input, this.scene);
+        this.wake(this.input, this.scene, data.scene);
       },
       this
     );
   }
-  wake(input, scene) {
+  wake(input, scene, sceneToSwitchTo) {
     input.once(
       Phaser.Input.Events.POINTER_DOWN,
       function (event) {
-        this.scene.switch("Tester");
+        this.scene.transition({
+          target: sceneToSwitchTo,
+          duration: 10,
+        });
       },
       this
     );

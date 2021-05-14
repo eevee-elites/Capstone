@@ -97,11 +97,31 @@ export default class TesterScene extends Phaser.Scene {
       this
     );
     /// scene switching logic
+    // scene.scene.transition({
+    // 	target: key,
+    // 	// data: null,
+    // 	// moveAbove: false,
+    // 	// moveBelow: false,
+
+    // 	duration: 1000,
+
+    // remove: false,
+    // sleep: false,
+    // allowInput: false,
+
+    // onUpdate: null,
+    // onUpdateScope: scene
+    // })
 
     this.input.once(
       Phaser.Input.Events.POINTER_DOWN,
       function () {
-        this.scene.switch("Inventory", { inventory: this.man.inventory });
+        this.scene.transition({
+          target: "Inventory",
+          duration: 10,
+          data: { inventory: this.man.inventory, scene: "Tester" },
+          sleep: true,
+        });
       },
       this
     );
@@ -119,7 +139,12 @@ export default class TesterScene extends Phaser.Scene {
     input.once(
       Phaser.Input.Events.POINTER_DOWN,
       function () {
-        this.scene.switch("Inventory", { inventory: this.man.inventory });
+        this.scene.transition({
+          target: "Inventory",
+          duration: 10,
+          data: { inventory: this.man.inventory, scene: "Tester" },
+          sleep: true,
+        });
       },
       this
     );
