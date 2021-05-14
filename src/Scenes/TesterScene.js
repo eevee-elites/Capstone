@@ -33,6 +33,7 @@ export default class TesterScene extends Phaser.Scene {
     this.load.image("star", "assets/star.png");
     this.load.image("cat", "assets/cat.png");
     this.load.image("pizza", "assets/pizza.png");
+    this.load.image("backpack", "assets/backpack.png");
   }
 
   create() {
@@ -45,6 +46,7 @@ export default class TesterScene extends Phaser.Scene {
     this.stars = this.physics.add.sprite(100, 450, "star");
     this.pizza = this.physics.add.sprite(333, 250, "pizza");
     this.cat = this.physics.add.sprite(200, 350, "cat");
+    this.backpack = this.add.image(770, 30, "backpack");
     var music = this.sound.add("bg", true);
     music.setLoop(true);
     music.play();
@@ -70,32 +72,32 @@ export default class TesterScene extends Phaser.Scene {
     this.physics.add.overlap(this.man, this.pizza, collectItem, null, this);
     this.physics.add.overlap(this.man, this.cat, collectItem, null, this);
 
-    var scene = this,
-      inventory = undefined;
-    this.input.keyboard.on(
-      "keydown-I",
-      function (pointer) {
-        var x = pointer.x,
-          y = pointer.y;
+    // var scene = this,
+    //   inventory = undefined;
+    // this.input.keyboard.on(
+    //   "keydown-I",
+    //   function (pointer) {
+    //     var x = pointer.x,
+    //       y = pointer.y;
 
-        if (inventory === undefined) {
-          inventory = Inventory(
-            this,
-            x,
-            y,
-            this.man.inventory,
-            function (color) {
-              inventory.scaleDownDestroy(100);
-              inventory = undefined;
-            }
-          );
-        } else if (!inventory.isInTouching(pointer)) {
-          inventory.scaleDownDestroy(100);
-          inventory = undefined;
-        }
-      },
-      this
-    );
+    //     if (inventory === undefined) {
+    //       inventory = Inventory(
+    //         this,
+    //         x,
+    //         y,
+    //         this.man.inventory,
+    //         function (color) {
+    //           inventory.scaleDownDestroy(100);
+    //           inventory = undefined;
+    //         }
+    //       );
+    //     } else if (!inventory.isInTouching(pointer)) {
+    //       inventory.scaleDownDestroy(100);
+    //       inventory = undefined;
+    //     }
+    //   },
+    //   this
+    // );
     /// scene switching logic
     // scene.scene.transition({
     // 	target: key,
@@ -112,9 +114,9 @@ export default class TesterScene extends Phaser.Scene {
     // onUpdate: null,
     // onUpdateScope: scene
     // })
-
-    this.input.once(
-      Phaser.Input.Events.POINTER_DOWN,
+    // let i = this.input.keyboard.addKey("I");
+    this.input.keyboard.on(
+      "keydown-I",
       function () {
         this.scene.transition({
           target: "Inventory",
@@ -126,6 +128,19 @@ export default class TesterScene extends Phaser.Scene {
       this
     );
 
+    // this.input.once(
+    //   Phaser.Input.Events.POINTER_DOWN,
+    //   function () {
+    //     this.scene.transition({
+    //       target: "Inventory",
+    //       duration: 10,
+    //       data: { inventory: this.man.inventory, scene: "Tester" },
+    //       sleep: true,
+    //     });
+    //   },
+    //   this
+    // );
+
     this.events.on(
       Phaser.Scenes.Events.WAKE,
       function () {
@@ -136,8 +151,8 @@ export default class TesterScene extends Phaser.Scene {
   }
 
   wake(input, scene) {
-    input.once(
-      Phaser.Input.Events.POINTER_DOWN,
+    this.input.keyboard.on(
+      "keydown-I",
       function () {
         this.scene.transition({
           target: "Inventory",

@@ -35,8 +35,8 @@ export default class Inventory extends Phaser.Scene {
 
     this.add.text(350, 0, "INVENTORY");
 
-    this.input.once(
-      Phaser.Input.Events.POINTER_DOWN,
+    this.input.keyboard.on(
+      "keydown-I",
       function () {
         this.scene.transition({
           target: data.scene,
@@ -65,8 +65,8 @@ export default class Inventory extends Phaser.Scene {
     );
   }
   wake(input, scene, sceneToSwitchTo) {
-    input.once(
-      Phaser.Input.Events.POINTER_DOWN,
+    this.input.keyboard.on(
+      "keydown-I",
       function (event) {
         this.scene.transition({
           target: sceneToSwitchTo,
