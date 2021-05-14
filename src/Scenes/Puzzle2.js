@@ -11,10 +11,15 @@ const COLOR_DARK = 0x260e04;
 let textOpen = false;
 let last = false;
 let wrongCounter = 0;
+var yesButton;
+var noButton;
+let clicked = false;
 
 export default class Puzzle2 extends Phaser.Scene {
     constructor() {
         super('Puzzle2')
+        // let yesButton;
+        // let noButton;
     }
 
     preload() {
@@ -70,10 +75,21 @@ export default class Puzzle2 extends Phaser.Scene {
         this.physics.add.existing(wrongDoll, true)
         this.physics.add.overlap (this.man, wrongDoll, this.chooseWrong, null, this)
 
+        //yes or no choices
+        yesButton = this.add.rectangle(400, 300, 50, 50, 0x000000)
+        yesButton.visible = false;
+        yesButton.setInteractive()
+        noButton = this.add.rectangle(400, 370, 50, 50, 0x000000)
+        noButton.visible = false;
+        noButton.setInteractive()
+
     }
 
     update() {
 		this.man.update(this);
+        if (clicked) {
+            this.penalty()
+        }
 	}
 
     openingDialogue() {
@@ -100,53 +116,73 @@ export default class Puzzle2 extends Phaser.Scene {
     chooseWrong() {
         let enter = this.input.keyboard.addKey('ENTER');
         if (enter.isDown) {
-            const dialog = this.rexUI.add.dialog({
-                x: 400,
-                y: 300,
+            yesButton.visible = true;
+            noButton.visible = true;
 
-                background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x156c0),
-                
-                content: this.add.text(0, 0, 'Choose this doll?', {
-                    fontSize: '24px'
-                }),
+            textOpen = true;
+			const dialogue = createTextBox(this, 100, 400, {
+				wrapWidth: 500,
+				fixedWidth: 500,
+				fixedHeight: 65,
+			}).start('Choose this doll?', 50);
 
-                actions: [
-                    createLabel(this, 'Yes'),
-                    createLabel(this, 'No')
-                ],
-
-                space: {
-                    content: 25,
-                    action: 15,
-
-                    left: 20,
-                    right: 20,
-                    top: 20,
-                    bottom: 20,
-                },
-
-                align: {
-                    actions: 'center'
-                },
-
-                expand: {
-                    content: false
-                }
+            yesButton.on('pointerdown', function() {
+                clicked = true;
+                dialogue.destroy();
             })
-            .layout()
-            .popUp(1000);
 
-            this.print = this.add.text(0, 0, '');
-            dialog
-                .on('button.click', function (button, groupName, index) {
-                    if (button.text === 'Yes') {
-                        this.penalty()
-                        dialog.destroy()
-                    } else {
-                        console.log("why")
-                        dialog.destroy()
-                    }
-                }, this)
+            noButton.on('pointerdown', function() {
+                yesButton.visible = false;
+                noButton.visible = false;
+                dialogue.destroy();
+            })
+            // const dialog = this.rexUI.add.dialog({
+            //     x: 400,
+            //     y: 300,
+
+            //     background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x156c0),
+                
+            //     content: this.add.text(0, 0, 'Choose this doll?', {
+            //         fontSize: '24px'
+            //     }),
+
+            //     actions: [
+            //         createLabel(this, 'Yes'),
+            //         createLabel(this, 'No')
+            //     ],
+
+            //     space: {
+            //         content: 25,
+            //         action: 15,
+
+            //         left: 20,
+            //         right: 20,
+            //         top: 20,
+            //         bottom: 20,
+            //     },
+
+            //     align: {
+            //         actions: 'center'
+            //     },
+
+            //     expand: {
+            //         content: false
+            //     }
+            // })
+            // .layout()
+            // .popUp(1000);
+
+            // this.print = this.add.text(0, 0, '');
+            // dialog
+            //     .on('button.click', function (button, groupName, index) {
+            //         if (button.text === 'Yes') {
+            //             this.penalty()
+            //             dialog.destroy()
+            //         } else {
+            //             console.log("why")
+            //             dialog.destroy()
+            //         }
+            //     }, this)
                 
         }
     }
@@ -157,6 +193,9 @@ export default class Puzzle2 extends Phaser.Scene {
 
         penalty() {
             wrongCounter++;
+            clicked = false;
+            yesButton.visible = false;
+            noButton.visible = false;
 
             if (wrongCounter === 1) {
                 console.log("strike one")
@@ -169,22 +208,22 @@ export default class Puzzle2 extends Phaser.Scene {
         }
 }
 
-var createLabel = function (scene, text) {
-    return scene.rexUI.add.label({
-        background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x5e92f3),
+// var createLabel = function (scene, text) {
+//     return scene.rexUI.add.label({
+//         background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x5e92f3),
 
-        text: scene.add.text(0, 0, text, {
-            fontSize: '24px'
-        }),
+//         text: scene.add.text(0, 0, text, {
+//             fontSize: '24px'
+//         }),
 
-        space: {
-            left: 10,
-            right: 10,
-            top: 10,
-            bottom: 10
-        }
-    })
-}
+//         space: {
+//             left: 10,
+//             right: 10,
+//             top: 10,
+//             bottom: 10
+//         }
+//     })
+// }
 
 const GetValue = Phaser.Utils.Objects.GetValue;
 var createTextBox = function (scene, x, y, config) {
@@ -203,6 +242,7 @@ var createTextBox = function (scene, x, y, config) {
 				.setVisible(true),
 
 			icon: scene.add.image(0, 0, 'icon'),
+            // icon: iconImage,
 
 			// text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
@@ -236,11 +276,12 @@ var createTextBox = function (scene, x, y, config) {
 	textBox.setInteractive().on(
 		'pageend',
 		function () {
-			if (this.isLastPage) {
+			if (this.isLastPage && !this.isTyping) {
 				scene.input.keyboard.on('keyup-ENTER', () => {
 					textBox.setVisible(false);
 					last = false;
 				});
+
 				textOpen = !textOpen;
 
 				last = true;
