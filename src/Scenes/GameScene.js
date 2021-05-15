@@ -1,5 +1,5 @@
 import "phaser";
-import { Game } from "phaser";
+
 import Player from "../Models/Player";
 import NPC from "../Models/NPC";
 import Animate from "../Models/Animate";
@@ -13,12 +13,14 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    // leave rexui in here do not move
     this.load.scenePlugin(
       "rexuiplugin",
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js",
       "rexUI",
       "rexUI"
     );
+    // added to preloader take out for clean up
     this.load.spritesheet("man", "assets/man.png", {
       frameWidth: 64,
       frameHeight: 64,
