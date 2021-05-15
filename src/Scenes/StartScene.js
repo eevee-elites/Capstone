@@ -49,6 +49,8 @@ export default class StartScene extends Phaser.Scene {
 		const tutorialRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
 		// if (data) this.finishedTutorial = data.finishedTutorial || false;
 		this.finishedTutorial = true;
+		const puzzle1Room = this.add.rectangle(840, 300, 120, 40, 0x000000);
+		this.physics.add.existing(puzzle1Room, true);
 		this.physics.add.existing(tutorialRoom, true);
 		//map
 		const map = this.make.tilemap({key: 'map'});
@@ -59,8 +61,7 @@ export default class StartScene extends Phaser.Scene {
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
 
 		collidingLayer.setCollisionByProperty({collides: true});
-		const puzzle1Room = this.add.rectangle(840, 300, 120, 40, 0x000000);
-		this.physics.add.existing(puzzle1Room, true);
+
 		this.man = this.physics.add
 			.existing(new Player(this, 400, 300, 'man'))
 			.setOrigin(0.5, -3);
