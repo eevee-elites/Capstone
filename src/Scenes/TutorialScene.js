@@ -243,6 +243,7 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 								immovable: true,
 							});
 							const movable = scene.physics.add.sprite(650, 520, 'drawer');
+							movable.body.setDrag(10000, 10000);
 							scene.physics.add.collider(staticRow6, scene.man);
 							scene.physics.add.collider(movable, scene.collidingLayer);
 							scene.physics.add.collider(movable, scene.man);
