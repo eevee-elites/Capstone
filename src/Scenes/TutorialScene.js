@@ -4,7 +4,8 @@ import NPC from '../Models/NPC';
 import Animate from '../Models/Animate';
 import NPCAnimate from '../Models/NPCAnimate';
 
-const Greet = 'Hey! Come over here! and press the "enter" key';
+const Greet =
+	'Hey! Come over here! Use your arrow keys of WASD to move and press the "enter" key to intable with me';
 const TalkandPushingInstructions =
 	"This is how you can talk to me. You can also keep pressing to finish and close out our conversations...                 Did you make sure to leave the door open?                                                                             …                                                                                                                       You didn't?! Oh no! Did you get trapped in here too? Go find the key! I'm not strong enough, but I'm sure you are!   You have to push those nightstands to get the key!";
 const InventoryInstructions = 'Press " i " to see your inventory';
@@ -20,9 +21,7 @@ let madeBoxesAppear = false;
 
 export default class TutorialScene extends Phaser.Scene {
 	constructor() {
-		super('TutorialScene');
-		let man, npc;
-		var anims;
+		super('Tutorial');
 	}
 
 	preload() {
@@ -60,6 +59,7 @@ export default class TutorialScene extends Phaser.Scene {
 
 	create() {
 		let npcHitBox = this.add.rectangle(100, 400, 70, 100, 0x000000);
+		let exitHitBox = this.add.rectangle(450, 600, 100, 20, 0x000000);
 
 		//map
 		const map = this.make.tilemap({key: 'tutorialRoom'});
@@ -75,8 +75,6 @@ export default class TutorialScene extends Phaser.Scene {
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 		this.npc = this.physics.add.existing(new NPC(this, 100, 400, 'NPC'), true);
-
-		let exitHitBox = this.add.rectangle(450, 600, 100, 20, 0x000000);
 
 		this.npc.body.setSize(30, 90, true);
 		// NPCAnimate(this, 'NPC', 0, 0, 0);
@@ -135,9 +133,8 @@ export default class TutorialScene extends Phaser.Scene {
 		// this.npc.update(this.npc, 'NPC');
 	}
 	exitRoom() {
-		console.log(this.collect), 'jniubyvtc';
 		if (this.collect) {
-			return this.scene.start('StartScene');
+			return this.scene.start('StartScene', {finishedTutorial: true});
 		}
 	}
 	collectKey(man, item) {
@@ -175,10 +172,6 @@ export default class TutorialScene extends Phaser.Scene {
 		}
 	}
 }
-function enterPuzzleRoom1() {
-	this.scene.start('Puzzle1');
-}
-
 const GetValue = Phaser.Utils.Objects.GetValue;
 var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 	var wrapWidth = GetValue(config, 'wrapWidth', 0);
@@ -196,8 +189,6 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 				.setVisible(true),
 
 			icon: scene.add.image(0, 0, 'icon'),
-
-			// text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
 
 			action: scene.add.image(0, 0, 'nextPage').setTint(COLOR_LIGHT),
@@ -243,7 +234,6 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 								immovable: true,
 							});
 							const movable = scene.physics.add.sprite(650, 520, 'drawer');
-							movable.body.setDrag(10000, 10000);
 							scene.physics.add.collider(staticRow6, scene.man);
 							scene.physics.add.collider(movable, scene.collidingLayer);
 							scene.physics.add.collider(movable, scene.man);
@@ -260,18 +250,6 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 	);
 
 	return textBox;
-};
-
-var getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
-	return scene.add
-		.text(0, 0, '', {
-			fontSize: '20px',
-			wordWrap: {
-				width: wrapWidth,
-			},
-			maxLines: 3,
-		})
-		.setFixedSize(fixedWidth, fixedHeight);
 };
 
 var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {

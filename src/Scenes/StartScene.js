@@ -18,7 +18,9 @@ export default class StartScene extends Phaser.Scene {
 		let man, npc;
 		var anims;
 	}
-
+	init(data) {
+		console.log(data);
+	}
 	preload() {
 		this.load.spritesheet('man', 'assets/man.png', {
 			frameWidth: 64,
@@ -47,10 +49,12 @@ export default class StartScene extends Phaser.Scene {
 		this.load.image('icon', 'assets/iconnpc.png');
 	}
 
-	create() {
+	create(data) {
+		console.log(data);
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
-		const puzzle1Room = this.add.rectangle(450, 300, 120, 40, 0x000000);
-		this.physics.add.existing(puzzle1Room, true);
+		const tutorialRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
+		this.finishedTutorial = data.finishedTutorial;
+		this.physics.add.existing(tutorialRoom, true);
 		//map
 		const map = this.make.tilemap({key: 'map'});
 
@@ -81,8 +85,8 @@ export default class StartScene extends Phaser.Scene {
 		this.physics.add.collider(this.man, collidingLayer);
 		this.physics.add.overlap(
 			this.man,
-			puzzle1Room,
-			enterPuzzleRoom1,
+			tutorialRoom,
+			this.enterTutorialRoom,
 			null,
 			this
 		);
@@ -106,9 +110,9 @@ export default class StartScene extends Phaser.Scene {
 			}).start(content, 50);
 		}
 	}
-}
-function enterPuzzleRoom1() {
-	this.scene.start('Puzzle1');
+	enterTutorialRoom() {
+		if (!this.finishedTutorial) return this.scene.start('Tutorial');
+	}
 }
 
 const GetValue = Phaser.Utils.Objects.GetValue;
