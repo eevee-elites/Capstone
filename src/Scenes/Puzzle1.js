@@ -68,12 +68,32 @@ export default class Puzzle1 extends Phaser.Scene {
 		// reset
 		this.physics.add.existing(resetBox, true);
 		this.physics.add.overlap(this.man, resetBox, reset, null, this);
+		this.events.on(
+			Phaser.Scenes.Events.WAKE,
+			function () {
+				this.wake(this.input, this.scene);
+			},
+			this
+		);
 	}
 	exitRoom() {
 		if (this.collect) {
 			this.music.stop();
-			this.scene.start('StartScene');
+			// this.scene.wake('StartScene');
+			this.scene.transition({
+				target: 'StartScene',
+				duration: 100,
+				data: {inventory: this.man.inventory, scene: 'Tester'},
+				sleep: true,
+			});
 		}
+	}
+	wake(input, scene) {
+		this.scene.transition({
+			target: 'StartScene',
+			duration: 10,
+			sleep: true,
+		});
 	}
 	update() {
 		this.man.update(this);

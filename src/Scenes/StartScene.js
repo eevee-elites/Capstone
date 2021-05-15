@@ -96,6 +96,13 @@ export default class StartScene extends Phaser.Scene {
 		);
 		this.cameras.main.setBounds(0, 0, 3000, 700);
 		this.cameras.main.startFollow(this.man);
+		this.events.on(
+			Phaser.Scenes.Events.WAKE,
+			function () {
+				this.wake(this.input, this.scene);
+			},
+			this
+		);
 	}
 
 	update() {
@@ -118,7 +125,18 @@ export default class StartScene extends Phaser.Scene {
 		if (!this.finishedTutorial) return this.scene.start('Tutorial');
 	}
 	enterPuzzle1Room() {
-		this.scene.start('Puzzle1');
+		this.scene.transition({
+			target: 'Puzzle1',
+			duration: 10,
+			sleep: true,
+		});
+	}
+	wake(input, scene) {
+		this.scene.transition({
+			target: 'Puzzle1',
+			duration: 10,
+			sleep: true,
+		});
 	}
 }
 
