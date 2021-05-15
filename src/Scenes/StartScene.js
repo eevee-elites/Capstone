@@ -75,6 +75,7 @@ export default class StartScene extends Phaser.Scene {
 		this.physics.add.collider(this.man, collidingLayer);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
+		// NPCAnimate(this, 'NPC', 0, 0, 1);
 
 		// this.man.setCollideWorldBounds(true);
 		this.physics.add.collider(this.man, collidingLayer);
@@ -91,7 +92,7 @@ export default class StartScene extends Phaser.Scene {
 
 	update() {
 		this.man.update(this);
-		// this.npc.update(this.npc, "NPC");
+		// this.npc.update(this.npc, 'NPC');
 	}
 
 	sayHello(man, pika) {
