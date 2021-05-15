@@ -46,16 +46,6 @@ export default class Inventory extends Phaser.Scene {
       this
     );
 
-    // this.input.once(
-    //   scene.input.keyboard.on(
-    //     "keydown-I",
-    //     function (event) {
-    //       this.scene.switch("Tester");
-    //     },
-    //     this
-    //   )
-    // );
-
     this.events.on(
       Phaser.Scenes.Events.WAKE,
       function () {
