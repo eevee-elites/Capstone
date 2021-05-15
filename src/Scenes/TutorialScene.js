@@ -4,17 +4,22 @@ import NPC from '../Models/NPC';
 import Animate from '../Models/Animate';
 import NPCAnimate from '../Models/NPCAnimate';
 
-var content =
-	'test dialogue array blaksjdflkasjfalkdsjfalksd falsd fasdfkljasd flkad fasd flkasdjflaksd fa sdf asdlkfj asdkljf asdkljf';
+const Greet = 'Hey! Come over here';
+const TalkingInstructions = 'Press enter to talk with me';
+const PushingInstructions = 'Go and push those boxes and get the key';
+const InventoryInstructions = 'Press " i " to see your inventory';
+const Leave =
+	'Now that you have the key, you can leave. Hurry and save your friends!';
+
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
 let textOpen = false;
 let last = false;
 
-export default class StartScene extends Phaser.Scene {
+export default class TutorialScene extends Phaser.Scene {
 	constructor() {
-		super('StartScene');
+		super('TutorialScene');
 		let man, npc;
 		var anims;
 	}
@@ -43,18 +48,16 @@ export default class StartScene extends Phaser.Scene {
 		);
 		this.load.image('nextPage', 'assets/next.png');
 		this.load.image('tiles', '../assets/Room spritesheet.png');
-		this.load.tilemapTiledJSON('map', '../assets/HallwayRoom.json');
+		this.load.tilemapTiledJSON('tutorialRoom', '../assets/TutorialRoom.json');
 		this.load.image('icon', 'assets/iconnpc.png');
 	}
 
 	create() {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
-		const puzzle1Room = this.add.rectangle(450, 300, 120, 40, 0x000000);
-		this.physics.add.existing(puzzle1Room, true);
 		//map
-		const map = this.make.tilemap({key: 'map'});
+		const map = this.make.tilemap({key: 'tutorialRoom'});
 
-		const tileset = map.addTilesetImage('Hallway', 'tiles');
+		const tileset = map.addTilesetImage('PuzzleRoom', 'tiles');
 
 		const belowLayer = map.createLayer('Below', tileset, 0, 0);
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
@@ -76,15 +79,15 @@ export default class StartScene extends Phaser.Scene {
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
-		// this.man.setCollideWorldBounds(true);
+		this.man.setCollideWorldBounds(true);
 		this.physics.add.collider(this.man, collidingLayer);
-		this.physics.add.overlap(
-			this.man,
-			puzzle1Room,
-			enterPuzzleRoom1,
-			null,
-			this
-		);
+		// this.physics.add.overlap(
+		// 	this.man,
+		// 	puzzle1Room,
+		// 	enterPuzzleRoom1,
+		// 	null,
+		// 	this
+		// );
 		this.cameras.main.setBounds(0, 0, 3000, 700);
 		this.cameras.main.startFollow(this.man);
 	}
