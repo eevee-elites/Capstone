@@ -37,12 +37,6 @@ export default class StartScene extends Phaser.Scene {
 			url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
 			sceneKey: 'rexUI',
 		});
-
-		this.load.plugin(
-			'rextexttypingplugin',
-			'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js',
-			true
-		);
 		this.load.image('nextPage', 'assets/next.png');
 		this.load.image('tiles', '../assets/Room spritesheet.png');
 		this.load.tilemapTiledJSON('map', '../assets/HallwayRoom.json');
@@ -53,8 +47,8 @@ export default class StartScene extends Phaser.Scene {
 		console.log(data);
 		let npcHitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		const tutorialRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
-		if (data) this.finishedTutorial = data.finishedTutorial || false;
-
+		// if (data) this.finishedTutorial = data.finishedTutorial || false;
+		this.finishedTutorial = true;
 		this.physics.add.existing(tutorialRoom, true);
 		//map
 		const map = this.make.tilemap({key: 'map'});
@@ -65,7 +59,8 @@ export default class StartScene extends Phaser.Scene {
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
 
 		collidingLayer.setCollisionByProperty({collides: true});
-
+		const puzzle1Room = this.add.rectangle(840, 300, 120, 40, 0x000000);
+		this.physics.add.existing(puzzle1Room, true);
 		this.man = this.physics.add
 			.existing(new Player(this, 400, 300, 'man'))
 			.setOrigin(0.5, -3);
@@ -91,6 +86,13 @@ export default class StartScene extends Phaser.Scene {
 			null,
 			this
 		);
+		this.physics.add.overlap(
+			this.man,
+			puzzle1Room,
+			this.enterPuzzle1Room,
+			null,
+			this
+		);
 		this.cameras.main.setBounds(0, 0, 3000, 700);
 		this.cameras.main.startFollow(this.man);
 	}
@@ -113,6 +115,9 @@ export default class StartScene extends Phaser.Scene {
 	}
 	enterTutorialRoom() {
 		if (!this.finishedTutorial) return this.scene.start('Tutorial');
+	}
+	enterPuzzle1Room() {
+		this.scene.start('Puzzle1');
 	}
 }
 

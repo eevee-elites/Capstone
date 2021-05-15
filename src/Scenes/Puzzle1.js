@@ -48,7 +48,7 @@ export default class Puzzle1 extends Phaser.Scene {
 
 		this.add.rectangle(0, 400, 10, 10, 0x000000);
 		this.stars = this.physics.add.sprite(760, 410, 'star');
-		this.collect = false;
+		this.collect = true;
 		//music
 		this.music = this.sound.add('bg', true);
 		this.music.setLoop(true);
@@ -72,7 +72,7 @@ export default class Puzzle1 extends Phaser.Scene {
 	exitRoom() {
 		if (this.collect) {
 			this.music.stop();
-			return this.scene.start('StartScene');
+			this.scene.start('StartScene');
 		}
 	}
 	update() {
