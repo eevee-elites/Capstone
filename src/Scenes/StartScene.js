@@ -51,9 +51,10 @@ export default class StartScene extends Phaser.Scene {
 
 	create(data) {
 		console.log(data);
-		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
+		let npcHitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		const tutorialRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
-		this.finishedTutorial = data.finishedTutorial;
+		if (data) this.finishedTutorial = data.finishedTutorial || false;
+
 		this.physics.add.existing(tutorialRoom, true);
 		//map
 		const map = this.make.tilemap({key: 'map'});
@@ -73,15 +74,15 @@ export default class StartScene extends Phaser.Scene {
 
 		this.npc.body.setSize(30, 90, true);
 
-		this.physics.add.existing(hitBox, true);
+		this.physics.add.existing(npcHitBox, true);
 		this.physics.add.collider(this.npc, this.man);
-		this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
+		this.physics.add.overlap(this.man, npcHitBox, this.sayHello, null, this);
 		this.physics.add.collider(this.man, collidingLayer);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 		// NPCAnimate(this, 'NPC', 0, 0, 1);
+		if (!this.finishedTutorial) this.man.setCollideWorldBounds(true);
 
-		// this.man.setCollideWorldBounds(true);
 		this.physics.add.collider(this.man, collidingLayer);
 		this.physics.add.overlap(
 			this.man,
