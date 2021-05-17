@@ -45,8 +45,7 @@ export default class StartScene extends Phaser.Scene {
 		this.load.image('tiles', '../assets/Room spritesheet.png');
 		this.load.tilemapTiledJSON('map', '../assets/HallwayRoom.json');
 		this.load.image('icon', 'assets/iconnpc.png');
-      
-  }
+	}
 
 	create() {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
@@ -77,7 +76,9 @@ export default class StartScene extends Phaser.Scene {
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
-		this.man.setCollideWorldBounds(true);
+		this.cameras.main.setBounds(48, 0, 3000, 700);
+		this.cameras.main.startFollow(this.man, true);
+
 		this.physics.add.collider(this.man, collidingLayer);
 		this.physics.add.overlap(
 			this.man,
