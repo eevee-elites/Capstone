@@ -27,6 +27,8 @@ export default class Puzzle3 extends Phaser.Scene {
 		this.load.image('nextPage', 'assets/next.png');
 		this.load.image('star', 'assets/star.png');
 		this.load.image('table', 'assets/table.png');
+		this.load.image('x', 'assets/x.png');
+
         this.load.scenePlugin({
 			key: 'rexuiplugin',
 			url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -43,6 +45,7 @@ export default class Puzzle3 extends Phaser.Scene {
 	create() {
 		//exit
         // Phaser.Display.Color(2)
+        
 		let exitBox = this.add.rectangle(20, 300, 50, 50, 0xffffff);
 
 		//map
@@ -53,13 +56,14 @@ export default class Puzzle3 extends Phaser.Scene {
 		const belowLayer = map.createLayer('Below', tileset, 0, 0).setPipeline('Light2D');
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0).setPipeline('Light2D');
         
+        const x = this.add.image(450, 700, 'x')
 		
         //colliding tile layers
         collidingLayer.setCollisionByProperty({collides: true});
        
 
-
-
+        
+        this.physics.add.existing(x,true)
 		//player
 		this.man = this.physics.add
 			.existing(new Player(this, 765, 765, 'man'))
@@ -81,7 +85,7 @@ export default class Puzzle3 extends Phaser.Scene {
 		 //lights
         this.lights.enable();
         this.lights.setAmbientColor(0x808080);
-        // light = this.lights.addLight( 459, 590, 60);
+        light = this.lights.addLight( 459, 590, 60);
     
         this.lights.addLight(450, 510, 40).setColor(0x00000FF).setIntensity(3.0);
         this.lights.addLight(310, 450, 40).setColor(0x00000FF).setIntensity(3.0);
@@ -103,10 +107,16 @@ export default class Puzzle3 extends Phaser.Scene {
 		// this.man.setCollideWorldBounds(true);
 
 		//exit
+        
 		this.physics.add.existing(exitBox, true);
 		this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
 		//collection
 		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
+		this.physics.add.overlap(this.man, x, function (){
+            this.man.body.velocity.x = 0
+        }, null, this);
+
+        
 		// reset
 		// this.physics.add.existing(resetBox, true);
 		this.physics.add.overlap(this.man, null, this);
@@ -143,6 +153,8 @@ export default class Puzzle3 extends Phaser.Scene {
             fixedHeight: 65,
         }).start(content, 50)
     };
+
+
 }
 function shake(){
     if(score < 3){
@@ -160,9 +172,6 @@ function collectBox(man, item) {
 // 	this.scene.start('Puzzle3');
 // }
 
-function Game (){
-
-}
 
 
 const GetValue = Phaser.Utils.Objects.GetValue;
