@@ -5,7 +5,7 @@ import Animate from '../Models/Animate';
 import NPCAnimate from '../Models/NPCAnimate';
 
 const Greet =
-	'Hey! Come over here! Use your arrow keys of WASD to move and press the "enter" key to intable with me';
+	'Hey! Come over here! Use your arrow keys of WASD to move and press the "enter" key to interact with me';
 const TalkandPushingInstructions =
 	"This is how you can talk to me. You can also keep pressing to finish and close out our conversations...                 Did you make sure to leave the door open?                                                                             …                                                                                                                       You didn't?! Oh no! Did you get trapped in here too? Go find the key! I'm not strong enough, but I'm sure you are!   You have to push those nightstands to get the key!";
 const InventoryInstructions = 'Press " i " to see your inventory';

@@ -47,8 +47,8 @@ export default class StartScene extends Phaser.Scene {
 		console.log(data);
 		let npcHitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		const tutorialRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
-		// if (data) this.finishedTutorial = data.finishedTutorial || false;
-		this.finishedTutorial = true;
+		this.finishedTutorial = false;
+		if (data) this.finishedTutorial = data.finishedTutorial || false;
 		const puzzle1Room = this.add.rectangle(840, 300, 120, 40, 0x000000);
 		this.physics.add.existing(puzzle1Room, true);
 		this.physics.add.existing(tutorialRoom, true);
