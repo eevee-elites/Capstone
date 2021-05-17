@@ -100,7 +100,7 @@ export default class Puzzle3 extends Phaser.Scene {
 
 
 		//collisions
-		this.man.setCollideWorldBounds(true);
+		// this.man.setCollideWorldBounds(true);
 
 		//exit
 		this.physics.add.existing(exitBox, true);
@@ -117,7 +117,7 @@ export default class Puzzle3 extends Phaser.Scene {
             
             // this.physics.add.collider(this.man, gate, shake, null, this);
         
-        this.cameras.main.setBounds(48, 0, 800, 700);
+        this.cameras.main.setBounds(48, 68, 800, 900);
         this.cameras.main.startFollow(this.man, true);
         //opening dialogue//
 
