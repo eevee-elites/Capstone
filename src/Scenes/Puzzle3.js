@@ -56,13 +56,8 @@ export default class Puzzle3 extends Phaser.Scene {
 		
         //colliding tile layers
         collidingLayer.setCollisionByProperty({collides: true});
-        
-        var border1= this.add.rectangle(215, 250, 300, 10, 0xffffff);
-		var border2= this.add.rectangle(680, 250, 301, 10, 0xffffff);
-		var gate = this.add.rectangle(447, 250, 163, 10, 0x000000);
-        this.physics.add.existing(border1, true)
-        this.physics.add.existing(border2, true)
-        this.physics.add.existing(gate, true)
+       
+
 
 
 		//player
@@ -72,8 +67,8 @@ export default class Puzzle3 extends Phaser.Scene {
 
 		this.physics.add.collider(this.man, collidingLayer);
 		// this.physics.add.collider(this.man, gate);
-		this.physics.add.collider(this.man, border1);
-		this.physics.add.collider(this.man, border2);
+		// this.physics.add.collider(this.man, border1);
+		// this.physics.add.collider(this.man, border2);
 
        
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
@@ -120,7 +115,7 @@ export default class Puzzle3 extends Phaser.Scene {
         }
 
             
-            this.physics.add.collider(this.man, gate, shake, null, this);
+            // this.physics.add.collider(this.man, gate, shake, null, this);
         
         this.cameras.main.setBounds(48, 0, 800, 700);
         this.cameras.main.startFollow(this.man, true);
