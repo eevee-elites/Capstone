@@ -62,7 +62,7 @@ export default class Puzzle3 extends Phaser.Scene {
 
 		//player
 		this.man = this.physics.add
-			.existing(new Player(this, 765, 600, 'man'))
+			.existing(new Player(this, 765, 765, 'man'))
 			.setOrigin(5.5, 0.5);
 
 		this.physics.add.collider(this.man, collidingLayer);
