@@ -10,12 +10,14 @@ import Puzzle1 from './Scenes/Puzzle1';
 import TesterScene from './Scenes/TesterScene';
 import Tester2 from './Scenes/Tester2';
 import Inventory from './Scenes/Inventory';
+import Puzzle3 from './Scenes/Puzzle3';
 
 class Game extends Phaser.Game {
 	constructor() {
 		super(config);
 		this.scene.add('Boot', BootScene);
 		this.scene.add('Puzzle1', Puzzle1);
+		this.scene.add('Puzzle3', Puzzle3);
 		this.scene.add('Preloader', PreloaderScene);
 		this.scene.add('Title', TitleScene);
 		this.scene.add('Options', OptionsScene);

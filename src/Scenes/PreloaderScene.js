@@ -93,7 +93,8 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("pizza", "assets/pizza.png");
     this.load.image("table", "assets/table.png");
     this.load.image("titleImage", "assets/logo.png");
-
+    this.load.image('tiles', '../assets/Room spritesheet.png');
+		this.load.tilemapTiledJSON('Puzzle3', '../assets/PuzzleRoom.json');
     //load sprites
     this.load.spritesheet("man", "assets/man.png", {
       frameWidth: 64,
@@ -115,7 +116,7 @@ export default class PreloaderScene extends Phaser.Scene {
     // brings us to title scene hwen assests are done loading
     this.readyCount++;
     if (this.readyCount === 2) {
-      this.scene.start("Title");
+      this.scene.start("Puzzle3");
     }
   }
 }
