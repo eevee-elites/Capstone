@@ -16,7 +16,6 @@ var yesButton;
 var noButton;
 let wrongClicked = false;
 let rightClicked = false;
-let haveScissors = false;
 let dollsCut = false;
 
 export default class Puzzle2 extends Phaser.Scene {
@@ -186,8 +185,6 @@ export default class Puzzle2 extends Phaser.Scene {
       yesButton.on("pointerdown", function () {
         yesButton.visible = false;
         noButton.visible = false;
-        haveScissors = true;
-        console.log("the man", man);
         man.pickupItem("cat");
         dialogue.destroy();
       });
@@ -200,10 +197,35 @@ export default class Puzzle2 extends Phaser.Scene {
     }
   }
 
-  chooseWrong() {
+  chooseWrong(man, doll) {
     let enter = this.input.keyboard.addKey("ENTER");
-    if (enter.isDown) {
-      yesButton.visible = true;
+    if (enter.isDown && !dollsCut && man.inventory.cat) {
+        yesButton.visible = true;
+      noButton.visible = true;
+
+      textOpen = true;
+      const dialogue = createTextBox(this, 100, 400, {
+        wrapWidth: 500,
+        fixedWidth: 500,
+        fixedHeight: 65,
+      }).start("Cut open the dolls?", 50);
+
+      yesButton.on("pointerdown", function () {
+        dollsCut = true;
+        man.inventory.cat = 0;
+        console.log("used the scissors")
+        yesButton.visible = false;
+        noButton.visible = false;
+        dialogue.destroy();
+      });
+
+      noButton.on("pointerdown", function () {
+        yesButton.visible = false;
+        noButton.visible = false;
+        dialogue.destroy();
+      });
+    } else if (enter.isDown && !man.inventory.cat) {
+        yesButton.visible = true;
       noButton.visible = true;
 
       textOpen = true;
@@ -241,6 +263,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
       yesButton.on("pointerdown", function () {
         rightClicked = true;
+        console.log("correct!")
         yesButton.visible = false;
         noButton.visible = false;
         dialogue.destroy();
