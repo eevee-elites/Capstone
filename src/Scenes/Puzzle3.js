@@ -15,7 +15,7 @@ var light;
 export default class Puzzle3 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle3');
-
+        this.pattern= this.pattern.bind(this)
     }
 
 	preload() {
@@ -56,24 +56,26 @@ export default class Puzzle3 extends Phaser.Scene {
 		const belowLayer = map.createLayer('Below', tileset, 0, 0).setPipeline('Light2D');
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0).setPipeline('Light2D');
         
-        const x = this.add.image(450, 700, 'x')
+        const xspot = this.add.image(450, 700, 'x')
 		
         //colliding tile layers
         collidingLayer.setCollisionByProperty({collides: true});
        
 
         
-        this.physics.add.existing(x,true)
+        
 		//player
 		this.man = this.physics.add
-			.existing(new Player(this, 765, 765, 'man'))
-			.setOrigin(5.5, 0.5);
+			.existing(new Player(this, 415, 710, 'man'))
+			.setOrigin(0, 0);
 
 		this.physics.add.collider(this.man, collidingLayer);
+		
+
 		// this.physics.add.collider(this.man, gate);
 		// this.physics.add.collider(this.man, border1);
 		// this.physics.add.collider(this.man, border2);
-
+        this.physics.add.existing(xspot,true)
        
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
@@ -85,12 +87,8 @@ export default class Puzzle3 extends Phaser.Scene {
 		 //lights
         this.lights.enable();
         this.lights.setAmbientColor(0x808080);
-        light = this.lights.addLight( 459, 590, 60);
+        light = this.lights.addLight( this.man.x, this.man.y, 60);
     
-        this.lights.addLight(450, 510, 40).setColor(0x00000FF).setIntensity(3.0);
-        this.lights.addLight(310, 450, 40).setColor(0x00000FF).setIntensity(3.0);
-
-
 
 
 		// this.stars = this.physics.add.sprite(760, 410, 'star');
@@ -111,15 +109,15 @@ export default class Puzzle3 extends Phaser.Scene {
 		this.physics.add.existing(exitBox, true);
 		this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
 		//collection
-		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
-		this.physics.add.overlap(this.man, x, function (){
-            this.man.body.velocity.x = 0
-        }, null, this);
+		this.physics.add.overlap(this.man, xspot, this.pattern,null, this)
+		// this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
+
+
 
         
 		// reset
 		// this.physics.add.existing(resetBox, true);
-		this.physics.add.overlap(this.man, null, this);
+		// this.physics.add.overlap(this.man, xspot, this.pattern, null, this);
         if(content.includes('die')){
             this.cameras.main.shake(600)
         }
@@ -131,12 +129,12 @@ export default class Puzzle3 extends Phaser.Scene {
         this.cameras.main.startFollow(this.man, true);
         //opening dialogue//
 
-        this.time.delayedCall(8000, this.openingDialogue(), this);  // delay in ms
+        // this.time.delayedCall(8000, this.openingDialogue(), this);  // delay in ms
 
         // this.lights.addLight(400, 300,200 ).setColor(0xFF0000);
-
+        this.time.delayedCall(8000, this.openingDialogue(), this); 
     }
-  
+   
 	exitRoom() {
 		if (this.collect) {
 			this.music.stop();
@@ -147,20 +145,29 @@ export default class Puzzle3 extends Phaser.Scene {
 		this.man.update(this);
 	}
     openingDialogue(){
-        createTextBox(this, 180, 400, {
+    createTextBox(this, 180, 400, {
             wrapWidth: 500,
             fixedWidth: 500,
             fixedHeight: 65,
         }).start(content, 50)
+
     };
+
+    pattern(){
+
+        this.lights.addLight(450, 510, 40).setColor(0x00000FF).setIntensity(3.0);
+        this.lights.addLight(310, 450, 40).setColor(0x00000FF).setIntensity(3.0);
+
+
+    }
 
 
 }
+
 function shake(){
     if(score < 3){
         content = "The gate seems to be locked"
     this.cameras.main.shake(500)
-    this.time.delayedCall(8000, this.openingDialogue(), this); 
     }
 }
 function collectBox(man, item) {
@@ -185,7 +192,7 @@ var createTextBox = function (scene, x, y, config) {
         .textBox({
             x: x,
             y: y,
-
+            
             background: scene.rexUI.add
                 .roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
                 .setStrokeStyle(2, COLOR_LIGHT)
@@ -217,8 +224,10 @@ var createTextBox = function (scene, x, y, config) {
         function (event) {
             if (this.isTyping) {
                 this.stop(true);
+
             } else {
                 this.typeNextPage();
+
             }
         },
         textBox

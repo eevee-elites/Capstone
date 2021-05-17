@@ -166,7 +166,6 @@ var createTextBox = function (scene, x, y, config) {
 					last = false;
 				});
 				textOpen = !textOpen;
-
 				last = true;
 			}
 		},
