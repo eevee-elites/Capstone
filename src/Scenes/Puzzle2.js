@@ -17,9 +17,7 @@ var noButton;
 let wrongClicked = false;
 let rightClicked = false;
 let haveScissors = false;
-let blueDollCut = false;
-let redDollCut = false;
-let greenDollCut = false;
+let dollsCut = false;
 
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
@@ -54,15 +52,15 @@ export default class Puzzle2 extends Phaser.Scene {
     collidingLayer.setCollisionByProperty({ collides: true });
 
     //items in room
-    let note = this.add.rectangle(100, 400, 40, 40, 0x000000);
-    let wrongDoll = this.add.rectangle(300, 200, 40, 40, 0x000000);
-    let rightDoll = this.add.rectangle(400, 200, 40, 40, 0x000000);
-    let wrongDoll2 = this.add.rectangle(500, 200, 40, 40, 0x000000);
-    let nurseDoll = this.add.rectangle(700, 400, 40, 40, 0x000000)
+    let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
+    let wrongDoll = this.add.rectangle(300, 400, 40, 40, 0x000000);
+    let rightDoll = this.add.rectangle(400, 400, 40, 40, 0x000000);
+    let wrongDoll2 = this.add.rectangle(500, 400, 40, 40, 0x000000);
+    let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0x000000)
 
     //player
     this.man = this.physics.add
-      .existing(new Player(this, 400, 300, "man"))
+      .existing(new Player(this, 420, 800, "man"))
       .setOrigin(0.5, 0.5);
 
     this.physics.add.collider(this.man, collidingLayer);
@@ -70,7 +68,7 @@ export default class Puzzle2 extends Phaser.Scene {
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
     //camera
-    this.cameras.main.setBounds(48, 0, 800, 600);
+    this.cameras.main.setBounds(48, 0, 800, 900);
     this.cameras.main.startFollow(this.man);
 
     //opening dialogue
@@ -111,6 +109,7 @@ export default class Puzzle2 extends Phaser.Scene {
       wrapWidth: 500,
       fixedWidth: 500,
       fixedHeight: 65,
+      imageName: 'npc2'
     }).start(openingLine, 50);
   }
 
@@ -182,7 +181,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   chooseRight() {
     let enter = this.input.keyboard.addKey("ENTER");
-    if (enter.isDown) {
+    if (enter.isDown && dollsCut) {
       yesButton.visible = true;
       noButton.visible = true;
 
@@ -194,10 +193,30 @@ export default class Puzzle2 extends Phaser.Scene {
       }).start("Choose this doll?", 50);
 
       yesButton.on("pointerdown", function () {
-        //wrongClicked = false;
         rightClicked = true;
         yesButton.visible = false;
         noButton.visible = false;
+        dialogue.destroy();
+      });
+
+      noButton.on("pointerdown", function () {
+        yesButton.visible = false;
+        noButton.visible = false;
+        dialogue.destroy();
+      });
+    } else if (enter.isDown && !dollsCut){
+      yesButton.visible = true;
+      noButton.visible = true;
+
+      textOpen = true;
+      const dialogue = createTextBox(this, 100, 400, {
+        wrapWidth: 500,
+        fixedWidth: 500,
+        fixedHeight: 65,
+      }).start("Choose this doll?", 50);
+
+      yesButton.on("pointerdown", function () {
+        wrongClicked = true;
         dialogue.destroy();
       });
 
@@ -235,7 +254,7 @@ var createTextBox = function (scene, x, y, config) {
   var textBox = scene.rexUI.add
     .textBox({
       x: x,
-      y: y,
+      y: scene.cameras.main.height,
 
       background: scene.rexUI.add
         .roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
