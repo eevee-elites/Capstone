@@ -139,10 +139,10 @@ export default class Puzzle1 extends Phaser.Scene {
 		);
 	}
 	exitRoom() {
-		if (this.collected) {
-			this.music.stop();
-			return this.scene.start('StartScene');
-		}
+		// if (this.collected) {
+		// 	this.music.stop();
+		return this.scene.start('StartScene');
+		// }
 	}
 	update() {
 		this.man.update(this);

@@ -163,7 +163,6 @@ export default class TutorialScene extends Phaser.Scene {
 	update() {
 		this.man.update(this);
 		this.room1Key.update(this.room1Key, 'room1Key');
-		// this.npc.update(this.npc, 'NPC');
 	}
 	exitRoom() {
 		if (this.collect) {

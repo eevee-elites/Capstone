@@ -41,11 +41,11 @@ export default class StartScene extends Phaser.Scene {
 			sceneKey: 'rexUI',
 		});
 
-		this.load.plugin(
-			'rextexttypingplugin',
-			'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js',
-			true
-		);
+		// this.load.plugin(
+		// 	'rextexttypingplugin',
+		// 	'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js',
+		// 	true
+		// );
 		this.load.image('nextPage', 'assets/next.png');
 		this.load.image('tiles', '../assets/Room spritesheet.png');
 		this.load.tilemapTiledJSON('map', '../assets/HallwayRoom.json');
@@ -55,6 +55,9 @@ export default class StartScene extends Phaser.Scene {
 	create() {
 		let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
 		const puzzle1Room = this.add.rectangle(450, 300, 120, 40, 0x000000);
+		const puzzle2Room = this.add.rectangle(835, 300, 120, 40, 0x000000);
+		this.physics.add.existing(puzzle2Room, true);
+
 		this.physics.add.existing(puzzle1Room, true);
 		//map
 		const map = this.make.tilemap({key: 'map'});
@@ -65,7 +68,7 @@ export default class StartScene extends Phaser.Scene {
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
 
 		collidingLayer.setCollisionByProperty({collides: true});
-		//map
+
 		this.man = this.physics.add.existing(new Player(this, 400, 600, 'man'));
 
 		this.npc = this.physics.add.existing(new NPC(this, 100, 400, 'NPC'), true);
@@ -78,7 +81,7 @@ export default class StartScene extends Phaser.Scene {
 		this.physics.add.collider(this.man, collidingLayer);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		//camera
+
 		this.cameras.main.setBounds(48, 0, 3000, 700);
 		this.cameras.main.startFollow(this.man, true);
 
@@ -90,6 +93,15 @@ export default class StartScene extends Phaser.Scene {
 			null,
 			this
 		);
+
+		this.physics.add.overlap(
+			this.man,
+			puzzle2Room,
+			enterPuzzleRoom2,
+			null,
+			this
+		);
+
 		this.input.keyboard.on(
 			'keydown-I',
 			function () {
@@ -144,10 +156,10 @@ export default class StartScene extends Phaser.Scene {
 	}
 }
 function enterPuzzleRoom1() {
-	this.scene.start('Puzzle1');
+	return this.scene.start('Puzzle1');
 }
 function enterPuzzleRoom2() {
-  this.scene.start("Puzzle2");
+	return this.scene.start('Puzzle2');
 }
 
 const GetValue = Phaser.Utils.Objects.GetValue;
