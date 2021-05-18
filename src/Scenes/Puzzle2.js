@@ -27,6 +27,7 @@ export default class Puzzle2 extends Phaser.Scene {
     super("Puzzle2");
     // let yesButton;
     // let noButton;
+
   }
   initialize() {
     function switchInventory() {
@@ -81,6 +82,8 @@ export default class Puzzle2 extends Phaser.Scene {
     this.man = this.physics.add
       .existing(new Player(this, 420, 700, "man"))
       .setOrigin(0, 0);
+
+	  this.man.body.setSize(30,10)
 
     this.physics.add.collider(this.man, collidingLayer);
 	this.physics.add.collider(this.man, blueDoll);
@@ -171,10 +174,8 @@ export default class Puzzle2 extends Phaser.Scene {
       },
       this
     );
-    console.log("wrongclick", wrongClicked);
-	if(wrongClicked === true ){
-		this.cameras.main.shake(500)
-	}
+    
+
 
 
   }
@@ -254,7 +255,7 @@ export default class Puzzle2 extends Phaser.Scene {
       });
     }
   }
- choosedoll (man,doll,scene){
+ choosedoll (man,doll, scene){
 	let enter = this.input.keyboard.addKey("ENTER");
 	if(enter.isDown && man.inventory.cat === 0){
 		blueButton.visible = true;
@@ -267,14 +268,17 @@ export default class Puzzle2 extends Phaser.Scene {
 				      }).start("Which doll do you want to choose?", 50);
 
 		blueButton.on('pointerdown', function(){
+			this.scene.cameras.main.shake(500)
 			blueButton.visible = false;
 			greenButton.visible = false;
 			redButton.visible = false;
 			wrongClicked = true
+			
 			dialogue.destroy()
 		})
 
 		greenButton.on('pointerdown', function(){
+			this.scene.cameras.main.shake(500)
 			blueButton.visible = false;
 			greenButton.visible = false;
 			redButton.visible = false;
