@@ -19,6 +19,7 @@ let rightClicked = false;
 let dollsCut = false;
 let light;
 let nurse;
+let once = false;
 export default class Puzzle2 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle2');
@@ -204,10 +205,12 @@ export default class Puzzle2 extends Phaser.Scene {
 			}).start('The doll is clutching a pair of scissors...take them?', 50);
 
 			yesButton.on('pointerdown', function () {
+        if (once === false){
+          once = true
 				yesButton.visible = false;
 				noButton.visible = false;
 				man.pickupItem('cat');
-				dialogue.destroy();
+				dialogue.destroy();}
 			});
 
 			noButton.on('pointerdown', function () {
@@ -221,7 +224,7 @@ export default class Puzzle2 extends Phaser.Scene {
 	chooseWrong(man, doll, scene) {
 		let enter = this.input.keyboard.addKey('ENTER');
 		// console.log('choosewrong', this)
-		if (enter.isDown && !dollsCut && man.inventory.cat && !nurse) {
+		if (enter.isDown && !dollsCut && man.inventory.cat === 1 && !nurse) {
 			yesButton.visible = true;
 			noButton.visible = true;
 
@@ -330,11 +333,11 @@ export default class Puzzle2 extends Phaser.Scene {
 		yesButton.visible = false;
 		noButton.visible = false;
 
-		if (wrongCounter === 1) {
+		if (wrongCounter === 1 && !nurse) {
 			console.log('strike one');
-		} else if (wrongCounter === 2) {
+		} else if (wrongCounter === 2  && !nurse) {
 			console.log('strike two');
-		} else if (wrongCounter === 3) {
+		} else if (wrongCounter === 3  && !nurse) {
 			console.log('strike three');
 			this.scene.switch('Title');
 		}

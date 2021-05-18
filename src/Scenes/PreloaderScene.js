@@ -129,7 +129,7 @@ export default class PreloaderScene extends Phaser.Scene {
 		// brings us to title scene hwen assests are done loading
 		this.readyCount++;
 		if (this.readyCount === 2) {
-			this.scene.start('Title');
+			this.scene.start('Puzzle2');
 		}
 	}
 }
