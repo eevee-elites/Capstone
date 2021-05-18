@@ -93,11 +93,25 @@ export default class PreloaderScene extends Phaser.Scene {
 		this.load.image('pizza', 'assets/pizza.png');
 		this.load.image('table', 'assets/table.png');
 		this.load.image('titleImage', 'assets/logo.png');
+		this.load.image('nextPage', 'assets/next.png');
+		this.load.image('icon', 'assets/iconnpc.png');
+		this.load.image('tiles', '../assets/Room spritesheet.png');
+		this.load.image('greenDoll', '../assets/Green doll.png');
+		this.load.image('greenDollCut', '../assets/Green doll cut.png');
+		this.load.image('blueDoll', '../assets/Blue doll.png');
+		this.load.image('blueDollCut', '../assets/Blue doll cut.png');
+		this.load.image('redDoll', '../assets/Red doll.png');
+		this.load.image('redDollCut', '../assets/Red doll cut.png');
+		this.load.image('nurseDoll', '../assets/Nurse doll.png');
+		this.load.image('note', '../assets/Note.png');
+		this.load.image('yesButton', '../assets/ui/Yes button.png');
+		this.load.image('noButton', '../assets/ui/No button.png');
+		this.load.tilemapTiledJSON('Puzzle2', '../assets/PuzzleRoom.json');
 
 		//load sprites
 		this.load.spritesheet('man', 'assets/man.png', {
 			frameWidth: 64,
-			frameHeight: 128,
+			frameHeight: 64,
 		});
 		this.load.spritesheet('pika', 'assets/pika.png', {
 			frameWidth: 31,
@@ -109,11 +123,6 @@ export default class PreloaderScene extends Phaser.Scene {
 		this.load.audio('titleMusic', 'assets/title.mp3');
 
 		// load other
-		this.load.plugin(
-			'rextexttypingplugin',
-			'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js',
-			true
-		);
 	}
 
 	ready() {
