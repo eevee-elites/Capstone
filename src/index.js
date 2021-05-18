@@ -7,8 +7,8 @@ import TitleScene from './Scenes/TitleScene';
 import OptionsScene from './Scenes/OptionsScene';
 import CreditsScene from './Scenes/CreditsScene';
 import Puzzle1 from './Scenes/Puzzle1';
-import TesterScene from './Scenes/TesterScene';
-import Tester2 from './Scenes/Tester2';
+import TesterScene from './TestingEnvironment/TesterScene';
+import Tester2 from './TestingEnvironment/Tester2';
 import Inventory from './Scenes/Inventory';
 import TutorialScene from './Scenes/TutorialScene';
 
