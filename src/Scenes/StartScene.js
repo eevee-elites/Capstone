@@ -75,7 +75,7 @@ export default class StartScene extends Phaser.Scene {
 		this.physics.add.collider(this.man, collidingLayer);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-
+		//camera
 		this.cameras.main.setBounds(48, 0, 3000, 700);
 		this.cameras.main.startFollow(this.man, true);
 

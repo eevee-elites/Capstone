@@ -2,7 +2,10 @@ import 'phaser';
 import {Game} from 'phaser';
 import Player from '../Models/Player';
 import Animate from '../Models/Animate';
+import NPC from '../Models/NPC';
+import NPCAnimate from '../Models/NPCAnimate';
 
+let light;
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle1');
@@ -13,41 +16,61 @@ export default class Puzzle1 extends Phaser.Scene {
 			frameWidth: 64,
 			frameHeight: 64,
 		});
+		this.load.spritesheet('key', 'assets/key.png', {
+			frameWidth: 28.5,
+			frameHeight: 45,
+		});
 		this.load.audio('bg', 'assets/bg.wav');
 		this.load.image('star', 'assets/star.png');
 		this.load.image('table', 'assets/table.png');
-		this.load.image('tiles', '../assets/Room spritesheet2.png');
-		this.load.tilemapTiledJSON('PuzzleMap', '../assets/Puzzle1Room.json');
+		this.load.image('drawer', 'assets/drawer.png');
+		this.load.image('tiles', '../assets/Room spritesheet.png');
+		this.load.tilemapTiledJSON('PuzzleMap', '../assets/PuzzleRoom.json');
 	}
 
 	create() {
 		//exit
-		let exitBox = this.add.rectangle(20, 300, 50, 50, 0xffffff);
+		// let exitBox = this.add.rectangle(20, 300, 50, 50, 0xffffff);
 		//map
 		const map = this.make.tilemap({key: 'PuzzleMap'});
 
 		const tileset = map.addTilesetImage('PuzzleRoom', 'tiles');
 
-		const belowLayer = map.createLayer('Below', tileset, 0, 0);
-		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
+		const belowLayer = map
+			.createLayer('Below', tileset, 0, 0)
+			.setPipeline('Light2D');
+		this.collidingLayer = map
+			.createLayer('Colliding', tileset, 0, 0)
+			.setPipeline('Light2D');
 
-		collidingLayer.setCollisionByProperty({collides: true});
+		this.collidingLayer.setCollisionByProperty({collides: true});
 
 		//player
 		this.man = this.physics.add
-			.existing(new Player(this, 400, 300, 'man'))
-			.setOrigin(5.5, 0.5);
-
-		this.physics.add.collider(this.man, collidingLayer);
+			.existing(new Player(this, 420, 750, 'man'))
+			.setOrigin(0, 0);
+		this.man.setSize(32, 32);
+		this.physics.add.collider(this.man, this.collidingLayer);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
-
-		this.cameras.main.setBounds(48, 0, 800, 600);
+		//puzzle
+		makePuzzle(this);
+		//unlock square
+		let lock1 = this.add.rectangle(100, 350, 32, 32, 0xffffff);
+		let lock2 = this.add.rectangle(100, 542, 32, 32, 0xffffff);
+		let lock3 = this.add.rectangle(548, 542, 32, 32, 0xffffff);
+		//camera
+		this.cameras.main.setBounds(48, 0, 800, 900);
 		this.cameras.main.startFollow(this.man);
-		let resetBox = this.add.rectangle(60, 200, 20, 20, 0xa93226);
+		//lights
+		this.lights.enable();
+		this.lights.setAmbientColor(0x7b5e57);
+		light = this.lights.addLight(180, 80, 80);
 
-		this.add.rectangle(0, 400, 10, 10, 0x000000);
-		this.stars = this.physics.add.sprite(760, 410, 'star');
+		// NPCAnimate(this, 'NPC', 0, 0, 0);
+		this.key = this.physics.add.existing(new NPC(this, 750, 120, 'key'), true);
+		NPCAnimate(this, 'key', 0, 9, 10, -1);
+		let resetBox = this.add.rectangle(60, 200, 20, 20, 0xa93226);
 		this.collect = false;
 		//music
 		this.music = this.sound.add('bg', true);
@@ -55,16 +78,11 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.music.play();
 		this.music.setVolume(0.3);
 
-		//puzzle
-		makePuzzle(this);
-		//collisions
-		this.man.setCollideWorldBounds(true);
-
 		//exit
-		this.physics.add.existing(exitBox, true);
-		this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
+		// this.physics.add.existing(exitBox, true);
+		// this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
 		//collection
-		this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
+		this.physics.add.overlap(this.man, this.key, collectBox, null, this);
 		// reset
 		this.physics.add.existing(resetBox, true);
 		this.physics.add.overlap(this.man, resetBox, reset, null, this);
@@ -77,6 +95,9 @@ export default class Puzzle1 extends Phaser.Scene {
 	}
 	update() {
 		this.man.update(this);
+		this.key.update(this.key, 'key');
+		light.x = this.man.x + 35;
+		light.y = this.man.y + 35;
 	}
 }
 function collectBox(man, item) {
@@ -90,136 +111,150 @@ function reset() {
 function makePuzzle(key) {
 	//puzzle
 	//row1
-	const staticRow1 = key.physics.add.staticGroup({
-		key: 'table',
-		repeat: 2,
-		setXY: {x: 190, y: 120, stepY: 160},
-		immovable: true,
-	});
-	const movableRow1 = key.physics.add.group({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 190, y: 200, stepY: 160},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	key.physics.add.collider(staticRow1, key.man);
-	key.physics.add.collider(movableRow1, key.man);
+	const staticRow1S1 = key.physics.add
+		.staticSprite(100, 414, 'table')
+		.setPipeline('Light2D');
+	const staticRow1S2 = key.physics.add
+		.staticSprite(100, 606, 'table')
+		.setPipeline('Light2D');
 	//row 2
-	const movableRow2Set1 = key.physics.add.group({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 290, y: 120, stepY: 80},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	const movableRow2Set2 = key.physics.add.group({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 290, y: 360, stepY: 80},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	const staticRow2B3 = key.physics.add.staticSprite(290, 280, 'table');
-	key.physics.add.collider(movableRow2Set1, key.man);
-	key.physics.add.collider(movableRow2Set2, key.man);
-	key.physics.add.collider(staticRow2B3, key.man);
+	const movableRow2B3 = key.physics.add.sprite(164, 478, 'drawer');
+	const staticRow2S1 = key.physics.add
+		.staticSprite(165, 606, 'table')
+		.setPipeline('Light2D');
+	key.physics.add.existing(movableRow2B3);
+	key.physics.add.collider(movableRow2B3, staticRow1S1);
+	key.physics.add.collider(movableRow2B3, staticRow1S2);
+	key.physics.add.collider(movableRow2B3, key.collidingLayer);
 	// row 3
-	const staticRow3 = key.physics.add.staticGroup({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 390, y: 280, stepY: 80},
-		immovable: true,
-	});
-	const movableRow3Set1 = key.physics.add.group({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 390, y: 120, stepY: 80},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	const movableRow3B5 = key.physics.add.sprite(390, 440, 'table');
-	movableRow3B5.body.setDrag(10000, 10000);
-	key.physics.add.collider(staticRow3, key.man);
-	key.physics.add.collider(movableRow3Set1, key.man);
-	key.physics.add.collider(movableRow3B5, key.man);
+	const movableRow3B2 = key.physics.add.sprite(228, 414, 'drawer');
+	const staticRow3 = key.physics.add
+		.staticSprite(228, 542, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider(movableRow3B2, key.man);
+	// key.physics.add.collider(staticRow3, key.man);
+	key.physics.add.existing(movableRow3B2);
+	key.physics.add.collider(movableRow3B2, [staticRow1S1, staticRow1S2]);
+	key.physics.add.collider(movableRow3B2, key.collidingLayer);
+	// row 4
+	const staticRow4 = key.physics.add
+		.staticSprite(292, 360, 'table')
+		.setPipeline('Light2D');
+	const movableRow4 = key.physics.add.sprite(292, 606, 'drawer');
+	key.physics.add.existing(movableRow4);
+	key.physics.add.collider(staticRow4, movableRow4);
+	key.physics.add.collider(staticRow4, movableRow3B2);
+	// key.physics.add.collider(staticRow4, key.man);
+	// key.physics.add.collider(movableRow4, key.man);
+	key.physics.add.collider(movableRow4, key.collidingLayer);
 
-	//row 4
-	const staticRow4 = key.physics.add.staticGroup({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 490, y: 200, stepY: 80},
-		immovable: true,
-	});
-	const movableRow4Set1 = key.physics.add.group({
-		key: 'table',
-		repeat: 2,
-		setXY: {x: 490, y: 280, stepY: 80},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	const movableRow4B2 = key.physics.add.sprite(490, 120, 'table');
-	movableRow4B2.body.setDrag(10000, 10000);
-	key.physics.add.collider(staticRow4, key.man);
-	key.physics.add.collider(movableRow4B2, key.man);
-	key.physics.add.collider(movableRow4Set1, key.man);
-	//row5
-	const movableRow5Set1 = key.physics.add.group({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 590, y: 120, stepY: 240},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	const staticRow5 = key.physics.add.staticGroup({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 590, y: 200, stepY: 240},
-		immovable: true,
-	});
-	const movableRow5B3 = key.physics.add.sprite(590, 280, 'table');
-	movableRow5B3.body.setDrag(10000, 10000);
-	key.physics.add.collider(movableRow5B3, key.man);
-	key.physics.add.collider(movableRow5Set1, key.man);
-	key.physics.add.collider(staticRow5, key.man);
-	//row 6
-	const staticRow6 = key.physics.add.staticGroup({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 690, y: 120, stepY: 80},
-		immovable: true,
-	});
-	const movableRow6Set1 = key.physics.add.group({
-		key: 'table',
-		repeat: 1,
-		setXY: {x: 690, y: 280, stepY: 80},
-		collideWorldBounds: true,
-		allowDrag: true,
-		dragX: 10000,
-		dragY: 10000,
-	});
-	const staticRow6B3 = key.physics.add.staticSprite(690, 440, 'table');
+	//row 5
+	const staticRow5B5 = key.physics.add
+		.staticSprite(358, 360, 'table')
+		.setPipeline('Light2D');
+	const staticRow5B3 = key.physics.add
+		.staticSprite(358, 478, 'table')
+		.setPipeline('Light2D');
+	const staticRow5B2 = key.physics.add
+		.staticSprite(358, 542, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider(staticRow5B5, key.man);
+	// key.physics.add.collider(staticRow5B2, key.man);
+	// key.physics.add.collider(staticRow5B3, key.man);
+	//row6
+	const staticRow6 = key.physics.add
+		.staticSprite(420, 606, 'table')
+		.setPipeline('Light2D');
 	key.physics.add.collider(staticRow6, key.man);
-	key.physics.add.collider(staticRow6B3, key.man);
-	key.physics.add.collider(movableRow6Set1, key.man);
-	//last row
-	const staticRow7 = key.physics.add.staticGroup({
-		key: 'table',
-		repeat: 5,
-		setXY: {x: 190, y: 520, stepX: 100},
-		immovable: true,
-	});
-	key.physics.add.collider(staticRow7, key.man);
+	//row 7
+	const movableRow7 = key.physics.add.sprite(484, 478, 'drawer');
+	const staticRow7 = key.physics.add
+		.staticSprite(484, 606, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider(staticRow7, key.man);
+	// key.physics.add.collider(movableRow7, key.man);
+	// key.physics.add.collider(movableRow7, key.collidingLayer);
+	//row 8
+	const staticRow8 = key.physics.add
+		.staticSprite(548, 606, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider(staticRow8, key.man);
+	//row 9
+	const staticRow9 = key.physics.add
+		.staticSprite(612, 542, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider(staticRow9, key.man);
+	//row 10
+	const staticRow10B1 = key.physics.add
+		.staticSprite(676, 414, 'table')
+		.setPipeline('Light2D');
+	const staticRow10B2 = key.physics.add
+		.staticSprite(676, 542, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider([staticRow10B1, staticRow10B2], key.man);
+	//row 11
+	const staticRow11 = key.physics.add
+		.staticSprite(740, 542, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider(staticRow11, key.man);
+	//row 12
+	const staticRow12B1 = key.physics.add
+		.staticSprite(740, 542, 'table')
+		.setPipeline('Light2D');
+	const staticRow12B2 = key.physics.add
+		.staticSprite(740, 606, 'table')
+		.setPipeline('Light2D');
+	// key.physics.add.collider([staticRow12B1, staticRow12B2], key.man);
+
+	// colliders
+	key.physics.add.collider(
+		[
+			staticRow1S1,
+			staticRow1S2,
+			staticRow2S1,
+			staticRow3,
+			staticRow4,
+			staticRow5B2,
+			staticRow5B3,
+			staticRow5B5,
+			staticRow6,
+			staticRow7,
+			staticRow8,
+			staticRow9,
+			staticRow10B1,
+			staticRow10B2,
+			staticRow11,
+			staticRow12B1,
+			staticRow12B2,
+		],
+		key.man
+	);
+	key.physics.add.collider(
+		[movableRow2B3, movableRow3B2, movableRow4, movableRow7],
+		[
+			key.man,
+			movableRow2B3,
+			movableRow3B2,
+			movableRow4,
+			movableRow7,
+			staticRow1S1,
+			staticRow1S2,
+			staticRow2S1,
+			staticRow3,
+			staticRow4,
+			staticRow5B2,
+			staticRow5B3,
+			staticRow5B5,
+			staticRow6,
+			staticRow7,
+			staticRow8,
+			staticRow9,
+			staticRow10B1,
+			staticRow10B2,
+			staticRow11,
+			staticRow12B1,
+			staticRow12B2,
+			key.collidingLayer,
+		]
+	);
 }
