@@ -8,6 +8,11 @@ export default class TesterScene extends Phaser.Scene {
   constructor() {
     super("Tester");
   }
+  initialize() {
+    function switchInventory() {
+      Phaser.Scene.call(this, "Inventory");
+    }
+  }
 
   preload() {
     this.load.scenePlugin(
@@ -64,59 +69,42 @@ export default class TesterScene extends Phaser.Scene {
     this.physics.add.overlap(this.man, this.stars, collectItem, null, this);
     this.physics.add.overlap(this.man, this.pizza, collectItem, null, this);
     this.physics.add.overlap(this.man, this.cat, collectItem, null, this);
-    this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
+
+    this.input.keyboard.on(
+      "keydown-I",
+      function () {
+        this.scene.transition({
+          target: "Inventory",
+          duration: 10,
+          data: { inventory: this.man.inventory, scene: "Tester" },
+          sleep: true,
+        });
+      },
+      this
+    );
+
+    this.events.on(
+      Phaser.Scenes.Events.WAKE,
+      function () {
+        this.wake(this.input, this.scene);
+      },
+      this
+    );
   }
-  sayHello(man, pika) {
-    let enter = this.input.keyboard.addKey("ENTER");
-    if (enter.isDown) {
-      const dialog = this.rexUI.add
-        .dialog({
-          x: 400,
-          y: 500,
-          height: 10,
-          width: 10,
 
-          background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, 0xddd7d6),
-          content: this.add.text(0, 0, "Do you want to build a snow man?", {
-            fontSize: "24px",
-            color: "0x00000",
-          }),
-          actions: [createLabel(this, "Yes"), createLabel(this, "No")],
-          space: {
-            title: 25,
-            content: 25,
-            action: 15,
-
-            left: 20,
-            right: 20,
-            top: 20,
-            bottom: 20,
-          },
-
-          align: {
-            title: "center", // 'center'|'left'|'right'
-            actions: "left",
-          },
-
-          expand: {
-            content: false, // Content is a pure text object
-          },
-        })
-        .layout();
-      this.print = this.add.text(0, 0, "");
-      dialog.on(
-        "button.click",
-        function (button, groupName, index) {
-          if (button.text === "Yes")
-            return this.scene.start("Tester2", {
-              inventory: this.man.inventory,
-            });
-          this.print.text += index + ": " + button.text + "\n";
-          if (button.text === "No") return this.scene.start("Title"); // can say what to do in button
-        },
-        this
-      );
-    }
+  wake(input, scene) {
+    this.input.keyboard.on(
+      "keydown-I",
+      function () {
+        this.scene.transition({
+          target: "Inventory",
+          duration: 10,
+          data: { inventory: this.man.inventory, scene: "Tester" },
+          sleep: true,
+        });
+      },
+      this
+    );
   }
 
   update() {
@@ -129,22 +117,3 @@ function collectItem(man, item) {
   item.disableBody(true, true);
   console.log(man.inventory);
 }
-var createLabel = function (scene, text) {
-  return scene.rexUI.add.label({
-    width: 40,
-    height: 40,
-
-    background: scene.rexUI.add.roundRectangle(10, 50, 10, 0, 0, 0x5e92f3),
-
-    text: scene.add.text(0, 0, text, {
-      fontSize: "24px",
-    }),
-
-    space: {
-      left: 80,
-      right: 80,
-      top: 10,
-      bottom: 10,
-    },
-  });
-};

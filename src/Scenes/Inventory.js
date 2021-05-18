@@ -1,128 +1,71 @@
-import 'phaser';
+import "phaser";
 
 export default class Inventory extends Phaser.Scene {
-	constructor() {
-		super({
-			key: 'Inventory',
-		});
-	}
+  constructor() {
+    super("Inventory");
+  }
 
-	preload() {
-		// leave rexui in her do not move
-		this.load.scenePlugin({
-			key: 'rexuiplugin',
-			url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
-			sceneKey: 'rexUI',
-		});
-		this.load.plugin(
-			'rexcirclemaskimageplugin',
-			'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcirclemaskimageplugin.min.js',
-			true
-		);
+  initialize(data) {
+    console.log(data);
+    Phaser.Scene.call(this, "Inventory");
+  }
 
-		// already added to preloader be sure to take out for clean up
-		this.load.image('pizza', 'assets/pizza.png');
-	}
+  preload() {
+    this.load.image("cat", "assets/cat.png");
+    this.load.image("star", "assets/star.png");
+    this.load.image("pizza", "assets/pizza.png");
+  }
 
-	create(data) {
-		console.log(data);
-		this.input.keyboard.on(
-			'keydown-I',
-			function () {
-				console.log('tranz1');
-				this.scene.transition({
-					target: data.scene,
-					duration: 10,
-				});
-			},
-			this
-		);
+  create(data) {
+    this.inventoryPassed = data.inventory;
+    const myInventory = [];
+    console.log(" inventory data", data);
 
-		this.events.on(
-			Phaser.Scenes.Events.WAKE,
-			function () {
-				this.wake(this.input, this.scene, data.scene);
-			},
-			this
-		);
-	}
+    for (const key in this.inventoryPassed) {
+      if (this.inventoryPassed[key] != 0) {
+        myInventory.push(key);
+      }
+    }
+    let x = 100;
+    let y = 100;
+    myInventory.forEach((item) => {
+      this.add.image(x, y, item);
+      x += 100;
+    });
 
-	wake(input, scene, sceneToSwitchTo) {
-		this.input.keyboard.on(
-			'keydown-I',
-			function (event) {
-				console.log('tranz2');
-				this.scene.transition({
-					target: sceneToSwitchTo,
-					duration: 10,
-				});
-			},
-			this
-		);
-	}
-	update() {}
+    this.add.text(350, 0, "INVENTORY");
+
+    this.input.keyboard.on(
+      "keydown-I",
+      function () {
+        this.scene.transition({
+          target: data.scene,
+          duration: 10,
+        });
+      },
+      this
+    );
+
+    this.events.on(
+      Phaser.Scenes.Events.WAKE,
+      function () {
+        this.wake(this.input, this.scene, data.scene);
+      },
+      this
+    );
+  }
+  wake(input, scene, sceneToSwitchTo) {
+    this.input.keyboard.on(
+      "keydown-I",
+      function (event) {
+        this.scene.transition({
+          target: sceneToSwitchTo,
+          duration: 10,
+        });
+      },
+      this
+    );
+  }
+
+  update() {}
 }
-
-var createDialog = function (scene, x, y, onClick) {
-	var dialog = scene.rexUI.add
-		.dialog({
-			x: 350,
-			y: 0,
-
-			background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0xf57f17),
-
-			title: scene.rexUI.add.label({
-				background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0xbc5100),
-				text: scene.add.text(0, 0, 'Inventory', {
-					fontSize: '20px',
-				}),
-				space: {
-					left: 15,
-					right: 15,
-					top: 10,
-					bottom: 10,
-				},
-			}),
-
-			actions: [
-				scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0xe91e63),
-				scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x673ab7),
-				scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x2196f3),
-				scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x00bcd4),
-				scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0xcddc39),
-				scene.add.rexCircleMaskImage(0, 0, 'assets/pizza.png'),
-
-				// scene.rexUI.add.image(0, 0, 0, 0, 20, "pizza"),
-			],
-			// icon: scene.add.image(0, 0, 0, 0, 20, "pizza"),
-
-			actionsAlign: 'left',
-
-			space: {
-				title: 10,
-				action: 5,
-
-				left: 10,
-				right: 10,
-				top: 10,
-				bottom: 10,
-			},
-		})
-		.layout()
-		.pushIntoBounds()
-		//.drawBounds(this.add.graphics(), 0xff0000)
-		.popUp(500);
-
-	dialog
-		.on('button.click', function (button, groupName, index) {
-			onClick(button.fillColor);
-		})
-		.on('button.over', function (button, groupName, index) {
-			button.setStrokeStyle(2, 0xffffff);
-		})
-		.on('button.out', function (button, groupName, index) {
-			button.setStrokeStyle();
-		});
-
-	return dialog;
-};
