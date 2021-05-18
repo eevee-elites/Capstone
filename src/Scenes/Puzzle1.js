@@ -16,7 +16,7 @@ export default class Puzzle1 extends Phaser.Scene {
   preload() {
     this.load.spritesheet("man", "assets/man.png", {
       frameWidth: 64,
-      frameHeight: 64,
+			frameHeight: 128,
     });
     this.load.audio("bg", "assets/bg.wav");
     this.load.image("star", "assets/star.png");

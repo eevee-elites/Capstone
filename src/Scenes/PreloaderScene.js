@@ -97,7 +97,7 @@ export default class PreloaderScene extends Phaser.Scene {
 		//load sprites
 		this.load.spritesheet('man', 'assets/man.png', {
 			frameWidth: 64,
-			frameHeight: 64,
+			frameHeight: 128,
 		});
 		this.load.spritesheet('pika', 'assets/pika.png', {
 			frameWidth: 31,
