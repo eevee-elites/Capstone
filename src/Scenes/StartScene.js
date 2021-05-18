@@ -146,6 +146,9 @@ export default class StartScene extends Phaser.Scene {
 function enterPuzzleRoom1() {
 	this.scene.start('Puzzle1');
 }
+function enterPuzzleRoom2() {
+  this.scene.start("Puzzle2");
+}
 
 const GetValue = Phaser.Utils.Objects.GetValue;
 var createTextBox = function (scene, x, y, config) {
