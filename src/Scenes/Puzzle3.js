@@ -15,7 +15,7 @@ var light;
 export default class Puzzle3 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle3');
-        this.pattern= this.pattern.bind(this)
+       
     }
 
 	preload() {
@@ -28,6 +28,10 @@ export default class Puzzle3 extends Phaser.Scene {
 		this.load.image('star', 'assets/star.png');
 		this.load.image('table', 'assets/table.png');
 		this.load.image('x', 'assets/x.png');
+		this.load.image('bluetile', 'assets/bluetile.png');
+		this.load.image('greentile', 'assets/greentile.png');
+		this.load.image('redtile', 'assets/redtile.png');
+
 
         this.load.scenePlugin({
 			key: 'rexuiplugin',
@@ -52,17 +56,19 @@ export default class Puzzle3 extends Phaser.Scene {
 		const map = this.make.tilemap({key: 'Puzzle3'});
 
 		const tileset = map.addTilesetImage('PuzzleRoom', 'tiles');
-    
+    //.setPipeline('Light2D');
+        
 		const belowLayer = map.createLayer('Below', tileset, 0, 0).setPipeline('Light2D');
 		const collidingLayer = map.createLayer('Colliding', tileset, 0, 0).setPipeline('Light2D');
-        
-        const xspot = this.add.image(450, 700, 'x')
+        // const xspot = this.add.image(450, 700, 'x')
 		
         //colliding tile layers
         collidingLayer.setCollisionByProperty({collides: true});
        
 
         
+        // this.add.image(450, 660, 'redtile')
+        // this.add.image(450, 700, 'redtile')
         
 		//player
 		this.man = this.physics.add
@@ -75,7 +81,7 @@ export default class Puzzle3 extends Phaser.Scene {
 		// this.physics.add.collider(this.man, gate);
 		// this.physics.add.collider(this.man, border1);
 		// this.physics.add.collider(this.man, border2);
-        this.physics.add.existing(xspot,true)
+        // this.physics.add.existing(xspot,true)
        
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
@@ -85,12 +91,13 @@ export default class Puzzle3 extends Phaser.Scene {
 
 		this.add.rectangle(0, 400, 10, 10, 0x000000);
 		 //lights
-        this.lights.enable();
-        this.lights.setAmbientColor(0x808080);
-        light = this.lights.addLight( this.man.x, this.man.y, 60);
+         this.lights.enable();
+         this.lights.setAmbientColor(0x7b5e57);
+                light = this.lights.addLight(180, 80, 80);
+        
+
+            
     
-
-
 		// this.stars = this.physics.add.sprite(760, 410, 'star');
 		this.collect = false;
 		//music
@@ -109,7 +116,7 @@ export default class Puzzle3 extends Phaser.Scene {
 		this.physics.add.existing(exitBox, true);
 		this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
 		//collection
-		this.physics.add.overlap(this.man, xspot, this.pattern,null, this)
+		// this.physics.add.overlap(this.man, xspot, this.pattern,null, this)
 		// this.physics.add.overlap(this.man, this.stars, collectBox, null, this);
 
 
@@ -143,6 +150,11 @@ export default class Puzzle3 extends Phaser.Scene {
 	}
 	update() {
 		this.man.update(this);
+        // let lightx = this.man.x - 0.5
+        // let lighty = this.man.y - 0.5
+        // this.lights.addLight( lightx, lighty, 40);
+        light.x = this.man.x + 35 ;
+            light.y = this.man.y + 35 ;
 	}
     openingDialogue(){
     createTextBox(this, 180, 400, {
@@ -152,14 +164,17 @@ export default class Puzzle3 extends Phaser.Scene {
         }).start(content, 50)
 
     };
-
     pattern(){
 
-        this.lights.addLight(450, 510, 40).setColor(0x00000FF).setIntensity(3.0);
-        this.lights.addLight(310, 450, 40).setColor(0x00000FF).setIntensity(3.0);
+        // this.lights.addLight(450, 510, 40).setColor(0x00000FF).setIntensity(3.0);
+        // this.lights.addLight(310, 450, 40).setColor(0x00000FF).setIntensity(3.0);
+    this.add.image(450, 700, 'redtile')
+    this.add.image(410, 660, 'redtile')
 
-
+    
     }
+
+    
 
 
 }
@@ -241,8 +256,6 @@ var createTextBox = function (scene, x, y, config) {
                     textBox.setVisible(false);
                     last = false;
                 });
-                
-                
                 textOpen = !textOpen;
 
                 last = true;
