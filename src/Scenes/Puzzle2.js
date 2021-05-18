@@ -14,10 +14,11 @@ let last = false;
 let wrongCounter = 0;
 var yesButton;
 var noButton;
-let wrongClicked = false;
+var wrongClicked = false;
 let rightClicked = false;
 let dollsCut = false;
-
+let light
+let nurse;
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
@@ -50,8 +51,8 @@ export default class Puzzle2 extends Phaser.Scene {
 
     const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
 
-    const belowLayer = map.createLayer("Below", tileset, 0, 0);
-    const collidingLayer = map.createLayer("Colliding", tileset, 0, 0);
+    const belowLayer = map.createLayer("Below", tileset, 0, 0).setPipeline('Light2D');;
+    const collidingLayer = map.createLayer("Colliding", tileset, 0, 0).setPipeline('Light2D');;
 
     collidingLayer.setCollisionByProperty({ collides: true });
 
@@ -60,12 +61,12 @@ export default class Puzzle2 extends Phaser.Scene {
     let wrongDoll = this.add.rectangle(300, 400, 40, 40, 0x000000);
     let rightDoll = this.add.rectangle(400, 400, 40, 40, 0x000000);
     let wrongDoll2 = this.add.rectangle(500, 400, 40, 40, 0x000000);
-    let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0x000000);
+    let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0xffffff); //nurse doll is white box
 
     //player
     this.man = this.physics.add
       .existing(new Player(this, 420, 800, "man"))
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0, 0);
 
     this.physics.add.collider(this.man, collidingLayer);
 
@@ -77,6 +78,11 @@ export default class Puzzle2 extends Phaser.Scene {
 
     //opening dialogue
     this.time.delayedCall(8000, this.openingDialogue(), this); // delay in ms
+
+    //lights
+    this.lights.enable();
+    this.lights.setAmbientColor(0x7b5e57);
+           light = this.lights.addLight(180, 80, 80);
 
     //player and item interactions
     this.physics.add.existing(note, true);
@@ -96,6 +102,8 @@ export default class Puzzle2 extends Phaser.Scene {
     );
     this.physics.add.overlap(this.man, rightDoll, this.chooseRight, null, this);
     this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
+    this.physics.add.overlap(this.man,note, this.readNote, null, this);
+
 
     //yes or no choices
     yesButton = this.add.rectangle(400, 300, 50, 50, 0x000000);
@@ -124,6 +132,7 @@ export default class Puzzle2 extends Phaser.Scene {
       },
       this
     );
+    console.log('wrongclick', wrongClicked)
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -145,6 +154,8 @@ export default class Puzzle2 extends Phaser.Scene {
     if (wrongClicked) {
       this.penalty();
     }
+    light.x = this.man.x + 35 ;
+    light.y = this.man.y + 35 ;
   }
 
   openingDialogue() {
@@ -171,6 +182,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   getScissors(man, doll) {
     let enter = this.input.keyboard.addKey("ENTER");
+    nurse = true
     if (enter.isDown) {
       yesButton.visible = true;
       noButton.visible = true;
@@ -197,9 +209,10 @@ export default class Puzzle2 extends Phaser.Scene {
     }
   }
 
-  chooseWrong(man, doll) {
+  chooseWrong(man, doll, scene) {
     let enter = this.input.keyboard.addKey("ENTER");
-    if (enter.isDown && !dollsCut && man.inventory.cat) {
+    // console.log('choosewrong', this)
+    if (enter.isDown && !dollsCut && man.inventory.cat && !nurse) {
         yesButton.visible = true;
       noButton.visible = true;
 
@@ -211,6 +224,7 @@ export default class Puzzle2 extends Phaser.Scene {
       }).start("Cut open the dolls?", 50);
 
       yesButton.on("pointerdown", function () {
+         //wrong click true
         dollsCut = true;
         man.inventory.cat = 0;
         console.log("used the scissors")
@@ -227,7 +241,7 @@ export default class Puzzle2 extends Phaser.Scene {
     } else if (enter.isDown && !man.inventory.cat) {
         yesButton.visible = true;
       noButton.visible = true;
-
+      //wrong click is false
       textOpen = true;
       const dialogue = createTextBox(this, 100, 400, {
         wrapWidth: 500,
@@ -236,11 +250,13 @@ export default class Puzzle2 extends Phaser.Scene {
       }).start("Choose this doll?", 50);
 
       yesButton.on("pointerdown", function () {
-        wrongClicked = true;
+        wrongClicked = true; 
+        // this.penalty;
         dialogue.destroy();
       });
 
       noButton.on("pointerdown", function () {
+        
         yesButton.visible = false;
         noButton.visible = false;
         dialogue.destroy();
@@ -250,6 +266,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   chooseRight() {
     let enter = this.input.keyboard.addKey("ENTER");
+    wrongClicked = false
     if (enter.isDown && dollsCut) {
       yesButton.visible = true;
       noButton.visible = true;
@@ -287,6 +304,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
       yesButton.on("pointerdown", function () {
         wrongClicked = true;
+        // this.penalty
         dialogue.destroy();
       });
 
@@ -313,6 +331,7 @@ export default class Puzzle2 extends Phaser.Scene {
       this.scene.switch("Title");
     }
   }
+
 }
 
 const GetValue = Phaser.Utils.Objects.GetValue;
