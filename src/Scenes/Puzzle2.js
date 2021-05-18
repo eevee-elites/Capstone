@@ -111,11 +111,11 @@ export default class Puzzle2 extends Phaser.Scene {
 
 
     //yes or no choices
-    yesButton = this.add.rectangle(400, 300, 50, 50, 0x000000);
+    yesButton = this.add.image(400, 200, "yesButton");
     yesButton.visible = false;
     yesButton.setScrollFactor(0)
     yesButton.setInteractive();
-    noButton = this.add.rectangle(400, 370, 50, 50, 0x000000);
+    noButton = this.add.image(400, 300, "noButton");
     noButton.visible = false;
     noButton.setScrollFactor(0)
     noButton.setInteractive();

@@ -104,6 +104,8 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('redDollCut', '../assets/Red doll cut.png')
     this.load.image('nurseDoll', '../assets/Nurse doll.png')
     this.load.image('note', '../assets/Note.png')
+    this.load.image('yesButton', '../assets/ui/Yes button.png')
+    this.load.image('noButton', '../assets/ui/No button.png')
 		this.load.tilemapTiledJSON('Puzzle2', '../assets/PuzzleRoom.json');
 
     //load sprites
