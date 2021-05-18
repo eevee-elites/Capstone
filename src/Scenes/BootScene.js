@@ -6,9 +6,7 @@ export default class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    // change this logo to custom made one with huanted hopper
-    //this is a place holder for now
-    this.load.image("logo", "assets/zenva_logo.png");
+    this.load.image("logo", "assets/bootTitle.png");
   }
 
   create() {
