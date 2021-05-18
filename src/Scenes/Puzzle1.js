@@ -6,7 +6,10 @@ import NPC from '../Models/NPC';
 import NPCAnimate from '../Models/NPCAnimate';
 
 let light;
-let locked = true;
+let unlocked = false;
+let lock1Collected = false;
+let lock2Collected = false;
+let lock3Collected = false;
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle1');
@@ -21,8 +24,8 @@ export default class Puzzle1 extends Phaser.Scene {
 			frameWidth: 28.5,
 			frameHeight: 45,
 		});
+		this.load.image('cage', 'assets/lockedCage.png');
 		this.load.audio('bg', 'assets/bg.wav');
-		this.load.image('star', 'assets/star.png');
 		this.load.image('table', 'assets/table.png');
 		this.load.image('drawer', 'assets/drawer.png');
 		this.load.image('tiles', '../assets/Room spritesheet.png');
@@ -31,7 +34,7 @@ export default class Puzzle1 extends Phaser.Scene {
 
 	create() {
 		//exit
-		// let exitBox = this.add.rectangle(20, 300, 50, 50, 0x6B6868);
+		let exitBox = this.add.rectangle(450, 850, 100, 100, 0x000000);
 		//map
 		const map = this.make.tilemap({key: 'PuzzleMap'});
 
@@ -63,6 +66,10 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.add.rectangle(100, 542, 16, 16, 0x000000);
 		let lock3 = this.add.rectangle(740, 542, 32, 32, 0x6b6868);
 		this.add.rectangle(740, 542, 16, 16, 0x000000);
+		//cage
+		this.lockedCage = this.physics.add.staticSprite(800, 256, 'cage');
+		this.physics.add.existing(this.lockedCage, true);
+		this.physics.add.collider(this.man, this.lockedCage);
 		//camera
 		this.cameras.main.setBounds(48, 0, 800, 900);
 		this.cameras.main.startFollow(this.man);
@@ -74,8 +81,8 @@ export default class Puzzle1 extends Phaser.Scene {
 		// NPCAnimate(this, 'NPC', 0, 0, 0);
 		this.key = this.physics.add.existing(new NPC(this, 750, 120, 'key'), true);
 		NPCAnimate(this, 'key', 0, 9, 10, -1);
-		let resetBox = this.add.rectangle(60, 200, 20, 20, 0xa93226);
-		this.collect = false;
+		let resetBox = this.add.rectangle(60, 650, 20, 20, 0xa93226);
+		this.collected = false;
 		//music
 		this.music = this.sound.add('bg', true);
 		this.music.setLoop(true);
@@ -83,16 +90,23 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.music.setVolume(0.3);
 
 		//exit
-		// this.physics.add.existing(exitBox, true);
-		// this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
+		this.physics.add.existing(exitBox, true);
+		this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
 		//collection
-		this.physics.add.overlap(this.man, this.key, collectBox, null, this);
+		this.physics.add.overlap(this.man, this.key, collectItem, null, this);
 		// reset
 		this.physics.add.existing(resetBox, true);
 		this.physics.add.overlap(this.man, resetBox, reset, null, this);
+		//lock
+		this.physics.add.existing(lock1, true);
+		this.physics.add.existing(lock2, true);
+		this.physics.add.existing(lock3, true);
+		this.physics.add.overlap(this.man, lock1, collectlock1, null, this);
+		this.physics.add.overlap(this.man, lock2, collectlock2, null, this);
+		this.physics.add.overlap(this.man, lock3, collectlock3, null, this);
 	}
 	exitRoom() {
-		if (this.collect) {
+		if (this.collected) {
 			this.music.stop();
 			return this.scene.start('StartScene');
 		}
@@ -104,11 +118,40 @@ export default class Puzzle1 extends Phaser.Scene {
 		light.y = this.man.y + 35;
 	}
 }
-function collectBox(man, item) {
-	item.disableBody(true, true);
-	this.collect = true;
+function collectlock1(man, lock1) {
+	lock1.setVisible(false);
+	lock1Collected = true;
+	if (lock1Collected && lock2Collected && lock3Collected) {
+		unlocked = true;
+	}
+	if (unlocked) {
+		this.lockedCage.disableBody(true, true);
+	}
 }
-
+function collectlock2(man, lock2) {
+	lock2.setVisible(false);
+	lock2Collected = true;
+	if (lock1Collected && lock2Collected && lock3Collected) {
+		unlocked = true;
+	}
+	if (unlocked) {
+		this.lockedCage.disableBody(true, true);
+	}
+}
+function collectlock3(man, lock3) {
+	lock3.setVisible(false);
+	lock3Collected = true;
+	if (lock1Collected && lock2Collected && lock3Collected) {
+		unlocked = true;
+	}
+	if (unlocked) {
+		this.lockedCage.disableBody(true, true);
+	}
+}
+function collectItem(man, key) {
+	key.disableBody(true, true);
+	this.collected = true;
+}
 function reset() {
 	this.scene.start('Puzzle1');
 }
