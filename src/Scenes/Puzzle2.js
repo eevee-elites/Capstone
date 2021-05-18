@@ -2,7 +2,6 @@ import "phaser";
 import { Game } from "phaser";
 import Player from "../Models/Player";
 import Animate from "../Models/Animate";
-
 const openingLine = "Player name, help!";
 const note =
   "Find the living among the dead. The answer will be revealed when blood is shed.";
@@ -14,11 +13,15 @@ let last = false;
 let wrongCounter = 0;
 var yesButton;
 var noButton;
+var blueButton;
+var greenButton;
+var redButton;
 let wrongClicked = false;
 let rightClicked = false;
 let dollsCut = false;
 let light;
 let nurse;
+let once = false
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
@@ -65,11 +68,11 @@ export default class Puzzle2 extends Phaser.Scene {
 
     let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
     this.add.image(100, 600, "note");
-    let wrongDoll = this.add.rectangle(300, 400, 40, 40, 0x000000);
+    let bluedollhitbox = this.add.rectangle(300, 400, 40, 40, 0x000000);
     let blueDoll = this.add.image(300, 400, "blueDoll");
-    let rightDoll = this.add.rectangle(400, 400, 40, 40, 0x000000);
+    let reddollhitbox = this.add.rectangle(400, 400, 40, 40, 0x000000);
     let redDoll = this.add.image(400, 400, "redDoll");
-    let wrongDoll2 = this.add.rectangle(500, 400, 40, 40, 0x000000);
+    let greendollhitbox = this.add.rectangle(500, 400, 40, 40, 0x000000);
     let greenDoll = this.add.image(500, 400, "greenDoll");
     let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0xffffff); //nurse doll is white box
     let nurseDollImg = this.add.image(700, 600, "nurseDoll");
@@ -80,6 +83,12 @@ export default class Puzzle2 extends Phaser.Scene {
       .setOrigin(0, 0);
 
     this.physics.add.collider(this.man, collidingLayer);
+	this.physics.add.collider(this.man, blueDoll);
+	this.physics.add.collider(this.man, greenDoll);
+	this.physics.add.collider(this.man, redDoll);
+	this.physics.add.collider(this.man, bluedollhitbox);
+	this.physics.add.collider(this.man, greendollhitbox);
+	this.physics.add.collider(this.man, reddollhitbox);
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     this.physics.add.overlap(this.man, exitdoor, exitPuzzleRoom2, null, this);
@@ -93,37 +102,55 @@ export default class Puzzle2 extends Phaser.Scene {
     //lights
     this.lights.enable();
     this.lights.setAmbientColor(0x7b5e57);
-    light = this.lights.addLight(180, 80, 80);
+    light = this.lights.addLight(180, 80, 120);
 
     //player and item interactions
     this.physics.add.existing(note, true);
-    this.physics.add.overlap(this.man, note, this.readNote, null, this);
+    // this.physics.add.overlap(this.man, note, this.readNote, null, this);
 
-    this.physics.add.existing(wrongDoll, true);
-    this.physics.add.existing(wrongDoll2, true);
-    this.physics.add.existing(rightDoll, true);
+    this.physics.add.existing(bluedollhitbox, true);
+    this.physics.add.existing(greendollhitbox, true);
+    this.physics.add.existing(reddollhitbox, true);
     this.physics.add.existing(nurseDoll, true);
-    this.physics.add.overlap(this.man, wrongDoll, this.chooseWrong, null, this);
+    this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, null, this);
     this.physics.add.overlap(
       this.man,
-      wrongDoll2,
-      this.chooseWrong,
+      greendollhitbox,
+      this.choosedoll,
       null,
       this
     );
-    this.physics.add.overlap(this.man, rightDoll, this.chooseRight, null, this);
+    this.physics.add.overlap(this.man, reddollhitbox, this.choosedoll, null, this);
     this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
     this.physics.add.overlap(this.man, note, this.readNote, null, this);
 
     //yes or no choices
-    yesButton = this.add.image(400, 200, "yesButton");
+    greenButton = this.add.image(400, 300, "yesButton");
+    greenButton.visible = false;
+    greenButton.setScrollFactor(0);
+    greenButton.setInteractive();
+
+	redButton = this.add.image(400, 200, "yesButton");
+    redButton.visible = false;
+    redButton.setScrollFactor(0);
+    redButton.setInteractive();
+
+    blueButton = this.add.image(400, 100, "yesButton");
+    blueButton.visible = false;
+    blueButton.setScrollFactor(0);
+    blueButton.setInteractive();
+	
+	yesButton = this.add.image(400, 200, "yesButton");
     yesButton.visible = false;
     yesButton.setScrollFactor(0);
     yesButton.setInteractive();
+
     noButton = this.add.image(400, 300, "noButton");
     noButton.visible = false;
     noButton.setScrollFactor(0);
     noButton.setInteractive();
+
+
     this.input.keyboard.on(
       "keydown-I",
       function () {
@@ -145,6 +172,11 @@ export default class Puzzle2 extends Phaser.Scene {
       this
     );
     console.log("wrongclick", wrongClicked);
+	if(wrongClicked === true ){
+		this.cameras.main.shake(500)
+	}
+
+
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -172,6 +204,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   openingDialogue() {
     textOpen = true;
+	this.man.body.setVelocity(0)
     createTextBox(this, 100, 400, {
       wrapWidth: 500,
       fixedWidth: 500,
@@ -205,13 +238,14 @@ export default class Puzzle2 extends Phaser.Scene {
         fixedWidth: 500,
         fixedHeight: 65,
       }).start("The doll is clutching a pair of scissors...take them?", 50);
-
+	  if(once === false){
+		  once = true 
       yesButton.on("pointerdown", function () {
         yesButton.visible = false;
         noButton.visible = false;
+		dialogue.destroy();
         man.pickupItem("cat");
-        dialogue.destroy();
-      });
+      })}
 
       noButton.on("pointerdown", function () {
         yesButton.visible = false;
@@ -220,112 +254,70 @@ export default class Puzzle2 extends Phaser.Scene {
       });
     }
   }
+ choosedoll (man,doll,scene){
+	let enter = this.input.keyboard.addKey("ENTER");
+	if(enter.isDown && man.inventory.cat === 0){
+		blueButton.visible = true;
+		greenButton.visible = true;
+		redButton.visible = true;
+			const dialogue = createTextBox(this, 100, 400, {
+				        wrapWidth: 500,
+				        fixedWidth: 500,
+				        fixedHeight: 65,
+				      }).start("Which doll do you want to choose?", 50);
 
-  chooseWrong(man, doll, scene) {
-    let enter = this.input.keyboard.addKey("ENTER");
-    // console.log('choosewrong', this)
-    if (enter.isDown && !dollsCut && man.inventory.cat && !nurse) {
-      yesButton.visible = true;
-      noButton.visible = true;
+		blueButton.on('pointerdown', function(){
+			blueButton.visible = false;
+			greenButton.visible = false;
+			redButton.visible = false;
+			wrongClicked = true
+			dialogue.destroy()
+		})
 
-      textOpen = true;
-      const dialogue = createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("Cut open the dolls?", 50);
+		greenButton.on('pointerdown', function(){
+			blueButton.visible = false;
+			greenButton.visible = false;
+			redButton.visible = false;
+			wrongClicked = true
+			dialogue.destroy()
+		})
+		redButton.on('pointerdown', function(){
+			blueButton.visible = false;
+			greenButton.visible = false;
+			redButton.visible = false;
+			if(dollsCut === true){
+				rightClicked = true
+			} else {
+				wrongClicked = true
+			}
+			dialogue.destroy()
+		})
+	} else if(enter.isDown && this.man.inventory.cat > 0){
+		yesButton.setVisible(true)
+		noButton.setVisible(true)
 
-      yesButton.on("pointerdown", function () {
-        //wrong click true
-        dollsCut = true;
-        man.inventory.cat = 0;
-        console.log("used the scissors");
-        yesButton.visible = false;
-        noButton.visible = false;
-        dialogue.destroy();
-      });
+		const dialogue = createTextBox(this, 100, 400, {
+					wrapWidth: 500,
+					fixedWidth: 500,
+					fixedHeight: 65,
+				  }).start("Cut open the dolls?", 50);
+				  yesButton.on("pointerdown", function () {
+							dollsCut = true;
+							man.inventory.cat = 0;
+							console.log("used the scissors");
+							yesButton.visible = false;
+							noButton.visible = false;
+							dialogue.destroy();
+						  });
+					
+						  noButton.on("pointerdown", function () {
+							yesButton.visible = false;
+							noButton.visible = false;
+							dialogue.destroy();
+						  });
+	}
 
-      noButton.on("pointerdown", function () {
-        yesButton.visible = false;
-        noButton.visible = false;
-        dialogue.destroy();
-      });
-    } else if (enter.isDown && !man.inventory.cat) {
-      yesButton.visible = true;
-      noButton.visible = true;
-      //wrong click is false
-      textOpen = true;
-      const dialogue = createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("Choose this doll?", 50);
-
-      yesButton.on("pointerdown", function () {
-        wrongClicked = true;
-        // this.penalty;
-        dialogue.destroy();
-      });
-
-      noButton.on("pointerdown", function () {
-        yesButton.visible = false;
-        noButton.visible = false;
-        dialogue.destroy();
-      });
-    }
-  }
-
-  chooseRight() {
-    let enter = this.input.keyboard.addKey("ENTER");
-    wrongClicked = false;
-    if (enter.isDown && dollsCut) {
-      yesButton.visible = true;
-      noButton.visible = true;
-
-      textOpen = true;
-      const dialogue = createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("Choose this doll?", 50);
-
-      yesButton.on("pointerdown", function () {
-        rightClicked = true;
-        console.log("correct!");
-        yesButton.visible = false;
-        noButton.visible = false;
-        dialogue.destroy();
-      });
-
-      noButton.on("pointerdown", function () {
-        yesButton.visible = false;
-        noButton.visible = false;
-        dialogue.destroy();
-      });
-    } else if (enter.isDown && !dollsCut) {
-      yesButton.visible = true;
-      noButton.visible = true;
-
-      textOpen = true;
-      const dialogue = createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("Choose this doll?", 50);
-
-      yesButton.on("pointerdown", function () {
-        wrongClicked = true;
-        // this.penalty
-        dialogue.destroy();
-      });
-
-      noButton.on("pointerdown", function () {
-        yesButton.visible = false;
-        noButton.visible = false;
-        dialogue.destroy();
-      });
-    }
-  }
+}
 
   penalty() {
     wrongCounter++;
@@ -333,11 +325,11 @@ export default class Puzzle2 extends Phaser.Scene {
     yesButton.visible = false;
     noButton.visible = false;
 
-    if (wrongCounter === 1) {
+    if (wrongCounter === 1 && !nurse) {
       console.log("strike one");
-    } else if (wrongCounter === 2) {
+    } else if (wrongCounter === 2 && !nurse) {
       console.log("strike two");
-    } else if (wrongCounter === 3) {
+    } else if (wrongCounter === 3 && !nurse) {
       console.log("strike three");
       this.scene.switch("Title");
     }
