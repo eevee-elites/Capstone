@@ -6,6 +6,7 @@ import NPC from '../Models/NPC';
 import NPCAnimate from '../Models/NPCAnimate';
 
 let light;
+let locked = true;
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super('Puzzle1');
@@ -30,7 +31,7 @@ export default class Puzzle1 extends Phaser.Scene {
 
 	create() {
 		//exit
-		// let exitBox = this.add.rectangle(20, 300, 50, 50, 0xffffff);
+		// let exitBox = this.add.rectangle(20, 300, 50, 50, 0x6B6868);
 		//map
 		const map = this.make.tilemap({key: 'PuzzleMap'});
 
@@ -56,9 +57,12 @@ export default class Puzzle1 extends Phaser.Scene {
 		//puzzle
 		makePuzzle(this);
 		//unlock square
-		let lock1 = this.add.rectangle(100, 350, 32, 32, 0xffffff);
-		let lock2 = this.add.rectangle(100, 542, 32, 32, 0xffffff);
-		let lock3 = this.add.rectangle(548, 542, 32, 32, 0xffffff);
+		let lock1 = this.add.rectangle(100, 350, 32, 32, 0x6b6868);
+		this.add.rectangle(100, 350, 16, 16, 0x000000);
+		let lock2 = this.add.rectangle(100, 542, 32, 32, 0x6b6868);
+		this.add.rectangle(100, 542, 16, 16, 0x000000);
+		let lock3 = this.add.rectangle(740, 542, 32, 32, 0x6b6868);
+		this.add.rectangle(740, 542, 16, 16, 0x000000);
 		//camera
 		this.cameras.main.setBounds(48, 0, 800, 900);
 		this.cameras.main.startFollow(this.man);
@@ -119,38 +123,51 @@ function makePuzzle(key) {
 		.setPipeline('Light2D');
 	//row 2
 	const movableRow2B3 = key.physics.add.sprite(164, 478, 'drawer');
-	const staticRow2S1 = key.physics.add
+	const staticRow2 = key.physics.add
 		.staticSprite(165, 606, 'table')
 		.setPipeline('Light2D');
 	key.physics.add.existing(movableRow2B3);
-	key.physics.add.collider(movableRow2B3, staticRow1S1);
-	key.physics.add.collider(movableRow2B3, staticRow1S2);
+	key.physics.add.collider(movableRow2B3, [
+		staticRow1S1,
+		staticRow1S2,
+		staticRow2,
+	]);
 	key.physics.add.collider(movableRow2B3, key.collidingLayer);
+	key.physics.add.collider(movableRow2B3, key.man);
 	// row 3
 	const movableRow3B2 = key.physics.add.sprite(228, 414, 'drawer');
-	const staticRow3 = key.physics.add
+	const staticRow3S1 = key.physics.add
 		.staticSprite(228, 542, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider(movableRow3B2, key.man);
-	// key.physics.add.collider(staticRow3, key.man);
+	const staticRow3S2 = key.physics.add
+		.staticSprite(228, 606, 'table')
+		.setPipeline('Light2D');
 	key.physics.add.existing(movableRow3B2);
-	key.physics.add.collider(movableRow3B2, [staticRow1S1, staticRow1S2]);
+	key.physics.add.collider(movableRow3B2, [
+		staticRow1S1,
+		staticRow1S2,
+		staticRow3S2,
+		staticRow3S1,
+		movableRow2B3,
+	]);
 	key.physics.add.collider(movableRow3B2, key.collidingLayer);
+	key.physics.add.collider(movableRow3B2, key.man);
+	key.physics.add.collider(staticRow3S1, movableRow2B3);
+	key.physics.add.collider(staticRow3S2, movableRow2B3);
 	// row 4
 	const staticRow4 = key.physics.add
-		.staticSprite(292, 360, 'table')
+		.staticSprite(292, 340, 'table')
 		.setPipeline('Light2D');
-	const movableRow4 = key.physics.add.sprite(292, 606, 'drawer');
+	const movableRow4 = key.physics.add.sprite(292, 60600, 'drawer');
 	key.physics.add.existing(movableRow4);
-	key.physics.add.collider(staticRow4, movableRow4);
-	key.physics.add.collider(staticRow4, movableRow3B2);
-	// key.physics.add.collider(staticRow4, key.man);
-	// key.physics.add.collider(movableRow4, key.man);
+	key.physics.add.collider(movableRow4, key.man);
 	key.physics.add.collider(movableRow4, key.collidingLayer);
+	key.physics.add.collider(staticRow4, [movableRow4, movableRow3B2]);
+	key.physics.add.collider(movableRow4, [staticRow3S1, staticRow3S2]);
 
 	//row 5
 	const staticRow5B5 = key.physics.add
-		.staticSprite(358, 360, 'table')
+		.staticSprite(358, 340, 'table')
 		.setPipeline('Light2D');
 	const staticRow5B3 = key.physics.add
 		.staticSprite(358, 478, 'table')
@@ -158,28 +175,38 @@ function makePuzzle(key) {
 	const staticRow5B2 = key.physics.add
 		.staticSprite(358, 542, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider(staticRow5B5, key.man);
-	// key.physics.add.collider(staticRow5B2, key.man);
-	// key.physics.add.collider(staticRow5B3, key.man);
 	//row6
 	const staticRow6 = key.physics.add
 		.staticSprite(420, 606, 'table')
 		.setPipeline('Light2D');
 	key.physics.add.collider(staticRow6, key.man);
 	//row 7
-	const movableRow7 = key.physics.add.sprite(484, 478, 'drawer');
-	const staticRow7 = key.physics.add
+	const movableRow7B2 = key.physics.add.sprite(484, 478, 'drawer');
+	const staticRow7B2 = key.physics.add
 		.staticSprite(484, 606, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider(staticRow7, key.man);
-	// key.physics.add.collider(movableRow7, key.man);
-	// key.physics.add.collider(movableRow7, key.collidingLayer);
+	key.physics.add.existing(movableRow7B2);
+	key.physics.add.collider(movableRow7B2, key.man);
+	key.physics.add.collider(staticRow7B2, key.man);
+	key.physics.add.collider(movableRow7B2, key.collidingLayer);
+	key.physics.add.collider(movableRow7B2, movableRow4);
+	key.physics.add.collider(staticRow7B2, [movableRow7B2, movableRow4]);
 	//row 8
+	const staticRow8B1 = key.physics.add
+		.staticSprite(548, 414, 'table')
+		.setPipeline('Light2D');
 	const staticRow8 = key.physics.add
 		.staticSprite(548, 606, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider(staticRow8, key.man);
+	key.physics.add.collider(movableRow4, staticRow8);
+	key.physics.add.collider(staticRow8, movableRow4);
+	key.physics.add.collider(staticRow8B1, movableRow4);
+	key.physics.add.collider(staticRow8B1, key.man);
+	key.physics.add.collider(staticRow8, key.man);
 	//row 9
+	const staticRow9B1 = key.physics.add
+		.staticSprite(612, 340, 'table')
+		.setPipeline('Light2D');
 	const staticRow9 = key.physics.add
 		.staticSprite(612, 542, 'table')
 		.setPipeline('Light2D');
@@ -194,64 +221,78 @@ function makePuzzle(key) {
 	// key.physics.add.collider([staticRow10B1, staticRow10B2], key.man);
 	//row 11
 	const staticRow11 = key.physics.add
-		.staticSprite(740, 542, 'table')
+		.staticSprite(740, 414, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider(staticRow11, key.man);
-	//row 12
-	const staticRow12B1 = key.physics.add
-		.staticSprite(740, 542, 'table')
-		.setPipeline('Light2D');
-	const staticRow12B2 = key.physics.add
+	const staticRow11S1 = key.physics.add
 		.staticSprite(740, 606, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider([staticRow12B1, staticRow12B2], key.man);
+	key.physics.add.collider(staticRow11, key.man);
+	key.physics.add.collider(staticRow11S1, key.man);
+	//row 12
+	const staticRow12B1 = key.physics.add
+		.staticSprite(804, 542, 'table')
+		.setPipeline('Light2D');
+	const staticRow12B2 = key.physics.add
+		.staticSprite(804, 606, 'table')
+		.setPipeline('Light2D');
 
 	// colliders
 	key.physics.add.collider(
 		[
+			staticRow3S2,
+			staticRow9B1,
 			staticRow1S1,
 			staticRow1S2,
-			staticRow2S1,
-			staticRow3,
+			staticRow2,
+			staticRow3S1,
 			staticRow4,
 			staticRow5B2,
 			staticRow5B3,
 			staticRow5B5,
 			staticRow6,
-			staticRow7,
+			staticRow8B1,
+			staticRow7B2,
 			staticRow8,
 			staticRow9,
 			staticRow10B1,
 			staticRow10B2,
 			staticRow11,
+			staticRow11S1,
 			staticRow12B1,
 			staticRow12B2,
+			movableRow2B3,
+			movableRow3B2,
+			movableRow4,
+			movableRow7B2,
 		],
 		key.man
 	);
 	key.physics.add.collider(
-		[movableRow2B3, movableRow3B2, movableRow4, movableRow7],
+		[movableRow2B3, movableRow3B2, movableRow4, movableRow7B2],
 		[
 			key.man,
+			staticRow9B1,
 			movableRow2B3,
 			movableRow3B2,
 			movableRow4,
-			movableRow7,
+			movableRow7B2,
 			staticRow1S1,
 			staticRow1S2,
-			staticRow2S1,
-			staticRow3,
+			staticRow2,
+			staticRow3S1,
 			staticRow4,
 			staticRow5B2,
 			staticRow5B3,
 			staticRow5B5,
 			staticRow6,
-			staticRow7,
+			staticRow7B2,
+			staticRow8B1,
 			staticRow8,
 			staticRow9,
 			staticRow10B1,
 			staticRow10B2,
 			staticRow11,
+			staticRow11S1,
 			staticRow12B1,
 			staticRow12B2,
 			key.collidingLayer,
