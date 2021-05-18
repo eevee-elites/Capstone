@@ -158,7 +158,7 @@ function makePuzzle(key) {
 	const staticRow4 = key.physics.add
 		.staticSprite(292, 340, 'table')
 		.setPipeline('Light2D');
-	const movableRow4 = key.physics.add.sprite(292, 60600, 'drawer');
+	const movableRow4 = key.physics.add.sprite(292, 606, 'drawer');
 	key.physics.add.existing(movableRow4);
 	key.physics.add.collider(movableRow4, key.man);
 	key.physics.add.collider(movableRow4, key.collidingLayer);
@@ -198,9 +198,9 @@ function makePuzzle(key) {
 	const staticRow8 = key.physics.add
 		.staticSprite(548, 606, 'table')
 		.setPipeline('Light2D');
-	key.physics.add.collider(movableRow4, staticRow8);
-	key.physics.add.collider(staticRow8, movableRow4);
-	key.physics.add.collider(staticRow8B1, movableRow4);
+	key.physics.add.collider([movableRow4, movableRow7B2], staticRow8);
+	key.physics.add.collider(staticRow8, [movableRow4, movableRow7B2]);
+	key.physics.add.collider(staticRow8B1, [movableRow4, movableRow7B2]);
 	key.physics.add.collider(staticRow8B1, key.man);
 	key.physics.add.collider(staticRow8, key.man);
 	//row 9
@@ -210,7 +210,10 @@ function makePuzzle(key) {
 	const staticRow9 = key.physics.add
 		.staticSprite(612, 542, 'table')
 		.setPipeline('Light2D');
-	// key.physics.add.collider(staticRow9, key.man);
+	// key.physics.add.collider([movableRow4, movableRow7B2], staticRow8);
+	key.physics.add.collider(staticRow9, [movableRow4, movableRow7B2]);
+	key.physics.add.collider(staticRow9, key.man);
+	key.physics.add.collider(staticRow9, key.man);
 	//row 10
 	const staticRow10B1 = key.physics.add
 		.staticSprite(676, 414, 'table')
