@@ -95,12 +95,13 @@ export default class Puzzle2 extends Phaser.Scene {
 
 		//player and item interactions
 		this.physics.add.existing(note, true);
-		this.physics.add.overlap(this.man, note, this.readNote, null, this);
 
 		this.physics.add.existing(wrongDoll, true);
 		this.physics.add.existing(wrongDoll2, true);
 		this.physics.add.existing(rightDoll, true);
 		this.physics.add.existing(nurseDoll, true);
+		this.physics.add.overlap(this.man, note, this.readNote, null, this);
+
 		this.physics.add.overlap(this.man, wrongDoll, this.chooseWrong, null, this);
 		this.physics.add.overlap(
 			this.man,
@@ -334,12 +335,15 @@ export default class Puzzle2 extends Phaser.Scene {
 		noButton.visible = false;
 
 		if (wrongCounter === 1 && !nurse) {
+      this.cameras.main.shake(500)
 			console.log('strike one');
 		} else if (wrongCounter === 2  && !nurse) {
+      this.cameras.main.shake(500)
 			console.log('strike two');
 		} else if (wrongCounter === 3  && !nurse) {
+      this.cameras.main.shake(500)
 			console.log('strike three');
-			this.scene.switch('Title');
+			this.scene.switch('StartScene');
 		}
 	}
 }
