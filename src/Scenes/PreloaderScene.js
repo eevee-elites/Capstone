@@ -96,6 +96,14 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('nextPage', 'assets/next.png');
     this.load.image('icon', 'assets/iconnpc.png');
     this.load.image('tiles', '../assets/Room spritesheet.png');
+    this.load.image('greenDoll', '../assets/Green doll.png')
+    this.load.image('greenDollCut', '../assets/Green doll cut.png')
+    this.load.image('blueDoll', '../assets/Blue doll.png')
+    this.load.image('blueDollCut', '../assets/Blue doll cut.png')
+    this.load.image('redDoll', '../assets/Red doll.png')
+    this.load.image('redDollCut', '../assets/Red doll cut.png')
+    this.load.image('nurseDoll', '../assets/Nurse doll.png')
+    this.load.image('note', '../assets/Note.png')
 		this.load.tilemapTiledJSON('Puzzle2', '../assets/PuzzleRoom.json');
 
     //load sprites

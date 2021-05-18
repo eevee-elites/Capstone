@@ -14,7 +14,7 @@ let last = false;
 let wrongCounter = 0;
 var yesButton;
 var noButton;
-var wrongClicked = false;
+let wrongClicked = false;
 let rightClicked = false;
 let dollsCut = false;
 let light
@@ -51,17 +51,22 @@ export default class Puzzle2 extends Phaser.Scene {
 
     const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
 
-    const belowLayer = map.createLayer("Below", tileset, 0, 0).setPipeline('Light2D');;
-    const collidingLayer = map.createLayer("Colliding", tileset, 0, 0).setPipeline('Light2D');;
+    const belowLayer = map.createLayer("Below", tileset, 0, 0).setPipeline('Light2D');
+    const collidingLayer = map.createLayer("Colliding", tileset, 0, 0).setPipeline('Light2D');
 
     collidingLayer.setCollisionByProperty({ collides: true });
 
     //items in room
     let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
+    this.add.image(100, 600, 'note')
     let wrongDoll = this.add.rectangle(300, 400, 40, 40, 0x000000);
+    let blueDoll = this.add.image(300, 400, 'blueDoll')
     let rightDoll = this.add.rectangle(400, 400, 40, 40, 0x000000);
+    let redDoll = this.add.image(400, 400, 'redDoll')
     let wrongDoll2 = this.add.rectangle(500, 400, 40, 40, 0x000000);
+    let greenDoll = this.add.image(500, 400, 'greenDoll')
     let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0xffffff); //nurse doll is white box
+    let nurseDollImg = this.add.image(700, 600, 'nurseDoll')
 
     //player
     this.man = this.physics.add
@@ -108,9 +113,11 @@ export default class Puzzle2 extends Phaser.Scene {
     //yes or no choices
     yesButton = this.add.rectangle(400, 300, 50, 50, 0x000000);
     yesButton.visible = false;
+    yesButton.setScrollFactor(0)
     yesButton.setInteractive();
     noButton = this.add.rectangle(400, 370, 50, 50, 0x000000);
     noButton.visible = false;
+    noButton.setScrollFactor(0)
     noButton.setInteractive();
     this.input.keyboard.on(
       "keydown-I",
@@ -343,7 +350,7 @@ var createTextBox = function (scene, x, y, config) {
   var textBox = scene.rexUI.add
     .textBox({
       x: x,
-      y: scene.cameras.main.height,
+      y: y,
 
       background: scene.rexUI.add
         .roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
@@ -367,6 +374,8 @@ var createTextBox = function (scene, x, y, config) {
     })
     .setOrigin(0)
     .layout();
+
+    textBox.setScrollFactor(0)
 
   scene.input.keyboard.on(
     "keydown-ENTER",
