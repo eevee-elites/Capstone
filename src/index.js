@@ -12,7 +12,7 @@ import Tester2 from './Scenes/Tester2';
 import Inventory from './Scenes/Inventory';
 import PuzzleSlider from './Scenes/PuzzleSlider';
 import Puzzle2 from './Scenes/Puzzle2';
-import TutorialScene from './Scene/TutorialScene';
+import TutorialScene from './Scenes/TutorialScene';
 
 class Game extends Phaser.Game {
 	constructor() {
