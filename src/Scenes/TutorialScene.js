@@ -18,6 +18,7 @@ const COLOR_DARK = 0x260e04;
 let textOpen = false;
 let last = false;
 let madeBoxesAppear = false;
+let light;
 
 export default class TutorialScene extends Phaser.Scene {
 	constructor() {
@@ -46,12 +47,16 @@ export default class TutorialScene extends Phaser.Scene {
 
 		const tileset = map.addTilesetImage('PuzzleRoom', 'tiles');
 
-		const belowLayer = map.createLayer('Below', tileset, 0, 0);
-		this.collidingLayer = map.createLayer('Colliding', tileset, 0, 0);
+		const belowLayer = map
+			.createLayer('Below', tileset, 0, 0)
+			.setPipeline('Light2D');
+		this.collidingLayer = map
+			.createLayer('Colliding', tileset, 0, 0)
+			.setPipeline('Light2D');
 
 		this.collidingLayer.setCollisionByProperty({collides: true});
 		// man key & npc
-		this.man = new Player(this, 400, 300, 'man').setOrigin(0.5, -3);
+		this.man = new Player(this, 400, 700, 'man').setOrigin(0, 0);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
 		this.man.body.setSize(32, 32, true);
@@ -92,6 +97,11 @@ export default class TutorialScene extends Phaser.Scene {
 
 		this.physics.add.overlap(npcHitBox, this.man, this.sayHello, null, this);
 		this.physics.add.overlap(exitHitBox, this.man, this.exitRoom, null, this);
+
+		//lights
+		this.lights.enable();
+		this.lights.setAmbientColor(0x7b5e57);
+		light = this.lights.addLight(180, 80, 50000);
 
 		this.input.keyboard.on(
 			'keydown-I',
@@ -138,7 +148,8 @@ export default class TutorialScene extends Phaser.Scene {
 	update() {
 		this.man.update(this);
 		this.room1Key.update(this.room1Key, 'room1Key');
-		// this.npc.update(this.npc, 'NPC');
+		light.x = this.man.x + 35;
+		light.y = this.man.y + 35;
 	}
 	exitRoom() {
 		if (this.collect) {
