@@ -5,7 +5,7 @@ import Animate from '../Models/Animate';
 import NPCAnimate from '../Models/NPCAnimate';
 
 var content =
-	'test dialogue array blaksjdflkasjfalkdsjfalksd falsd fasdfkljasd flkad fasd flkasdjflaksd fa sdf asdlkfj asdkljf asdkljf';
+	'Welcome to Haunted Hopper! Behind each door you will find the opportunity to save one of your friends but dont be fooled, each mistake you make will cost them their life';
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
