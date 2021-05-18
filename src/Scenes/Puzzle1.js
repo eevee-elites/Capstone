@@ -18,7 +18,7 @@ export default class Puzzle1 extends Phaser.Scene {
 	preload() {
 		this.load.spritesheet('man', 'assets/man.png', {
 			frameWidth: 64,
-			frameHeight: 64,
+			frameHeight: 128,
 		});
 		this.load.spritesheet('key', 'assets/key.png', {
 			frameWidth: 28.5,
@@ -53,7 +53,7 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.man = this.physics.add
 			.existing(new Player(this, 420, 750, 'man'))
 			.setOrigin(0, 0);
-		this.man.setSize(32, 32);
+		this.man.body.setSize(32, 32, true);
 		this.physics.add.collider(this.man, this.collidingLayer);
 
 		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
@@ -104,6 +104,39 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.physics.add.overlap(this.man, lock1, collectlock1, null, this);
 		this.physics.add.overlap(this.man, lock2, collectlock2, null, this);
 		this.physics.add.overlap(this.man, lock3, collectlock3, null, this);
+		this.input.keyboard.on(
+			'keydown-I',
+			function () {
+				this.scene.transition({
+					target: 'Inventory',
+					duration: 10,
+					data: {inventory: this.man.inventory, scene: 'Puzzle1'},
+					sleep: true,
+				});
+			},
+			this
+		);
+		this.events.on(
+			Phaser.Scenes.Events.WAKE,
+			function () {
+				this.wake(this.input, this.scene);
+			},
+			this
+		);
+	}
+	wake(input, scene) {
+		this.input.keyboard.on(
+			'keydown-I',
+			function () {
+				this.scene.transition({
+					target: 'Inventory',
+					duration: 10,
+					data: {inventory: this.man.inventory, scene: 'Puzzle1'},
+					sleep: true,
+				});
+			},
+			this
+		);
 	}
 	exitRoom() {
 		if (this.collected) {
@@ -149,6 +182,7 @@ function collectlock3(man, lock3) {
 	}
 }
 function collectItem(man, key) {
+	man.pickupItem(key.texture.key);
 	key.disableBody(true, true);
 	this.collected = true;
 }
