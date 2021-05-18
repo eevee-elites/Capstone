@@ -47,6 +47,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   create(data) {
     //tilemap
+    const exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
     const map = this.make.tilemap({ key: "Puzzle2" });
 
     const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
@@ -61,6 +62,7 @@ export default class Puzzle2 extends Phaser.Scene {
     collidingLayer.setCollisionByProperty({ collides: true });
 
     //items in room
+
     let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
     this.add.image(100, 600, "note");
     let wrongDoll = this.add.rectangle(300, 400, 40, 40, 0x000000);
@@ -74,13 +76,13 @@ export default class Puzzle2 extends Phaser.Scene {
 
     //player
     this.man = this.physics.add
-      .existing(new Player(this, 420, 800, "man"))
+      .existing(new Player(this, 420, 700, "man"))
       .setOrigin(0, 0);
 
     this.physics.add.collider(this.man, collidingLayer);
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
-
+    this.physics.add.overlap(this.man, exitdoor, exitPuzzleRoom2, null, this);
     //camera
     this.cameras.main.setBounds(48, 0, 800, 900);
     this.cameras.main.startFollow(this.man);
@@ -435,3 +437,6 @@ var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
     maxLines: 3,
   });
 };
+function exitPuzzleRoom2() {
+  this.scene.start("StartScene");
+}

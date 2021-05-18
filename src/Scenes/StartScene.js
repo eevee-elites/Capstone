@@ -55,6 +55,9 @@ export default class StartScene extends Phaser.Scene {
   create() {
     let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
     const puzzle1Room = this.add.rectangle(450, 300, 120, 40, 0x000000);
+    const puzzle2Room = this.add.rectangle(835, 300, 120, 40, 0x000000);
+    this.physics.add.existing(puzzle2Room, true);
+
     this.physics.add.existing(puzzle1Room, true);
     //map
     const map = this.make.tilemap({ key: "map" });
@@ -92,6 +95,15 @@ export default class StartScene extends Phaser.Scene {
       null,
       this
     );
+
+    this.physics.add.overlap(
+      this.man,
+      puzzle2Room,
+      enterPuzzleRoom2,
+      null,
+      this
+    );
+
     this.input.keyboard.on(
       "keydown-I",
       function () {
@@ -147,6 +159,9 @@ export default class StartScene extends Phaser.Scene {
 }
 function enterPuzzleRoom1() {
   this.scene.start("Puzzle1");
+}
+function enterPuzzleRoom2() {
+  this.scene.start("Puzzle2");
 }
 
 const GetValue = Phaser.Utils.Objects.GetValue;
