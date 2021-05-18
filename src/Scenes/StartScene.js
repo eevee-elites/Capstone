@@ -5,7 +5,7 @@ import Animate from "../Models/Animate";
 import NPCAnimate from "../Models/NPCAnimate";
 
 var content =
-  "test dialogue array blaksjdflkasjfalkdsjfalksd falsd fasdfkljasd flkad fasd flkasdjflaksd fa sdf asdlkfj asdkljf asdkljf";
+  "Welcome to Haunted Hopper! Behind each door you will find the opportunity to save one of your friends but dont be fooled, each mistake you make will cost them their life";
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
 const COLOR_DARK = 0x260e04;
@@ -25,31 +25,11 @@ export default class StartScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.spritesheet("man", "assets/man.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-
-    this.load.spritesheet("NPC", "assets/NPC.png", {
-      frameWidth: 80,
-      frameHeight: 130,
-    });
-
     this.load.scenePlugin({
       key: "rexuiplugin",
       url: "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js",
       sceneKey: "rexUI",
     });
-
-    this.load.plugin(
-      "rextexttypingplugin",
-      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js",
-      true
-    );
-    this.load.image("nextPage", "assets/next.png");
-    this.load.image("tiles", "../assets/Room spritesheet.png");
-    this.load.tilemapTiledJSON("map", "../assets/HallwayRoom.json");
-    this.load.image("icon", "assets/iconnpc.png");
   }
 
   create() {
@@ -68,10 +48,8 @@ export default class StartScene extends Phaser.Scene {
     const collidingLayer = map.createLayer("Colliding", tileset, 0, 0);
 
     collidingLayer.setCollisionByProperty({ collides: true });
-
-    this.man = this.physics.add
-      .existing(new Player(this, 400, 300, "man"))
-      .setOrigin(0.5, -3);
+    //map
+    this.man = this.physics.add.existing(new Player(this, 400, 600, "man"));
 
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
@@ -83,7 +61,7 @@ export default class StartScene extends Phaser.Scene {
     this.physics.add.collider(this.man, collidingLayer);
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
-
+    //camera
     this.cameras.main.setBounds(48, 0, 3000, 700);
     this.cameras.main.startFollow(this.man, true);
 

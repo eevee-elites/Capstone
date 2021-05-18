@@ -7,11 +7,13 @@ import TitleScene from "./Scenes/TitleScene";
 import OptionsScene from "./Scenes/OptionsScene";
 import CreditsScene from "./Scenes/CreditsScene";
 import Puzzle1 from "./Scenes/Puzzle1";
-import TesterScene from "./Scenes/TesterScene";
-import Tester2 from "./Scenes/Tester2";
+import TesterScene from "./TestingEnvironment/TesterScene";
+import Tester2 from "./TestingEnvironment/Tester2";
 import Inventory from "./Scenes/Inventory";
 import PuzzleSlider from "./Scenes/PuzzleSlider";
 import Puzzle2 from "./Scenes/Puzzle2";
+import TutorialScene from "./Scenes/TutorialScene";
+
 class Game extends Phaser.Game {
   constructor() {
     super(config);
@@ -27,6 +29,7 @@ class Game extends Phaser.Game {
     this.scene.add("Inventory", Inventory);
     this.scene.add("PuzzleSlider", PuzzleSlider);
     this.scene.add("Puzzle2", Puzzle2);
+    this.scene.add("Tutorial", TutorialScene);
 
     this.scene.start("Boot");
   }

@@ -1,12 +1,12 @@
 import 'phaser';
 
 export default {
-  type: Phaser.AUTO,
-  parent: 'phaser-example',
-  width: 800,
-  height: 600,
-  physics: {
-    default: 'arcade'
-  },
-  autoCenter: true,
+	type: Phaser.AUTO,
+	parent: 'phaser-example',
+	width: 800,
+	height: 600,
+	physics: {
+		default: 'arcade',
+	},
+	autoCenter: true,
 };

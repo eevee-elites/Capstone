@@ -10,6 +10,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       pizza: 0,
       cat: 0,
       scissors: 0,
+      room1Key: 0,
     };
   }
   // updates inventory when an item is picked up
@@ -27,6 +28,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.inventory.cat += 1;
         console.log("cat collected");
         break;
+      case "room1Key":
+        this.inventory.room1Key += 1;
+        console.log("room1 key collected");
+        break;
+
       default:
         console.log("cant pick up item");
     }
