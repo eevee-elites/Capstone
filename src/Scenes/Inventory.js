@@ -10,11 +10,7 @@ export default class Inventory extends Phaser.Scene {
     Phaser.Scene.call(this, "Inventory");
   }
 
-  preload() {
-    this.load.image("cat", "assets/cat.png");
-    this.load.image("star", "assets/star.png");
-    this.load.image("pizza", "assets/pizza.png");
-  }
+  preload() {}
 
   create(data) {
     this.inventoryPassed = data.inventory;
