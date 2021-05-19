@@ -11,6 +11,7 @@ import TesterScene from "./TestingEnvironment/TesterScene";
 import Tester2 from "./TestingEnvironment/Tester2";
 import Inventory from "./Scenes/Inventory";
 import TutorialScene from "./Scenes/TutorialScene";
+import Puzzle2 from "./Scenes/Puzzle2";
 
 class Game extends Phaser.Game {
   constructor() {
@@ -26,6 +27,7 @@ class Game extends Phaser.Game {
     this.scene.add("Tester2", Tester2);
     this.scene.add("Inventory", Inventory);
     this.scene.add("Tutorial", TutorialScene);
+    this.scene.add("Puzzle2", Puzzle2);
 
     this.scene.start("Boot");
   }

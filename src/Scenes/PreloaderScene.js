@@ -93,12 +93,22 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("pizza", "assets/pizza.png");
     this.load.image("table", "assets/table.png");
     this.load.image("titleImage", "assets/logo.png");
+    this.load.image("greenDoll", "../assets/Green doll.png");
+    this.load.image("greenDollCut", "../assets/Green doll cut.png");
+    this.load.image("blueDoll", "../assets/Blue doll.png");
+    this.load.image("blueDollCut", "../assets/Blue doll cut.png");
+    this.load.image("redDoll", "../assets/Red doll.png");
+    this.load.image("redDollCut", "../assets/Red doll cut.png");
+    this.load.image("nurseDoll", "../assets/Nurse doll.png");
+    this.load.image("note", "../assets/Note.png");
+    this.load.image("yesButton", "../assets/ui/Yes button.png");
+    this.load.image("noButton", "../assets/ui/No button.png");
     this.load.image("nextPage", "assets/next.png");
     this.load.image("tiles", "../assets/Room spritesheet.png");
     this.load.image("cage", "assets/lockedCage.png");
     this.load.image("icon", "assets/iconnpc.png");
     this.load.image("drawer", "assets/drawer.png");
-
+    this.load.tilemapTiledJSON("Puzzle2", "../assets/PuzzleRoom.json");
     this.load.tilemapTiledJSON("tutorialRoom", "../assets/TutorialRoom.json");
     this.load.tilemapTiledJSON("map", "../assets/HallwayRoom.json");
     this.load.tilemapTiledJSON("PuzzleMap", "../assets/PuzzleRoom.json");
