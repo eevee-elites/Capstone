@@ -1,6 +1,7 @@
 import "phaser";
 
 export default class PreloaderScene extends Phaser.Scene {
+
   constructor() {
     super("Preloader");
   }
@@ -117,6 +118,13 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.tilemapTiledJSON("tutorialRoom", "../assets/TutorialRoom.json");
     this.load.tilemapTiledJSON("map", "../assets/HallwayRoom.json");
     this.load.tilemapTiledJSON("PuzzleMap", "../assets/PuzzleRoom.json");
+    this.load.image("HotelEmployee", "assets/HotelEmployee.png");
+	  this.load.image("dresser", "assets/dresser.png");
+  	this.load.tilemapTiledJSON("HotelRoom", "../assets/HotelRoom.json");
+		this.load.tilemapTiledJSON("Lobby", "../assets/Convention.json");
+		this.load.tilemapTiledJSON("Outside", "../assets/Outside.json");
+
+
 
     //load sprites
     this.load.spritesheet("man", "assets/man.png", {
@@ -158,4 +166,5 @@ export default class PreloaderScene extends Phaser.Scene {
       this.scene.start("Title");
     }
   }
+
 }

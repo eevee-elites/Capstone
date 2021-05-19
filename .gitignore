@@ -1,4 +1,4 @@
 node_modules
-public/project.bundle.js
-public/assets/ui/.DS_Store
+***/project.bundle.js
+***/assets/ui/.DS_Store
 
