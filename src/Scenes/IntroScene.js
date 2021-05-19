@@ -37,8 +37,6 @@ export default class IntroScene extends Phaser.Scene {
 			url: "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js",
 			sceneKey: "rexUI",
 		});
-		// this.load.image('tiles', '../assets/Room spritesheet.png');
-		this.load.tilemapTiledJSON("HotelRoom", "../assets/HotelRoom.json");
 	}
 
 	create() {

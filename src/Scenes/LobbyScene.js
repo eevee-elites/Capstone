@@ -75,9 +75,9 @@ export default class LobbyScene extends Phaser.Scene {
 		// this.lights.disable();
 		this.lights.setAmbientColor(0x970404);
 		this.HotelEmployee.disableBody(true, true);
-		this.input.keyboard.once("keydown-ENTER", this.startTutorial, this);
+		this.input.keyboard.once("keydown-ENTER", this.startScene, this);
 	}
-	startTutorial() {
-		this.scene.start("Tutorial");
+	startScene() {
+		this.scene.start("StartScene");
 	}
 }

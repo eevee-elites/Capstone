@@ -4,20 +4,32 @@ import Player from "../Models/Player";
 import Animate from "../Models/Animate";
 import NPC from "../Models/NPC";
 import NPCAnimate from "../Models/NPCAnimate";
+import TextBoxWithoutIcon, {TextBoxWithIcon} from "../Utilities/TextBox";
 
 let light;
 let unlocked = false;
 let lock1Collected = false;
 let lock2Collected = false;
 let lock3Collected = false;
+// let music;
+const Help = "SOPHIE!!! HELP!";
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super("Puzzle1");
 	}
 
-	preload() {}
+	preload() {
+		this.load.scenePlugin({
+			key: "rexuiplugin",
+			url: "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js",
+			sceneKey: "rexUI",
+		});
+	}
 
 	create() {
+		// music = this.sound.add("dollroom", true);
+		// music.play();
+		// music.setVolume(0.3);
 		//exit
 		let exitBox = this.add.rectangle(450, 850, 100, 100, 0x000000);
 		//map
@@ -27,6 +39,12 @@ export default class Puzzle1 extends Phaser.Scene {
 		const belowLayer = map
 			.createLayer("Below", tileset, 0, 0)
 			.setPipeline("Light2D");
+
+		this.add.image(256, 224, "employee");
+		this.add.image(384, 224, "employee");
+		this.add.image(512, 224, "employee");
+		this.add.sprite(640, 224, "NPC2");
+
 		this.collidingLayer = map
 			.createLayer("Colliding", tileset, 0, 0)
 			.setPipeline("Light2D");
@@ -89,6 +107,9 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.physics.add.overlap(this.man, lock1, collectlock1, null, this);
 		this.physics.add.overlap(this.man, lock2, collectlock2, null, this);
 		this.physics.add.overlap(this.man, lock3, collectlock3, null, this);
+
+		TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
+
 		this.input.keyboard.on(
 			"keydown-I",
 			function () {
