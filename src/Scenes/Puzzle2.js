@@ -28,7 +28,7 @@ let green;
 let blueDoll
 let redDoll
 let greenDoll
-
+let exitdoor
 
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
@@ -59,7 +59,9 @@ export default class Puzzle2 extends Phaser.Scene {
 
   create(data) {
     //tilemap
-    const exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+  let music = this.sound.add("dollroom", true);
+
+    exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
     const map = this.make.tilemap({ key: "Puzzle2" });
 
     const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
@@ -136,17 +138,17 @@ export default class Puzzle2 extends Phaser.Scene {
     this.physics.add.overlap(this.man, note, this.readNote, null, this);
 
     //yes or no choices
-    greenButton = this.add.image(400, 300, "yesButton");
+    greenButton = this.add.image(400, 300, "greenButton");
     greenButton.visible = false;
     greenButton.setScrollFactor(0);
     greenButton.setInteractive();
 
-	redButton = this.add.image(400, 200, "yesButton");
+	redButton = this.add.image(400, 200, "redButton");
     redButton.visible = false;
     redButton.setScrollFactor(0);
     redButton.setInteractive();
 
-    blueButton = this.add.image(400, 100, "yesButton");
+    blueButton = this.add.image(400, 100, "blueButton");
     blueButton.visible = false;
     blueButton.setScrollFactor(0);
     blueButton.setInteractive();
@@ -288,7 +290,7 @@ export default class Puzzle2 extends Phaser.Scene {
 // }
  choosedoll (man,doll, scene){
 	let enter = this.input.keyboard.addKey("ENTER");
-	
+
 	if(enter.isDown && man.inventory.cat === 0){
 		blueButton.visible = true;
 		greenButton.visible = true;
@@ -483,5 +485,6 @@ var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
   });
 };
 function exitPuzzleRoom2() {
-  this.scene.start("StartScene");
+  scene.physics.add.existing(exitdoor, true)
+
 }
