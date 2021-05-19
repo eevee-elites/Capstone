@@ -45,7 +45,7 @@ export default class StartScene extends Phaser.Scene {
 
     collidingLayer.setCollisionByProperty({ collides: true });
     //map
-    this.man = this.physics.add.existing(new Player(this, 400, 600, "man"));
+    this.man = this.physics.add.existing(new Player(this, 400, 400, "man"));
 
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
@@ -130,7 +130,5 @@ function enterPuzzleRoom1() {
 }
 function enterPuzzleRoom2() {
   this.scene.start("Puzzle2");
-  let music = this.sound.add("dollroom", true);
-   music.play();
-   music.setVolume(0.3);
+
 }
