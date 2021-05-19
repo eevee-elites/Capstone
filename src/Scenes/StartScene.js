@@ -130,4 +130,7 @@ function enterPuzzleRoom1() {
 }
 function enterPuzzleRoom2() {
   this.scene.start("Puzzle2");
+  let music = this.sound.add("dollroom", true);
+   music.play();
+   music.setVolume(0.3);
 }
