@@ -123,15 +123,15 @@ export default class Puzzle2 extends Phaser.Scene {
     this.physics.add.existing(greendollhitbox, true);
     this.physics.add.existing(reddollhitbox, true);
     this.physics.add.existing(nurseDoll, true);
-    blue = this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, this.bluefunc, this);
+    blue = this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, null, this);
     green = this.physics.add.overlap(
       this.man,
       greendollhitbox,
       this.choosedoll,
-      this.greenfunc,
+      null,
       this
     );
-    red = this.physics.add.overlap(this.man, reddollhitbox, this.choosedoll, this.redfunc, this);
+    red = this.physics.add.overlap(this.man, reddollhitbox, this.choosedoll, null, this);
     this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
     this.physics.add.overlap(this.man, note, this.readNote, null, this);
 
@@ -264,28 +264,28 @@ export default class Puzzle2 extends Phaser.Scene {
       });
     }
   }
-  bluefunc (){
-	let enter = this.input.keyboard.addKey("ENTER");
+//   bluefunc (){
+// 	let enter = this.input.keyboard.addKey("ENTER");
 
-	  if(enter.isDown){
-		blue = true}
+// 	  if(enter.isDown){
+// 		blue = true}
 
-  }
- greenfunc (){
-	let enter = this.input.keyboard.addKey("ENTER");
+//   }
+//  greenfunc (){
+// 	let enter = this.input.keyboard.addKey("ENTER");
 
-	if(enter.isDown){
-		green = true}
+// 	if(enter.isDown){
+// 		green = true}
 
-}
-redfunc (){
-	let enter = this.input.keyboard.addKey("ENTER");
+// }
+// redfunc (){
+// 	let enter = this.input.keyboard.addKey("ENTER");
 
-	if(enter.isDown){
-		red = true}
+// 	if(enter.isDown){
+// 		red = true}
 
 
-}
+// }
  choosedoll (man,doll, scene){
 	let enter = this.input.keyboard.addKey("ENTER");
 	
@@ -341,14 +341,19 @@ redfunc (){
 				  }).start("Cut open the dolls?", 50);
 				  yesButton.on("pointerdown", function () {
 							dollsCut = true;
-							if(red === true ){
-								redDoll = this.scene.add.image(400, 400, "redDollCut")
+							if(red){
+								// redDoll = this.scene.add.image(400, 400, "redDollCut")
+								redDoll.setTexture('redDollCut')
 							 }
-							 if(blue === true){
-								blueDoll = this.scene.add.image(300, 400, "blueDollCut")
+							 if(blue){
+								// blueDoll = this.scene.add.image(300, 400, "blueDollCut")
+								blueDoll.setTexture('blueDollCut')
+
 							 }
-							 if(green === true){
-								greenDoll = this.scene.add.image(500, 400, "greenDollCut")
+							 if(green){
+								greenDoll.setTexture('greenDollCut')
+								
+								// greenDoll = this.scene.add.image(500, 400, "greenDollCut")
 							 }
 
 							man.inventory.cat = 0;
