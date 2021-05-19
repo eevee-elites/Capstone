@@ -11,6 +11,7 @@ import TesterScene from "./TestingEnvironment/TesterScene";
 import Tester2 from "./TestingEnvironment/Tester2";
 import Inventory from "./Scenes/Inventory";
 import TutorialScene from "./Scenes/TutorialScene";
+import Puzzle2 from "./Scenes/Puzzle2";
 import IntroScene from "./Scenes/IntroScene";
 import HallwayScene from "./Scenes/HallwayScene";
 import OutsideScene from "./Scenes/OutsideScene";
@@ -34,6 +35,7 @@ class Game extends Phaser.Game {
 		this.scene.add("Hallway", HallwayScene);
 		this.scene.add("Outside", OutsideScene);
 		this.scene.add("Lobby", LobbyScene);
+    this.scene.add("Puzzle2", Puzzle2);
 
 		this.scene.start("Boot");
 	}
