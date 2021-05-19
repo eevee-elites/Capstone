@@ -32,6 +32,7 @@ let employee1;
 let employee2;
 let employee3;
 let friend;
+let exitdoor;
 
 
 export default class Puzzle2 extends Phaser.Scene {
@@ -76,7 +77,7 @@ export default class Puzzle2 extends Phaser.Scene {
     employee2 = this.add.image(384, 224, "employee")
     employee3 = this.add.image(512, 224, "employee")
     friend = this.add.sprite(640, 224, "NPC")
-    const exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+    exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
     const collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
       .setPipeline("Light2D");
@@ -221,7 +222,7 @@ export default class Puzzle2 extends Phaser.Scene {
     }
 
     if (rightClicked) {
-        this.correct();
+        this.correct(this);
     }
     light.x = this.man.x + 35;
     light.y = this.man.y + 35;
@@ -387,7 +388,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
 }
 
-correct() {
+correct(scene) {
     rightClicked = false;
     this.lockedCage.disableBody(true, true);
     const dialogue = createTextBox(this, 100, 400, {
@@ -395,6 +396,8 @@ correct() {
         fixedWidth: 500,
         fixedHeight: 65,
       }).start("You did it! Let's go!", 50);
+    
+    scene.physics.add.existing(exitdoor, true)
 }
 
   penalty() {
