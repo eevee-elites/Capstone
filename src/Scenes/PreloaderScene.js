@@ -101,13 +101,11 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("redDollCut", "../assets/Red doll cut.png");
     this.load.image("nurseDoll", "../assets/Nurse doll.png");
     this.load.image("note", "../assets/Note.png");
-    this.load.image("yesButton", "../assets/ui/Yesbutton.png");
-    this.load.image("noButton", "../assets/ui/Nobutton.png");
-    this.load.image("blueButton", "../assets/ui/Bluebutton.png");
-    this.load.image("greenButton", "../assets/ui/Greenbutton.png");
-    this.load.image("redButton", "../assets/ui/Redbutton.png");
-
-
+    this.load.image("yesButton", "../assets/ui/Yes button.png");
+    this.load.image("noButton", "../assets/ui/No button.png");
+    this.load.image("blueButton", "../assets/ui/Blue button.png");
+    this.load.image("greenButton", "../assets/ui/Green button.png");
+    this.load.image("redButton", "../assets/ui/Red button.png");
     this.load.image("nextPage", "assets/next.png");
     this.load.image("tiles", "../assets/Room spritesheet.png");
     this.load.image("cage", "assets/LockedCage.png");

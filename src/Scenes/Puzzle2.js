@@ -2,7 +2,7 @@ import "phaser";
 import { Game } from "phaser";
 import Player from "../Models/Player";
 import Animate from "../Models/Animate";
-const openingLine = "Player name, help!";
+const openingLine = "Sophie, help! We're stuck in this cage! I think you have to solve the puzzle to let us out.";
 const note =
   "Find the living among the dead. The answer will be revealed when blood is shed.";
 const COLOR_PRIMARY = 0x4e342e;
@@ -28,7 +28,12 @@ let green;
 let blueDoll
 let redDoll
 let greenDoll
-let exitdoor
+let employee1;
+let employee2;
+let employee3;
+let friend;
+let exitdoor;
+let music
 
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
@@ -58,10 +63,18 @@ export default class Puzzle2 extends Phaser.Scene {
   }
 
   create(data) {
+     music = this.sound.add("dollroom", true);
+    music.play();
+    music.setVolume(0.3);
     //tilemap
-  let music = this.sound.add("dollroom", true);
-
+    //const exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+    let bluedollhitbox = this.add.rectangle(300, 400, 70, 132, 0x000000);
+    let reddollhitbox = this.add.rectangle(400, 400, 70, 132, 0x000000);
+    let greendollhitbox = this.add.rectangle(500, 400, 70, 132, 0x000000);
+    let nurseDoll = this.add.rectangle(700, 600, 70, 70, 0xffffff);
+    let note = this.add.rectangle(100, 600, 70, 70, 0x000000);
     exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+
     const map = this.make.tilemap({ key: "Puzzle2" });
 
     const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
@@ -69,6 +82,11 @@ export default class Puzzle2 extends Phaser.Scene {
     const belowLayer = map
       .createLayer("Below", tileset, 0, 0)
       .setPipeline("Light2D");
+
+    employee1 = this.add.image(256, 224, "employee")
+    employee2 = this.add.image(384, 224, "employee")
+    employee3 = this.add.image(512, 224, "employee")
+    friend = this.add.sprite(640, 224, "NPC")
     const collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
       .setPipeline("Light2D");
@@ -76,17 +94,15 @@ export default class Puzzle2 extends Phaser.Scene {
     collidingLayer.setCollisionByProperty({ collides: true });
 
     //items in room
-
-    let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
     this.add.image(100, 600, "note");
-    let bluedollhitbox = this.add.rectangle(300, 400, 40, 40, 0x000000);
     blueDoll = this.add.image(300, 400, "blueDoll");
-    let reddollhitbox = this.add.rectangle(400, 400, 40, 40, 0x000000);
     redDoll = this.add.image(400, 400, "redDoll");
-    let greendollhitbox = this.add.rectangle(500, 400, 40, 40, 0x000000);
     greenDoll = this.add.image(500, 400, "greenDoll");
-    let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0xffffff); //nurse doll is white box
     let nurseDollImg = this.add.image(700, 600, "nurseDoll");
+
+    //cage
+	this.lockedCage = this.physics.add.staticSprite(800, 256, 'cage');
+	this.physics.add.existing(this.lockedCage, true);
 
     //player
     this.man = this.physics.add
@@ -99,6 +115,8 @@ export default class Puzzle2 extends Phaser.Scene {
 	this.physics.add.collider(this.man, blueDoll);
 	this.physics.add.collider(this.man, greenDoll);
 	this.physics.add.collider(this.man, redDoll);
+    this.physics.add.collider(this.man, nurseDollImg)
+    this.physics.add.collider(this.man, this.lockedCage);
 	// this.physics.add.collider(this.man, bluedollhitbox);
 	// this.physics.add.collider(this.man, greendollhitbox);
 	// this.physics.add.collider(this.man, reddollhitbox);
@@ -118,13 +136,15 @@ export default class Puzzle2 extends Phaser.Scene {
     light = this.lights.addLight(180, 80, 120);
 
     //player and item interactions
-    this.physics.add.existing(note, true);
-    // this.physics.add.overlap(this.man, note, this.readNote, null, this);
-
+    this.physics.add.existing(greenDoll, true)
+    this.physics.add.existing(redDoll, true)
+    this.physics.add.existing(blueDoll, true)
+    this.physics.add.existing(nurseDollImg, true)
     this.physics.add.existing(bluedollhitbox, true);
     this.physics.add.existing(greendollhitbox, true);
     this.physics.add.existing(reddollhitbox, true);
     this.physics.add.existing(nurseDoll, true);
+    this.physics.add.existing(note, true)
     blue = this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, null, this);
     green = this.physics.add.overlap(
       this.man,
@@ -136,6 +156,7 @@ export default class Puzzle2 extends Phaser.Scene {
     red = this.physics.add.overlap(this.man, reddollhitbox, this.choosedoll, null, this);
     this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
     this.physics.add.overlap(this.man, note, this.readNote, null, this);
+    
 
     //yes or no choices
     greenButton = this.add.image(400, 300, "greenButton");
@@ -184,10 +205,6 @@ export default class Puzzle2 extends Phaser.Scene {
       },
       this
     );
-    
-
-
-
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -208,6 +225,10 @@ export default class Puzzle2 extends Phaser.Scene {
     this.man.update(this);
     if (wrongClicked) {
       this.penalty();
+    }
+
+    if (rightClicked) {
+        this.correct(this);
     }
     light.x = this.man.x + 35;
     light.y = this.man.y + 35;
@@ -290,7 +311,7 @@ export default class Puzzle2 extends Phaser.Scene {
 // }
  choosedoll (man,doll, scene){
 	let enter = this.input.keyboard.addKey("ENTER");
-
+	
 	if(enter.isDown && man.inventory.cat === 0){
 		blueButton.visible = true;
 		greenButton.visible = true;
@@ -302,7 +323,7 @@ export default class Puzzle2 extends Phaser.Scene {
 				      }).start("Which doll do you want to choose?", 50);
 
 		blueButton.on('pointerdown', function(){
-			this.scene.cameras.main.shake(500)
+            this.scene.cameras.main.shake(500)
 			blueButton.visible = false;
 			greenButton.visible = false;
 			redButton.visible = false;
@@ -312,8 +333,7 @@ export default class Puzzle2 extends Phaser.Scene {
 		})
 
 		greenButton.on('pointerdown', function(){
-			
-			this.scene.cameras.main.shake(500)
+            this.scene.cameras.main.shake(500)
 			blueButton.visible = false;
 			greenButton.visible = false;
 			redButton.visible = false;
@@ -321,13 +341,13 @@ export default class Puzzle2 extends Phaser.Scene {
 			dialogue.destroy()
 		})
 		redButton.on('pointerdown', function(){
-			
 			blueButton.visible = false;
 			greenButton.visible = false;
 			redButton.visible = false;
 			if(dollsCut === true){
 				rightClicked = true
 			} else {
+                this.scene.cameras.main.shake(500)
 				wrongClicked = true
 			}
 			dialogue.destroy()
@@ -374,6 +394,18 @@ export default class Puzzle2 extends Phaser.Scene {
 
 }
 
+correct(scene) {
+    rightClicked = false;
+    this.lockedCage.disableBody(true, true);
+    const dialogue = createTextBox(this, 100, 400, {
+        wrapWidth: 500,
+        fixedWidth: 500,
+        fixedHeight: 65,
+      }).start("You did it! Let's go!", 50);
+    
+    scene.physics.add.existing(exitdoor, true)
+}
+
   penalty() {
     wrongCounter++;
     wrongClicked = false;
@@ -381,12 +413,30 @@ export default class Puzzle2 extends Phaser.Scene {
     noButton.visible = false;
 
     if (wrongCounter === 1 && !nurse) {
-      console.log("strike one");
+        textOpen = true;
+      createTextBox(this, 100, 400, {
+        wrapWidth: 500,
+        fixedWidth: 500,
+        fixedHeight: 65,
+      }).start("aaaaaaaaa", 50);
+      employee1.setTexture("dead")
+      
     } else if (wrongCounter === 2 && !nurse) {
-      console.log("strike two");
+        createTextBox(this, 100, 400, {
+            wrapWidth: 500,
+            fixedWidth: 500,
+            fixedHeight: 65,
+          }).start("aaaaaaaaa i'm fucking dead too", 50);
+        employee2.setTexture("dead")
     } else if (wrongCounter === 3 && !nurse) {
-      console.log("strike three");
-      this.scene.switch("Title");
+        createTextBox(this, 100, 400, {
+            wrapWidth: 500,
+            fixedWidth: 500,
+            fixedHeight: 65,
+          }).start(":(", 50);
+        employee3.setTexture("dead")
+    } else if (wrongCounter === 4 && !nurse) {
+        this.scene.switch('Title')
     }
   }
 }
@@ -485,6 +535,7 @@ var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
   });
 };
 function exitPuzzleRoom2() {
-  scene.physics.add.existing(exitdoor, true)
-
+  music.stop()
+  this.scene.start("StartScene");
 }
+
