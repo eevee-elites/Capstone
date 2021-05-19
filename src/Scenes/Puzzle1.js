@@ -1,9 +1,9 @@
-import 'phaser';
-import {Game} from 'phaser';
-import Player from '../Models/Player';
-import Animate from '../Models/Animate';
-import NPC from '../Models/NPC';
-import NPCAnimate from '../Models/NPCAnimate';
+import "phaser";
+import {Game} from "phaser";
+import Player from "../Models/Player";
+import Animate from "../Models/Animate";
+import NPC from "../Models/NPC";
+import NPCAnimate from "../Models/NPCAnimate";
 
 let light;
 let unlocked = false;
@@ -12,7 +12,7 @@ let lock2Collected = false;
 let lock3Collected = false;
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
-		super('Puzzle1');
+		super("Puzzle1");
 	}
 
 	preload() {}
@@ -21,28 +21,27 @@ export default class Puzzle1 extends Phaser.Scene {
 		//exit
 		let exitBox = this.add.rectangle(450, 850, 100, 100, 0x000000);
 		//map
-		const map = this.make.tilemap({key: 'PuzzleMap'});
-
-		const tileset = map.addTilesetImage('PuzzleRoom', 'tiles');
+		const map = this.make.tilemap({key: "PuzzleMap"});
+		const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
 
 		const belowLayer = map
-			.createLayer('Below', tileset, 0, 0)
-			.setPipeline('Light2D');
+			.createLayer("Below", tileset, 0, 0)
+			.setPipeline("Light2D");
 		this.collidingLayer = map
-			.createLayer('Colliding', tileset, 0, 0)
-			.setPipeline('Light2D');
+			.createLayer("Colliding", tileset, 0, 0)
+			.setPipeline("Light2D");
 
 		this.collidingLayer.setCollisionByProperty({collides: true});
 
 		//player
 		this.man = this.physics.add
-			.existing(new Player(this, 420, 750, 'man'))
+			.existing(new Player(this, 420, 750, "man"))
 			.setOrigin(0, 0);
 		this.man.body.setSize(58, 50).setOffset(0, 64);
 		this.physics.add.collider(this.man, this.collidingLayer);
 		this.man.setDepth(1);
 
-		Animate(this, 'man', 4, 7, 8, 11, 12, 15, 0, 3, 0);
+		Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
 		//puzzle
 		makePuzzle(this);
 		//unlock square
@@ -53,7 +52,7 @@ export default class Puzzle1 extends Phaser.Scene {
 		let lock3 = this.add.rectangle(740, 542, 32, 32, 0x6b6868);
 		this.add.rectangle(740, 542, 16, 16, 0x000000);
 		//cage
-		this.lockedCage = this.physics.add.staticSprite(800, 256, 'cage');
+		this.lockedCage = this.physics.add.staticSprite(800, 256, "cage");
 		this.physics.add.existing(this.lockedCage, true);
 		this.physics.add.collider(this.man, this.lockedCage);
 		//camera
@@ -65,12 +64,12 @@ export default class Puzzle1 extends Phaser.Scene {
 		light = this.lights.addLight(180, 80, 120);
 
 		// NPCAnimate(this, 'NPC', 0, 0, 0);
-		this.key = this.physics.add.existing(new NPC(this, 750, 120, 'key'), true);
-		NPCAnimate(this, 'key', 0, 9, 10, -1);
+		this.key = this.physics.add.existing(new NPC(this, 750, 120, "key"), true);
+		NPCAnimate(this, "key", 0, 9, 10, -1);
 		let resetBox = this.add.rectangle(60, 650, 20, 20, 0xa93226);
 		this.collected = false;
 		//music
-		this.music = this.sound.add('bg', true);
+		this.music = this.sound.add("bg", true);
 		this.music.setLoop(true);
 		this.music.play();
 		this.music.setVolume(0.3);
@@ -91,12 +90,12 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.physics.add.overlap(this.man, lock2, collectlock2, null, this);
 		this.physics.add.overlap(this.man, lock3, collectlock3, null, this);
 		this.input.keyboard.on(
-			'keydown-I',
+			"keydown-I",
 			function () {
 				this.scene.transition({
-					target: 'Inventory',
+					target: "Inventory",
 					duration: 10,
-					data: {inventory: this.man.inventory, scene: 'Puzzle1'},
+					data: {inventory: this.man.inventory, scene: "Puzzle1"},
 					sleep: true,
 				});
 			},
@@ -112,12 +111,12 @@ export default class Puzzle1 extends Phaser.Scene {
 	}
 	wake(input, scene) {
 		this.input.keyboard.on(
-			'keydown-I',
+			"keydown-I",
 			function () {
 				this.scene.transition({
-					target: 'Inventory',
+					target: "Inventory",
 					duration: 10,
-					data: {inventory: this.man.inventory, scene: 'Puzzle1'},
+					data: {inventory: this.man.inventory, scene: "Puzzle1"},
 					sleep: true,
 				});
 			},
@@ -127,12 +126,12 @@ export default class Puzzle1 extends Phaser.Scene {
 	exitRoom() {
 		if (this.collected) {
 			this.music.stop();
-			return this.scene.start('StartScene');
+			return this.scene.start("StartScene");
 		}
 	}
 	update() {
 		this.man.update(this);
-		this.key.update(this.key, 'key');
+		this.key.update(this.key, "key");
 		light.x = this.man.x + 35;
 		light.y = this.man.y + 35;
 	}
@@ -173,22 +172,26 @@ function collectItem(man, key) {
 	this.collected = true;
 }
 function reset() {
-	this.scene.start('Puzzle1');
+	unlocked = false;
+	lock1Collected = false;
+	lock2Collected = false;
+	lock3Collected = false;
+	this.scene.start("Puzzle1");
 }
 function makePuzzle(key) {
 	//puzzle
 	//row1
 	const staticRow1S1 = key.physics.add
-		.staticSprite(100, 414, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(100, 414, "table")
+		.setPipeline("Light2D");
 	const staticRow1S2 = key.physics.add
-		.staticSprite(100, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(100, 606, "table")
+		.setPipeline("Light2D");
 	//row 2
-	const movableRow2B3 = key.physics.add.sprite(164, 478, 'drawer');
+	const movableRow2B3 = key.physics.add.sprite(164, 478, "drawer");
 	const staticRow2 = key.physics.add
-		.staticSprite(165, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(165, 606, "table")
+		.setPipeline("Light2D");
 	key.physics.add.existing(movableRow2B3);
 	key.physics.add.collider(movableRow2B3, [
 		staticRow1S1,
@@ -198,13 +201,13 @@ function makePuzzle(key) {
 	key.physics.add.collider(movableRow2B3, key.collidingLayer);
 	key.physics.add.collider(movableRow2B3, key.man);
 	// row 3
-	const movableRow3B2 = key.physics.add.sprite(228, 414, 'drawer');
+	const movableRow3B2 = key.physics.add.sprite(228, 414, "drawer");
 	const staticRow3S1 = key.physics.add
-		.staticSprite(228, 542, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(228, 542, "table")
+		.setPipeline("Light2D");
 	const staticRow3S2 = key.physics.add
-		.staticSprite(228, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(228, 606, "table")
+		.setPipeline("Light2D");
 	key.physics.add.existing(movableRow3B2);
 	key.physics.add.collider(movableRow3B2, [
 		staticRow1S1,
@@ -219,9 +222,9 @@ function makePuzzle(key) {
 	key.physics.add.collider(staticRow3S2, movableRow2B3);
 	// row 4
 	const staticRow4 = key.physics.add
-		.staticSprite(292, 340, 'table')
-		.setPipeline('Light2D');
-	const movableRow4 = key.physics.add.sprite(292, 606, 'drawer');
+		.staticSprite(292, 340, "table")
+		.setPipeline("Light2D");
+	const movableRow4 = key.physics.add.sprite(292, 606, "drawer");
 	key.physics.add.existing(movableRow4);
 	key.physics.add.collider(movableRow4, key.man);
 	key.physics.add.collider(movableRow4, key.collidingLayer);
@@ -230,24 +233,24 @@ function makePuzzle(key) {
 
 	//row 5
 	const staticRow5B5 = key.physics.add
-		.staticSprite(358, 340, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(358, 340, "table")
+		.setPipeline("Light2D");
 	const staticRow5B3 = key.physics.add
-		.staticSprite(358, 478, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(358, 478, "table")
+		.setPipeline("Light2D");
 	const staticRow5B2 = key.physics.add
-		.staticSprite(358, 542, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(358, 542, "table")
+		.setPipeline("Light2D");
 	//row6
 	const staticRow6 = key.physics.add
-		.staticSprite(420, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(420, 606, "table")
+		.setPipeline("Light2D");
 	key.physics.add.collider(staticRow6, key.man);
 	//row 7
-	const movableRow7B2 = key.physics.add.sprite(484, 478, 'drawer');
+	const movableRow7B2 = key.physics.add.sprite(484, 478, "drawer");
 	const staticRow7B2 = key.physics.add
-		.staticSprite(484, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(484, 606, "table")
+		.setPipeline("Light2D");
 	key.physics.add.existing(movableRow7B2);
 	key.physics.add.collider(movableRow7B2, key.man);
 	key.physics.add.collider(staticRow7B2, key.man);
@@ -256,11 +259,11 @@ function makePuzzle(key) {
 	key.physics.add.collider(staticRow7B2, [movableRow7B2, movableRow4]);
 	//row 8
 	const staticRow8B1 = key.physics.add
-		.staticSprite(548, 414, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(548, 414, "table")
+		.setPipeline("Light2D");
 	const staticRow8 = key.physics.add
-		.staticSprite(548, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(548, 606, "table")
+		.setPipeline("Light2D");
 	key.physics.add.collider([movableRow4, movableRow7B2], staticRow8);
 	key.physics.add.collider(staticRow8, [movableRow4, movableRow7B2]);
 	key.physics.add.collider(staticRow8B1, [movableRow4, movableRow7B2]);
@@ -268,39 +271,39 @@ function makePuzzle(key) {
 	key.physics.add.collider(staticRow8, key.man);
 	//row 9
 	const staticRow9B1 = key.physics.add
-		.staticSprite(612, 340, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(612, 340, "table")
+		.setPipeline("Light2D");
 	const staticRow9 = key.physics.add
-		.staticSprite(612, 542, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(612, 542, "table")
+		.setPipeline("Light2D");
 	// key.physics.add.collider([movableRow4, movableRow7B2], staticRow8);
 	key.physics.add.collider(staticRow9, [movableRow4, movableRow7B2]);
 	key.physics.add.collider(staticRow9, key.man);
 	key.physics.add.collider(staticRow9, key.man);
 	//row 10
 	const staticRow10B1 = key.physics.add
-		.staticSprite(676, 414, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(676, 414, "table")
+		.setPipeline("Light2D");
 	const staticRow10B2 = key.physics.add
-		.staticSprite(676, 542, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(676, 542, "table")
+		.setPipeline("Light2D");
 	// key.physics.add.collider([staticRow10B1, staticRow10B2], key.man);
 	//row 11
 	const staticRow11 = key.physics.add
-		.staticSprite(740, 414, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(740, 414, "table")
+		.setPipeline("Light2D");
 	const staticRow11S1 = key.physics.add
-		.staticSprite(740, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(740, 606, "table")
+		.setPipeline("Light2D");
 	key.physics.add.collider(staticRow11, key.man);
 	key.physics.add.collider(staticRow11S1, key.man);
 	//row 12
 	const staticRow12B1 = key.physics.add
-		.staticSprite(804, 542, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(804, 542, "table")
+		.setPipeline("Light2D");
 	const staticRow12B2 = key.physics.add
-		.staticSprite(804, 606, 'table')
-		.setPipeline('Light2D');
+		.staticSprite(804, 606, "table")
+		.setPipeline("Light2D");
 
 	// colliders
 	key.physics.add.collider(
