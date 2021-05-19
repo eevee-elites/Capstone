@@ -35,7 +35,7 @@ export default class OutsideScene extends Phaser.Scene {
 		this.cameras.main.setBounds(50, -50, 900, 900);
 		this.foodDialogue(this);
 		this.input.keyboard.on(
-			"keydown-SPACE",
+			"keydown-ENTER",
 			function () {
 				this.scene.start("Lobby");
 			},

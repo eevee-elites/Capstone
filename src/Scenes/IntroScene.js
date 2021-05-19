@@ -76,55 +76,55 @@ export default class IntroScene extends Phaser.Scene {
 	openingdialogue1() {
 		textOpen = true;
 		TextBoxWithIcon(this, "man", textOpen, last).start(Finally, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply1, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply1, this);
 	}
 	reply1() {
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply1, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply2, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply2, this);
 	}
 	reply2() {
 		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply2, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply3, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply3, this);
 	}
 	reply3() {
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply3, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply4, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply4, this);
 	}
 	reply4() {
 		TextBoxWithIcon(this, "man", textOpen, last).start(Reply4, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply5, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply5, this);
 	}
 	reply5() {
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply5, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply6, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply6, this);
 	}
 	reply6() {
 		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply6, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply7, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply7, this);
 	}
 	reply7() {
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply7, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply8, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply8, this);
 	}
 	reply8() {
 		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply8, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply9, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply9, this);
 	}
 	reply9() {
 		TextBoxWithIcon(this, "man", textOpen, last).start(Reply9, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply10, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply10, this);
 	}
 	reply10() {
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply10, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply11, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply11, this);
 	}
 	reply11() {
 		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply11, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply12, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply12, this);
 	}
 	reply12() {
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply12, 50);
-		this.input.keyboard.once("keydown-SPACE", this.reply13, this);
+		this.input.keyboard.once("keydown-ENTER", this.reply13, this);
 	}
 	reply13() {
 		TextBoxWithIcon(this, "man", textOpen, last).start(Reply13, 50);

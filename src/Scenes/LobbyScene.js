@@ -67,7 +67,7 @@ export default class LobbyScene extends Phaser.Scene {
 		).start(Attention, 50);
 		//shake
 		camera.shake(1000);
-		this.input.keyboard.once("keydown-SPACE", this.monsterDialogue, this);
+		this.input.keyboard.once("keydown-ENTER", this.monsterDialogue, this);
 	}
 	monsterDialogue() {
 		openingTextBox.setVisible(false);
@@ -75,7 +75,7 @@ export default class LobbyScene extends Phaser.Scene {
 		// this.lights.disable();
 		this.lights.setAmbientColor(0x970404);
 		this.HotelEmployee.disableBody(true, true);
-		this.input.keyboard.once("keydown-SPACE", this.startTutorial, this);
+		this.input.keyboard.once("keydown-ENTER", this.startTutorial, this);
 	}
 	startTutorial() {
 		this.scene.start("Tutorial");
