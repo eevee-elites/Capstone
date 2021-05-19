@@ -65,6 +65,13 @@ export default class Puzzle2 extends Phaser.Scene {
   create(data) {
     //tilemap
     //const exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+    let bluedollhitbox = this.add.rectangle(300, 400, 70, 132, 0x000000);
+    let reddollhitbox = this.add.rectangle(400, 400, 70, 132, 0x000000);
+    let greendollhitbox = this.add.rectangle(500, 400, 70, 132, 0x000000);
+    let nurseDoll = this.add.rectangle(700, 600, 70, 70, 0xffffff);
+    let note = this.add.rectangle(100, 600, 70, 70, 0x000000);
+    exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+
     const map = this.make.tilemap({ key: "Puzzle2" });
 
     const tileset = map.addTilesetImage("PuzzleRoom", "tiles");
@@ -77,7 +84,6 @@ export default class Puzzle2 extends Phaser.Scene {
     employee2 = this.add.image(384, 224, "employee")
     employee3 = this.add.image(512, 224, "employee")
     friend = this.add.sprite(640, 224, "NPC")
-    exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
     const collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
       .setPipeline("Light2D");
@@ -85,16 +91,10 @@ export default class Puzzle2 extends Phaser.Scene {
     collidingLayer.setCollisionByProperty({ collides: true });
 
     //items in room
-
-    let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
     this.add.image(100, 600, "note");
-    let bluedollhitbox = this.add.rectangle(300, 400, 40, 40, 0x000000);
     blueDoll = this.add.image(300, 400, "blueDoll");
-    let reddollhitbox = this.add.rectangle(400, 400, 40, 40, 0x000000);
     redDoll = this.add.image(400, 400, "redDoll");
-    let greendollhitbox = this.add.rectangle(500, 400, 40, 40, 0x000000);
     greenDoll = this.add.image(500, 400, "greenDoll");
-    let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0xffffff); //nurse doll is white box
     let nurseDollImg = this.add.image(700, 600, "nurseDoll");
 
     //cage
@@ -112,6 +112,7 @@ export default class Puzzle2 extends Phaser.Scene {
 	this.physics.add.collider(this.man, blueDoll);
 	this.physics.add.collider(this.man, greenDoll);
 	this.physics.add.collider(this.man, redDoll);
+    this.physics.add.collider(this.man, nurseDollImg)
     this.physics.add.collider(this.man, this.lockedCage);
 	// this.physics.add.collider(this.man, bluedollhitbox);
 	// this.physics.add.collider(this.man, greendollhitbox);
@@ -132,13 +133,15 @@ export default class Puzzle2 extends Phaser.Scene {
     light = this.lights.addLight(180, 80, 120);
 
     //player and item interactions
-    this.physics.add.existing(note, true);
-    // this.physics.add.overlap(this.man, note, this.readNote, null, this);
-
+    this.physics.add.existing(greenDoll, true)
+    this.physics.add.existing(redDoll, true)
+    this.physics.add.existing(blueDoll, true)
+    this.physics.add.existing(nurseDollImg, true)
     this.physics.add.existing(bluedollhitbox, true);
     this.physics.add.existing(greendollhitbox, true);
     this.physics.add.existing(reddollhitbox, true);
     this.physics.add.existing(nurseDoll, true);
+    this.physics.add.existing(note, true)
     blue = this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, null, this);
     green = this.physics.add.overlap(
       this.man,
@@ -153,17 +156,17 @@ export default class Puzzle2 extends Phaser.Scene {
     
 
     //yes or no choices
-    greenButton = this.add.image(400, 300, "yesButton");
+    greenButton = this.add.image(400, 300, "greenButton");
     greenButton.visible = false;
     greenButton.setScrollFactor(0);
     greenButton.setInteractive();
 
-	redButton = this.add.image(400, 200, "yesButton");
+	redButton = this.add.image(400, 200, "redButton");
     redButton.visible = false;
     redButton.setScrollFactor(0);
     redButton.setInteractive();
 
-    blueButton = this.add.image(400, 100, "yesButton");
+    blueButton = this.add.image(400, 100, "blueButton");
     blueButton.visible = false;
     blueButton.setScrollFactor(0);
     blueButton.setInteractive();
