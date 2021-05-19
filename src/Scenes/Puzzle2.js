@@ -22,6 +22,14 @@ let dollsCut = false;
 let light;
 let nurse;
 let once = false
+let blue;
+let red; 
+let green;
+let blueDoll
+let redDoll
+let greenDoll
+
+
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
@@ -70,11 +78,11 @@ export default class Puzzle2 extends Phaser.Scene {
     let note = this.add.rectangle(100, 600, 40, 40, 0x000000);
     this.add.image(100, 600, "note");
     let bluedollhitbox = this.add.rectangle(300, 400, 40, 40, 0x000000);
-    let blueDoll = this.add.image(300, 400, "blueDoll");
+    blueDoll = this.add.image(300, 400, "blueDoll");
     let reddollhitbox = this.add.rectangle(400, 400, 40, 40, 0x000000);
-    let redDoll = this.add.image(400, 400, "redDoll");
+    redDoll = this.add.image(400, 400, "redDoll");
     let greendollhitbox = this.add.rectangle(500, 400, 40, 40, 0x000000);
-    let greenDoll = this.add.image(500, 400, "greenDoll");
+    greenDoll = this.add.image(500, 400, "greenDoll");
     let nurseDoll = this.add.rectangle(700, 600, 40, 40, 0xffffff); //nurse doll is white box
     let nurseDollImg = this.add.image(700, 600, "nurseDoll");
 
@@ -89,9 +97,9 @@ export default class Puzzle2 extends Phaser.Scene {
 	this.physics.add.collider(this.man, blueDoll);
 	this.physics.add.collider(this.man, greenDoll);
 	this.physics.add.collider(this.man, redDoll);
-	this.physics.add.collider(this.man, bluedollhitbox);
-	this.physics.add.collider(this.man, greendollhitbox);
-	this.physics.add.collider(this.man, reddollhitbox);
+	// this.physics.add.collider(this.man, bluedollhitbox);
+	// this.physics.add.collider(this.man, greendollhitbox);
+	// this.physics.add.collider(this.man, reddollhitbox);
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     this.physics.add.overlap(this.man, exitdoor, exitPuzzleRoom2, null, this);
@@ -115,15 +123,15 @@ export default class Puzzle2 extends Phaser.Scene {
     this.physics.add.existing(greendollhitbox, true);
     this.physics.add.existing(reddollhitbox, true);
     this.physics.add.existing(nurseDoll, true);
-    this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, null, this);
-    this.physics.add.overlap(
+    blue = this.physics.add.overlap(this.man, bluedollhitbox, this.choosedoll, this.bluefunc, this);
+    green = this.physics.add.overlap(
       this.man,
       greendollhitbox,
       this.choosedoll,
-      null,
+      this.greenfunc,
       this
     );
-    this.physics.add.overlap(this.man, reddollhitbox, this.choosedoll, null, this);
+    red = this.physics.add.overlap(this.man, reddollhitbox, this.choosedoll, this.redfunc, this);
     this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
     this.physics.add.overlap(this.man, note, this.readNote, null, this);
 
@@ -242,9 +250,10 @@ export default class Puzzle2 extends Phaser.Scene {
 	  if(once === false){
 		  once = true 
       yesButton.on("pointerdown", function () {
+		dialogue.destroy()
         yesButton.visible = false;
         noButton.visible = false;
-		dialogue.destroy();
+		
         man.pickupItem("cat");
       })}
 
@@ -255,8 +264,31 @@ export default class Puzzle2 extends Phaser.Scene {
       });
     }
   }
+  bluefunc (){
+	let enter = this.input.keyboard.addKey("ENTER");
+
+	  if(enter.isDown){
+		blue = true}
+
+  }
+ greenfunc (){
+	let enter = this.input.keyboard.addKey("ENTER");
+
+	if(enter.isDown){
+		green = true}
+
+}
+redfunc (){
+	let enter = this.input.keyboard.addKey("ENTER");
+
+	if(enter.isDown){
+		red = true}
+
+
+}
  choosedoll (man,doll, scene){
 	let enter = this.input.keyboard.addKey("ENTER");
+	
 	if(enter.isDown && man.inventory.cat === 0){
 		blueButton.visible = true;
 		greenButton.visible = true;
@@ -278,6 +310,7 @@ export default class Puzzle2 extends Phaser.Scene {
 		})
 
 		greenButton.on('pointerdown', function(){
+			
 			this.scene.cameras.main.shake(500)
 			blueButton.visible = false;
 			greenButton.visible = false;
@@ -286,6 +319,7 @@ export default class Puzzle2 extends Phaser.Scene {
 			dialogue.destroy()
 		})
 		redButton.on('pointerdown', function(){
+			
 			blueButton.visible = false;
 			greenButton.visible = false;
 			redButton.visible = false;
@@ -307,6 +341,16 @@ export default class Puzzle2 extends Phaser.Scene {
 				  }).start("Cut open the dolls?", 50);
 				  yesButton.on("pointerdown", function () {
 							dollsCut = true;
+							if(red === true ){
+								redDoll = this.scene.add.image(400, 400, "redDollCut")
+							 }
+							 if(blue === true){
+								blueDoll = this.scene.add.image(300, 400, "blueDollCut")
+							 }
+							 if(green === true){
+								greenDoll = this.scene.add.image(500, 400, "greenDollCut")
+							 }
+
 							man.inventory.cat = 0;
 							console.log("used the scissors");
 							yesButton.visible = false;
