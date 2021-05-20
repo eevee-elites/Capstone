@@ -12,7 +12,7 @@ export default class TitleScene extends Phaser.Scene {
 	create() {
 		this.add.image(400, 300, "logo");
 		const startButton = new Button(400, 500, "Start Game", this, () => {
-			this.scene.start("Puzzle1");
+			this.scene.start("Tutorial");
 		});
 	}
 }
