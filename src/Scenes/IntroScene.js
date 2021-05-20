@@ -8,24 +8,19 @@ let last = false;
 let go = false;
 
 const Finally =
-	"I can't believe you guys finally came with me! Im so excited all of us are here!";
+	"I can't believe you guys finally came with me to MineCon! I'm so excited all of us are here!";
 const Reply1 =
-	"Of course! You know we normally have summer camp, but after what happened in 2020? It shut down.";
+	"You know we always wanted to come with you, Sophie.";
 const Reply2 =
-	"Yeah, 2020 was a wild one. Im so glad we're pass that. I always wanted to go to MineCon with you Sophie!";
+	"Yeah! We were super jealous when you posted about it on Instagram.";
 const Reply3 =
-	"Yeah! We always saw you post on instagram and was super jealous";
+	"Well, I'm glad you made it this year. I hear it's going to be different now that there's new management.";
 const Reply4 =
-	"Well I'm glad you both can make it! I heard this year is going to be different they have new management";
-const Reply5 = "I'm stoked regardless!";
-const Reply6 = "Yeah me too!";
-const Reply7 = "Before we go down, did you order the food?";
-const Reply8 = "Yeah, I ordered on UberEats";
-const Reply9 = "Gooooooood, Im starving! How far are they?";
-const Reply10 = "Oh they're about to be downstairs. Who's going to pick it up?";
-const Reply11 = "Lets play rock paper scissors!";
-const Reply12 = "Ok! Rock... Paper... Scissors... Says Shoot!";
-const Reply13 = "Damn! I lost, I'll Go get it";
+	"Let's go look around after lunch. The delivery guy just pulled up with our order. Who's gonna get it?";
+const Reply5 = "Rock paper scissors?";
+const Reply6 = "Sure. Rock...paper...scissors...say shoot!";
+const Reply7 = "Ugh, I always lose. Alright, I'll go get it.";
+
 export default class IntroScene extends Phaser.Scene {
 	constructor() {
 		super("Intro");
@@ -85,47 +80,23 @@ export default class IntroScene extends Phaser.Scene {
 		this.input.keyboard.once("keydown-ENTER", this.reply3, this);
 	}
 	reply3() {
-		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply3, 50);
+		TextBoxWithIcon(this, "man", textOpen, last).start(Reply3, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply4, this);
 	}
 	reply4() {
-		TextBoxWithIcon(this, "man", textOpen, last).start(Reply4, 50);
+		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply4, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply5, this);
 	}
 	reply5() {
-		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply5, 50);
+		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply5, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply6, this);
 	}
 	reply6() {
-		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply6, 50);
+		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply6, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply7, this);
 	}
 	reply7() {
-		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply7, 50);
-		this.input.keyboard.once("keydown-ENTER", this.reply8, this);
-	}
-	reply8() {
-		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply8, 50);
-		this.input.keyboard.once("keydown-ENTER", this.reply9, this);
-	}
-	reply9() {
-		TextBoxWithIcon(this, "man", textOpen, last).start(Reply9, 50);
-		this.input.keyboard.once("keydown-ENTER", this.reply10, this);
-	}
-	reply10() {
-		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply10, 50);
-		this.input.keyboard.once("keydown-ENTER", this.reply11, this);
-	}
-	reply11() {
-		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply11, 50);
-		this.input.keyboard.once("keydown-ENTER", this.reply12, this);
-	}
-	reply12() {
-		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply12, 50);
-		this.input.keyboard.once("keydown-ENTER", this.reply13, this);
-	}
-	reply13() {
-		TextBoxWithIcon(this, "man", textOpen, last).start(Reply13, 50);
+		TextBoxWithIcon(this, "man", textOpen, last).start(Reply7, 50);
 		go = true;
 	}
 }
