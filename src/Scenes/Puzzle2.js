@@ -536,6 +536,7 @@ var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
 };
 function exitPuzzleRoom2() {
   music.stop()
-  this.scene.start("StartScene");
+  this.scene.start("StartScene", {x: 1200, y: 320})
+
 }
 

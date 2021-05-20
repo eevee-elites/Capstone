@@ -164,9 +164,12 @@ export default class Puzzle1 extends Phaser.Scene {
 	exitRoom() {
 		if (this.collected) {
 			this.music.stop();
-			return this.scene.start("StartScene");
+			// return this.scene.start("StartScene");
+			this.scene.start("StartScene", {x: 825, y: 320})
+		
 		}
-	}
+		}
+	
 	update() {
 		this.man.update(this);
 		this.key.update(this.key, "room1Key");
