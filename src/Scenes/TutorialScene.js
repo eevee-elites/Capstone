@@ -251,13 +251,13 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 								repeat: 4,
 								setXY: {x: 650, y: 120, stepY: 80},
 								immovable: true,
-								pipeline: "Light2D"
-							})
+							});
 							const movable = scene.physics.add.sprite(650, 520, "drawer");
 							scene.physics.add.collider(staticRow6, scene.man);
 							scene.physics.add.collider(movable, scene.collidingLayer);
 							scene.physics.add.collider(movable, scene.man);
 							scene.room1Key.setVisible(true);
+
 
 						}
 					} 
