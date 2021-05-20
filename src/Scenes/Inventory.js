@@ -29,7 +29,8 @@ export default class Inventory extends Phaser.Scene {
       x += 100;
     });
 
-    this.add.text(350, 0, "INVENTORY");
+    this.add.text(310, 0, "INVENTORY").setFontSize(30);
+    this.add.text(270, 580, "Press 'i' to return to game");
 
     this.input.keyboard.on(
       "keydown-I",

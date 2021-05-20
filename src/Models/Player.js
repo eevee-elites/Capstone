@@ -32,6 +32,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.inventory.room1Key += 1;
         console.log("room1 key collected");
         break;
+      case "scissors":
+        this.inventory.scissors += 1;
+        break;
 
       default:
         console.log("cant pick up item");
