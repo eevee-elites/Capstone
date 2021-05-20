@@ -1,18 +1,21 @@
 import "phaser";
-import {Game} from "phaser";
 import Player from "../Models/Player";
 import Animate from "../Models/Animate";
 import NPC from "../Models/NPC";
 import NPCAnimate from "../Models/NPCAnimate";
-import TextBoxWithoutIcon, {TextBoxWithIcon} from "../Utilities/TextBox";
+import {TextBoxWithIcon} from "../Utilities/TextBox";
 
 let light;
 let unlocked = false;
 let lock1Collected = false;
 let lock2Collected = false;
 let lock3Collected = false;
+let dialog = false;
+let reenter = false;
 // let music;
-const Help = "SOPHIE!!! HELP!";
+const Help =
+	"SOPHIE!!! HELP! Come save us, you're trapped in this room too! BUT WE HAVE THE KEY TO THE DOOR! Press the sensors on the ground to unlock the door!!       I think that big red button is also a reset button!!!";
+const Thanks = "Thanks for freeing us! Grab the key and lets goooo!";
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super("Puzzle1");
@@ -26,7 +29,7 @@ export default class Puzzle1 extends Phaser.Scene {
 		});
 	}
 
-	create() {
+	create(data) {
 		// music = this.sound.add("dollroom", true);
 		// music.play();
 		// music.setVolume(0.3);
@@ -52,23 +55,31 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.collidingLayer.setCollisionByProperty({collides: true});
 
 		//player
-		this.man = this.physics.add
-			.existing(new Player(this, 420, 750, "man"))
-			.setOrigin(0, 0);
+		if (data.x)
+			this.man = this.physics.add
+				.existing(new Player(this, data.x, data.y, "man"))
+				.setOrigin(0, 0);
+		else {
+			this.man = this.physics.add
+				.existing(new Player(this, 420, 700, "man"))
+				.setOrigin(0, 0);
+		}
+
 		this.man.body.setSize(58, 50).setOffset(0, 64);
 		this.physics.add.collider(this.man, this.collidingLayer);
 		this.man.setDepth(1);
 
 		Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
 		//puzzle
-		makePuzzle(this);
+		if (!reenter) makePuzzle(this);
 		//unlock square
-		let lock1 = this.add.rectangle(100, 350, 32, 32, 0x6b6868);
-		this.add.rectangle(100, 350, 16, 16, 0x000000);
-		let lock2 = this.add.rectangle(100, 542, 32, 32, 0x6b6868);
-		this.add.rectangle(100, 542, 16, 16, 0x000000);
-		let lock3 = this.add.rectangle(740, 542, 32, 32, 0x6b6868);
-		this.add.rectangle(740, 542, 16, 16, 0x000000);
+		this.add.rectangle(100, 350, 32, 32, 0x000000);
+		let lock1 = this.add.rectangle(100, 350, 16, 16, 0x6b6868);
+		this.add.rectangle(100, 542, 32, 32, 0x000000);
+		let lock2 = this.add.rectangle(100, 542, 16, 16, 0x6b6868);
+		this.add.rectangle(740, 542, 32, 32, 0x000000);
+		let lock3 = this.add.rectangle(740, 542, 16, 16, 0x6b6868);
+
 		//cage
 		this.lockedCage = this.physics.add.staticSprite(800, 256, "cage");
 		this.physics.add.existing(this.lockedCage, true);
@@ -82,8 +93,11 @@ export default class Puzzle1 extends Phaser.Scene {
 		light = this.lights.addLight(180, 80, 120);
 
 		// NPCAnimate(this, 'NPC', 0, 0, 0);
-		this.key = this.physics.add.existing(new NPC(this, 750, 120, "key"), true);
-		NPCAnimate(this, "key", 0, 9, 10, -1);
+		this.key = this.physics.add.existing(
+			new NPC(this, 750, 120, "room1Key"),
+			true
+		);
+		NPCAnimate(this, "room1Key", 0, 9, 10, -1);
 		let resetBox = this.add.rectangle(60, 650, 20, 20, 0xa93226);
 		this.collected = false;
 		//music
@@ -108,7 +122,10 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.physics.add.overlap(this.man, lock2, collectlock2, null, this);
 		this.physics.add.overlap(this.man, lock3, collectlock3, null, this);
 
-		TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
+		if (!dialog && !reenter) {
+			let dialogue = TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
+			dialogue.setDepth(2);
+		}
 
 		this.input.keyboard.on(
 			"keydown-I",
@@ -152,52 +169,43 @@ export default class Puzzle1 extends Phaser.Scene {
 	}
 	update() {
 		this.man.update(this);
-		this.key.update(this.key, "key");
+		this.key.update(this.key, "room1Key");
 		light.x = this.man.x + 35;
 		light.y = this.man.y + 35;
+		if (lock1Collected && lock2Collected && lock3Collected) {
+			unlocked = true;
+		}
+		if (unlocked) {
+			this.lockedCage.disableBody(true, true);
+		}
 	}
 }
 function collectlock1(man, lock1) {
 	lock1.setVisible(false);
 	lock1Collected = true;
-	if (lock1Collected && lock2Collected && lock3Collected) {
-		unlocked = true;
-	}
-	if (unlocked) {
-		this.lockedCage.disableBody(true, true);
-	}
 }
 function collectlock2(man, lock2) {
 	lock2.setVisible(false);
 	lock2Collected = true;
-	if (lock1Collected && lock2Collected && lock3Collected) {
-		unlocked = true;
-	}
-	if (unlocked) {
-		this.lockedCage.disableBody(true, true);
-	}
 }
 function collectlock3(man, lock3) {
 	lock3.setVisible(false);
 	lock3Collected = true;
-	if (lock1Collected && lock2Collected && lock3Collected) {
-		unlocked = true;
-	}
-	if (unlocked) {
-		this.lockedCage.disableBody(true, true);
-	}
 }
 function collectItem(man, key) {
+	dialog = true;
+	TextBoxWithIcon(this, "NPC2", true, false).start(Thanks, 50);
 	man.pickupItem(key.texture.key);
 	key.disableBody(true, true);
 	this.collected = true;
 }
 function reset() {
+	dialog = true;
 	unlocked = false;
 	lock1Collected = false;
 	lock2Collected = false;
 	lock3Collected = false;
-	this.scene.start("Puzzle1");
+	this.scene.start("Puzzle1", {x: this.man.x, y: this.man.y});
 }
 function makePuzzle(key) {
 	//puzzle
