@@ -33,9 +33,12 @@ export default class StartScene extends Phaser.Scene {
     let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
     const puzzle1Room = this.add.rectangle(835, 300, 120, 40, 0x000000);
     const puzzle2Room = this.add.rectangle(1220, 300, 120, 40, 0x000000);
+    const EmptyRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
 
     this.physics.add.existing(puzzle1Room, true);
     this.physics.add.existing(puzzle2Room, true);
+    this.physics.add.existing(EmptyRoom, true);
+
     //map
     const map = this.make.tilemap({ key: "map" });
 
@@ -63,6 +66,7 @@ export default class StartScene extends Phaser.Scene {
 				.existing(new Player(this, 200, 400, "man"))
 				.setOrigin(0, 0);
 		}
+		this.man.body.setSize(32, 32, true);
 
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
@@ -72,6 +76,7 @@ export default class StartScene extends Phaser.Scene {
     this.physics.add.collider(this.npc, this.man);
     this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
     this.physics.add.collider(this.man, collidingLayer);
+    this.physics.add.overlap(this.man, EmptyRoom, emptyEnter, null, this);
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     //camera
@@ -154,6 +159,7 @@ function enterPuzzleRoom1() {
 }
 function enterPuzzleRoom2() {
   this.scene.start("Puzzle2");
-
 }
-
+function emptyEnter() {
+  this.scene.start("EmptyRoom1");
+}

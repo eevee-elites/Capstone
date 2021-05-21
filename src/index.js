@@ -16,6 +16,8 @@ import IntroScene from "./Scenes/IntroScene";
 import HallwayScene from "./Scenes/HallwayScene";
 import OutsideScene from "./Scenes/OutsideScene";
 import LobbyScene from "./Scenes/LobbyScene";
+import EmptyRoom1 from "./Scenes/EmptyRoom1";
+
 
 class Game extends Phaser.Game {
 	constructor() {
@@ -35,6 +37,8 @@ class Game extends Phaser.Game {
 		this.scene.add("Hallway", HallwayScene);
 		this.scene.add("Outside", OutsideScene);
 		this.scene.add("Lobby", LobbyScene);
+		this.scene.add("EmptyRoom1", EmptyRoom1);
+
     this.scene.add("Puzzle2", Puzzle2);
 
 		this.scene.start("Boot");
