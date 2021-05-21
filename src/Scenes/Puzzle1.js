@@ -157,7 +157,7 @@ export default class Puzzle1 extends Phaser.Scene {
     if (!dialog && !reenter) {
       let dialogue = TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
       dialogue.setDepth(2);
-      this.cameras.main.pan(640, 224, 3000);
+      this.cameras.main.pan(640, 224, 5000);
     }
 
     this.input.keyboard.on(
@@ -179,6 +179,18 @@ export default class Puzzle1 extends Phaser.Scene {
       },
       this
     );
+    // function disableMovement() {
+    //   cursors = this.input.keyboard.createCursorKeys();
+    //   const keyObjW = this.input.keyboard.addKey("W");
+    //   const keyObjA = this.input.keyboard.addKey("A");
+    //   const keyObjS = this.input.keyboard.addKey("S");
+    //   const keyObjD = this.input.keyboard.addKey("D");
+    //   cursors.enabled = false;
+    //   keyObjA.enabled = false;
+    //   keyObjD.enabled = false;
+    //   keyObjS.enabled = false;
+    //   keyObjW.enabled = false;
+    // }
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -240,6 +252,18 @@ function collectItem(man, key) {
   key.disableBody(true, true);
   this.collected = true;
 }
+function disableMovement() {
+  const cursors = this.input.keyboard.createCursorKeys();
+  const keyObjW = this.input.keyboard.addKey("W");
+  const keyObjA = this.input.keyboard.addKey("A");
+  const keyObjS = this.input.keyboard.addKey("S");
+  const keyObjD = this.input.keyboard.addKey("D");
+  cursors.enabled = false;
+  keyObjA.enabled = false;
+  keyObjD.enabled = false;
+  keyObjS.enabled = false;
+  keyObjW.enabled = false;
+}
 
 function reset() {
   strikes += 1;
@@ -253,15 +277,6 @@ function reset() {
   if (strikes > 3) {
     this.scene.start("GameOver");
   }
-  // employee1.setTexture("dead");
-  // console.log("reached 1st if");
-  //   } else if (strikes === 2) {
-  //     employee2.setTexture("dead");
-  //   } else if (strikes === 3) {
-  //     employee3.setTexture("dead");
-  //   } else {
-
-  //   }
 }
 
 function makePuzzle(key) {
