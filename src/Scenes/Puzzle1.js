@@ -42,18 +42,43 @@ export default class Puzzle1 extends Phaser.Scene {
     const belowLayer = map
       .createLayer("Below", tileset, 0, 0)
       .setPipeline("Light2D");
-
-    this.add.image(256, 224, "employee");
-    this.add.image(384, 224, "employee");
-    this.add.image(512, 224, "employee");
-    this.add.sprite(640, 224, "NPC2");
+    switch (strikes) {
+      case 0:
+        this.add.image(256, 224, "employee");
+        this.add.image(384, 224, "employee");
+        this.add.image(512, 224, "employee");
+        this.add.sprite(640, 224, "NPC2");
+        break;
+      case 1:
+        this.add.image(256, 224, "dead");
+        this.add.image(384, 224, "employee");
+        this.add.image(512, 224, "employee");
+        this.add.sprite(640, 224, "NPC2");
+        break;
+      case 2:
+        this.add.image(256, 224, "dead");
+        this.add.image(384, 224, "dead");
+        this.add.image(512, 224, "employee");
+        this.add.sprite(640, 224, "NPC2");
+        break;
+      case 3:
+        this.add.image(256, 224, "dead");
+        this.add.image(384, 224, "dead");
+        this.add.image(512, 224, "dead");
+        this.add.sprite(640, 224, "NPC2");
+        break;
+      case 4:
+        this.scene.start("GameOver");
+      default:
+        console.log("somethin went wrong here");
+    }
 
     this.collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
       .setPipeline("Light2D");
 
     this.collidingLayer.setCollisionByProperty({ collides: true });
-
+    // could this be why we are getting double!!!!!!!!! look below
     //player
     if (data.x)
       this.man = this.physics.add
@@ -125,6 +150,7 @@ export default class Puzzle1 extends Phaser.Scene {
     if (!dialog && !reenter) {
       let dialogue = TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
       dialogue.setDepth(2);
+      //this.cameras.main.pan(640, 224, 3000);
     }
 
     this.input.keyboard.on(
@@ -203,18 +229,26 @@ function collectItem(man, key) {
 }
 
 function reset() {
-  if (strikes < 3) {
-    strikes += 1;
-    console.log("strikes", strikes);
-    dialog = true;
-    unlocked = false;
-    lock1Collected = false;
-    lock2Collected = false;
-    lock3Collected = false;
-    this.scene.start("Puzzle1", { x: this.man.x, y: this.man.y });
-  } else {
+  strikes += 1;
+  console.log("strikes", strikes);
+  dialog = true;
+  unlocked = false;
+  lock1Collected = false;
+  lock2Collected = false;
+  lock3Collected = false;
+  this.scene.start("Puzzle1", { x: this.man.x, y: this.man.y });
+  if (strikes > 3) {
     this.scene.start("GameOver");
   }
+  // employee1.setTexture("dead");
+  // console.log("reached 1st if");
+  //   } else if (strikes === 2) {
+  //     employee2.setTexture("dead");
+  //   } else if (strikes === 3) {
+  //     employee3.setTexture("dead");
+  //   } else {
+
+  //   }
 }
 
 function makePuzzle(key) {
