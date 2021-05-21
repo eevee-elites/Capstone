@@ -69,6 +69,12 @@ export default class Puzzle1 extends Phaser.Scene {
         break;
       case 4:
         strikes = 0;
+        unlocked = false;
+        lock1Collected = false;
+        lock2Collected = false;
+        lock3Collected = false;
+        dialog = false;
+        reenter = false;
         this.scene.start("GameOver");
       default:
         console.log("somethin went wrong here");
@@ -151,7 +157,7 @@ export default class Puzzle1 extends Phaser.Scene {
     if (!dialog && !reenter) {
       let dialogue = TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
       dialogue.setDepth(2);
-      //this.cameras.main.pan(640, 224, 3000);
+      this.cameras.main.pan(640, 224, 3000);
     }
 
     this.input.keyboard.on(
@@ -192,7 +198,13 @@ export default class Puzzle1 extends Phaser.Scene {
     if (this.collected) {
       this.music.stop();
       // return this.scene.start("StartScene");
-      this.scene.start("StartScene", { x: 825, y: 320 });
+      unlocked = false;
+      lock1Collected = false;
+      lock2Collected = false;
+      lock3Collected = false;
+      dialog = false;
+      reenter = false;
+      this.scene.start("StartScene", { x: 825, y: 320, completed1: true });
     }
   }
 

@@ -3,7 +3,7 @@ import Player from "../Models/Player";
 import NPC from "../Models/NPC";
 import Animate from "../Models/Animate";
 import { TextBoxWithIcon } from "../Utilities/TextBox";
-let light; 
+let light;
 var content =
   "Welcome to Haunted Hopper! Behind each door you will find the opportunity to save one of your friends but dont be fooled, each mistake you make will cost them their life";
 let textOpen = false;
@@ -33,6 +33,7 @@ export default class StartScene extends Phaser.Scene {
     let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
     const puzzle1Room = this.add.rectangle(835, 300, 120, 40, 0x000000);
     const puzzle2Room = this.add.rectangle(1220, 300, 120, 40, 0x000000);
+    this.completed1 = data.completed1 || false;
 
     this.physics.add.existing(puzzle1Room, true);
     this.physics.add.existing(puzzle2Room, true);
@@ -41,28 +42,30 @@ export default class StartScene extends Phaser.Scene {
 
     const tileset = map.addTilesetImage("Hallway", "tiles");
 
-    const belowLayer = map.createLayer("Below", tileset, 0, 0).setPipeline("Light2D");;
-    const collidingLayer = map.createLayer("Colliding", tileset, 0, 0).setPipeline("Light2D");;
+    const belowLayer = map
+      .createLayer("Below", tileset, 0, 0)
+      .setPipeline("Light2D");
+    const collidingLayer = map
+      .createLayer("Colliding", tileset, 0, 0)
+      .setPipeline("Light2D");
 
     collidingLayer.setCollisionByProperty({ collides: true });
     //map
 
-    this.add.text(425,170, 'Room 1', {color: 'black'})
-    this.add.text(805,170, 'Room 2', {color: 'black'})
-    this.add.text(1185,170, 'Room 3', {color: 'black'})
+    this.add.text(425, 170, "Room 1", { color: "black" });
+    this.add.text(805, 170, "Room 2", { color: "black" });
+    this.add.text(1185, 170, "Room 3", { color: "black" });
 
-
-
-    if (data.x){
-    console.log('data', data)
-			this.man = this.physics.add
-				.existing(new Player(this, data.x, data.y, "man"))
-				.setOrigin(0, 0);}
-		else {
-			this.man = this.physics.add
-				.existing(new Player(this, 200, 400, "man"))
-				.setOrigin(0, 0);
-		}
+    if (data.x) {
+      console.log("data", data);
+      this.man = this.physics.add
+        .existing(new Player(this, data.x, data.y, "man"))
+        .setOrigin(0, 0);
+    } else {
+      this.man = this.physics.add
+        .existing(new Player(this, 200, 400, "man"))
+        .setOrigin(0, 0);
+    }
 
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
@@ -79,9 +82,9 @@ export default class StartScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.man, true);
 
     //lights
-		this.lights.enable();
-		this.lights.setAmbientColor(0x7b5e57);
-		light = this.lights.addLight(180, 80, 120);
+    this.lights.enable();
+    this.lights.setAmbientColor(0x7b5e57);
+    light = this.lights.addLight(180, 80, 120);
 
     this.physics.add.collider(this.man, collidingLayer);
     this.physics.add.overlap(
@@ -138,7 +141,7 @@ export default class StartScene extends Phaser.Scene {
   update() {
     this.man.update(this);
     light.x = this.man.x + 35;
-		light.y = this.man.y + 35;
+    light.y = this.man.y + 35;
   }
 
   sayHello(man, pika) {
@@ -150,10 +153,15 @@ export default class StartScene extends Phaser.Scene {
   }
 }
 function enterPuzzleRoom1() {
-  this.scene.start("Puzzle1");
+  if (!this.completed1) {
+    this.scene.start("Puzzle1");
+  } else {
+    TextBoxWithIcon(this, "icon", textOpen, last).start(
+      "Wow I already completed this!",
+      50
+    );
+  }
 }
 function enterPuzzleRoom2() {
   this.scene.start("Puzzle2");
-
 }
-
