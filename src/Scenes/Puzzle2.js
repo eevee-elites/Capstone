@@ -443,7 +443,8 @@ export default class Puzzle2 extends Phaser.Scene {
       }).start(":(", 50);
       employee3.setTexture("dead");
     } else if (wrongCounter === 4 && !nurse) {
-      this.scene.switch("Title");
+      wrongCounter = 0;
+      this.scene.start("GameOver");
     }
   }
 }
@@ -542,7 +543,6 @@ var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
   });
 };
 function exitPuzzleRoom2() {
-  music.stop()
-  this.scene.start("StartScene", {x: 1200, y: 320})
-
+  music.stop();
+  this.scene.start("StartScene", { x: 1200, y: 320 });
 }
