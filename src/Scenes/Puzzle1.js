@@ -68,6 +68,7 @@ export default class Puzzle1 extends Phaser.Scene {
         this.add.sprite(640, 224, "NPC2");
         break;
       case 4:
+        strikes = 0;
         this.scene.start("GameOver");
       default:
         console.log("somethin went wrong here");
