@@ -9,7 +9,7 @@ const Greet =
 const TalkandPushingInstructions =
   "This is how you can talk to me. You can also keep pressing to finish and close out our conversations...                 Did you make sure to leave the door open?                                                                             …                                                                                                                       You didn't?! Oh no! Did you get trapped in here too? Go find the key! I'm not strong enough, but I'm sure you are!   You have to push those nightstands to get the key!";
 const InventoryInstructions = 'Press " i " to see your inventory';
-const Leave = "Now that you have the key, you can leave. Go back your friends!";
+const Leave = "Now that you have the key, you can leave. Go back to your friends!";
 
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;

@@ -6,7 +6,11 @@ import {TextBoxWithIcon} from "../Utilities/TextBox";
 let textOpen = false;
 let last = false;
 let go = false;
-
+let icon;
+let box
+let content = ["I can't believe you guys finally came with me to MineCon! I'm so excited all of us are here!", "You know we always wanted to come with you, Sophie.", "Yeah! We were super jealous when you posted about it on Instagram."
+,"Well, I'm glad you made it this year. I hear it's going to be different now that there's new management.", "Let's go look around after lunch. The delivery guy just pulled up with our order. Who's gonna get it?", "Rock paper scissors?",
+"Sure. Rock...paper...scissors...say shoot!","Ugh, I always lose. Alright, I'll go get it."]
 const Finally =
 	"I can't believe you guys finally came with me to MineCon! I'm so excited all of us are here!";
 const Reply1 =
@@ -45,7 +49,9 @@ export default class IntroScene extends Phaser.Scene {
 		const collidingLayer = map.createLayer("Colliding", tileset, 0, 0);
 		collidingLayer.setCollisionByProperty({collides: true});
 		//player
-		this.man = this.physics.add.existing(new Player(this, 450, 350, "man"));
+		this.man = this.physics.add.existing(new Player(this, 450, 350, "man"))		
+		this.man.body.setSize(32, 32, true);
+
 		this.physics.add.collider(this.man, collidingLayer);
 		Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
 
@@ -68,34 +74,48 @@ export default class IntroScene extends Phaser.Scene {
 	}
 	openingdialogue1() {
 		textOpen = true;
-		TextBoxWithIcon(this, "man", textOpen, last).start(Finally, 50);
+
+		box = TextBoxWithIcon(this, "man", textOpen, last).start(Finally, 50); //Finally
 		this.input.keyboard.once("keydown-ENTER", this.reply1, this);
+	
 	}
 	reply1() {
-		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply1, 50);
+
+		box = TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply1, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply2, this);
 	}
 	reply2() {
+
 		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply2, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply3, this);
+		
 	}
 	reply3() {
+
 		TextBoxWithIcon(this, "man", textOpen, last).start(Reply3, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply4, this);
+		
 	}
 	reply4() {
+
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply4, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply5, this);
+		
 	}
 	reply5() {
+
 		TextBoxWithIcon(this, "NPC3", textOpen, last).start(Reply5, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply6, this);
+		
 	}
 	reply6() {
+
 		TextBoxWithIcon(this, "NPC2", textOpen, last).start(Reply6, 50);
 		this.input.keyboard.once("keydown-ENTER", this.reply7, this);
+		
 	}
 	reply7() {
+
 		TextBoxWithIcon(this, "man", textOpen, last).start(Reply7, 50);
 		go = true;
 	}
