@@ -444,6 +444,7 @@ export default class Puzzle2 extends Phaser.Scene {
       employee3.setTexture("dead");
     } else if (wrongCounter === 4 && !nurse) {
       wrongCounter = 0;
+      once = false;
       this.scene.start("GameOver");
     }
   }
