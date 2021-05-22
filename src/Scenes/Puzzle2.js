@@ -1,7 +1,7 @@
 import "phaser";
 import Player from "../Models/Player";
 import Animate from "../Models/Animate";
-import { TextBoxWithIcon } from "../Utilities/TextBox";
+import TextBoxWithoutIcon, { TextBoxWithIcon } from "../Utilities/TextBox";
 const openingLine =
   "Sophie, help! We're stuck in this cage! I think you have to solve the puzzle to let us out.";
 const note =
@@ -253,7 +253,7 @@ export default class Puzzle2 extends Phaser.Scene {
   }
 
   openingDialogue() {
-    this.cameras.main.pan(340, 224, 3000);
+    this.cameras.main.pan(140, 124, 3000);
     let opening = TextBoxWithIcon(this, "icon", true, false).start(
       openingLine,
       50
@@ -305,34 +305,13 @@ export default class Puzzle2 extends Phaser.Scene {
     textOpen = false;
   }
   gotScissors() {
-    let hasScissors = TextBoxWithIcon(this, "nurseDoll", true, false).start(
+    let hasScissors = TextBoxWithoutIcon(this, true, false).start(
       "You took my scissors!",
       50
     );
     textOpen = false;
   }
 
-  //   bluefunc (){
-  // 	let enter = this.input.keyboard.addKey("ENTER");
-
-  // 	  if(enter.isDown){
-  // 		blue = true}
-
-  //   }
-  //  greenfunc (){
-  // 	let enter = this.input.keyboard.addKey("ENTER");
-
-  // 	if(enter.isDown){
-  // 		green = true}
-
-  // }
-  // redfunc (){
-  // 	let enter = this.input.keyboard.addKey("ENTER");
-
-  // 	if(enter.isDown){
-  // 		red = true}
-
-  // }
   choosedoll(man, doll, scene) {
     let enter = this.input.keyboard.addKey("ENTER");
 
@@ -340,11 +319,10 @@ export default class Puzzle2 extends Phaser.Scene {
       blueButton.visible = true;
       greenButton.visible = true;
       redButton.visible = true;
-      const dialogue = createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("Which doll do you want to choose?", 50);
+      let dollChoice = TextBoxWithoutIcon(this, true, false).start(
+        "Which doll do you want to choose?",
+        50
+      );
 
       blueButton.on("pointerdown", function () {
         this.scene.cameras.main.shake(500);
@@ -353,7 +331,7 @@ export default class Puzzle2 extends Phaser.Scene {
         redButton.visible = false;
         wrongClicked = true;
 
-        dialogue.destroy();
+        //dialogue.destroy();
       });
 
       greenButton.on("pointerdown", function () {
@@ -362,7 +340,7 @@ export default class Puzzle2 extends Phaser.Scene {
         greenButton.visible = false;
         redButton.visible = false;
         wrongClicked = true;
-        dialogue.destroy();
+        //dialogue.destroy();
       });
       redButton.on("pointerdown", function () {
         blueButton.visible = false;
@@ -374,17 +352,16 @@ export default class Puzzle2 extends Phaser.Scene {
           this.scene.cameras.main.shake(500);
           wrongClicked = true;
         }
-        dialogue.destroy();
+        //dialogue.destroy();
       });
     } else if (enter.isDown && this.man.inventory.scissors > 0) {
       yesButton.setVisible(true);
       noButton.setVisible(true);
+      let cutOpen = TextBoxWithoutIcon(this, true, false).start(
+        "Cut open the dolls?",
+        50
+      );
 
-      const dialogue = createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("Cut open the dolls?", 50);
       yesButton.on("pointerdown", function () {
         dollsCut = true;
         if (red) {
@@ -400,13 +377,13 @@ export default class Puzzle2 extends Phaser.Scene {
         console.log("used the scissors");
         yesButton.visible = false;
         noButton.visible = false;
-        dialogue.destroy();
+        //dialogue.destroy();
       });
 
       noButton.on("pointerdown", function () {
         yesButton.visible = false;
         noButton.visible = false;
-        dialogue.destroy();
+        //dialogue.destroy();
       });
     }
   }
@@ -414,11 +391,10 @@ export default class Puzzle2 extends Phaser.Scene {
   correct(scene) {
     rightClicked = false;
     this.lockedCage.disableBody(true, true);
-    const dialogue = createTextBox(this, 100, 400, {
-      wrapWidth: 500,
-      fixedWidth: 500,
-      fixedHeight: 65,
-    }).start("You did it! Let's go!", 50);
+    let correctChoice = TextBoxWithIcon(this, "icon", true, false).start(
+      "You did it! Let's go!",
+      50
+    );
 
     scene.physics.add.existing(exitdoor, true);
   }
@@ -431,25 +407,16 @@ export default class Puzzle2 extends Phaser.Scene {
 
     if (wrongCounter === 1 && !nurse) {
       textOpen = true;
-      createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("aaaaaaaaa", 50);
+      TextBoxWithIcon(this, "icon", true, false).start("aaaaaaaaa", 50);
       employee1.setTexture("dead");
     } else if (wrongCounter === 2 && !nurse) {
-      createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start("aaaaaaaaa i'm fucking dead too", 50);
+      TextBoxWithIcon(this, "icon", true, false).start(
+        "aaaaaaaaa i'm fucking dead too",
+        50
+      );
       employee2.setTexture("dead");
     } else if (wrongCounter === 3 && !nurse) {
-      createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start(":(", 50);
+      TextBoxWithIcon(this, "icon", true, false).start("anotha one", 50);
       employee3.setTexture("dead");
     } else if (wrongCounter === 4 && !nurse) {
       wrongCounter = 0;
@@ -459,99 +426,6 @@ export default class Puzzle2 extends Phaser.Scene {
   }
 }
 
-const GetValue = Phaser.Utils.Objects.GetValue;
-var createTextBox = function (scene, x, y, config) {
-  var wrapWidth = GetValue(config, "wrapWidth", 0);
-  var fixedWidth = GetValue(config, "fixedWidth", 0);
-  var fixedHeight = GetValue(config, "fixedHeight", 0);
-
-  var textBox = scene.rexUI.add
-    .textBox({
-      x: x,
-      y: y,
-
-      background: scene.rexUI.add
-        .roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-        .setStrokeStyle(2, COLOR_LIGHT)
-        .setVisible(true),
-
-      icon: scene.add.image(0, 0, "icon"),
-
-      text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
-
-      action: scene.add.image(0, 0, "nextPage").setTint(COLOR_LIGHT),
-
-      space: {
-        left: 20,
-        right: 20,
-        top: 20,
-        bottom: 20,
-        icon: 10,
-        text: 10,
-      },
-    })
-    .setOrigin(0)
-    .layout();
-
-  textBox.setScrollFactor(0);
-
-  scene.input.keyboard.on(
-    "keydown-ENTER",
-    function (event) {
-      if (this.isTyping) {
-        this.stop(true);
-      } else {
-        this.typeNextPage();
-      }
-    },
-    textBox
-  );
-
-  textBox.setInteractive().on(
-    "pageend",
-    function () {
-      if (this.isLastPage && !this.isTyping) {
-        scene.input.keyboard.on("keyup-ENTER", () => {
-          textBox.setVisible(false);
-          last = false;
-        });
-
-        textOpen = !textOpen;
-
-        last = true;
-      }
-    },
-    textBox
-  );
-
-  return textBox;
-};
-
-var getBuiltInText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
-  return scene.add
-    .text(0, 0, "", {
-      fontSize: "20px",
-      wordWrap: {
-        width: wrapWidth,
-      },
-      maxLines: 3,
-    })
-    .setFixedSize(fixedWidth, fixedHeight);
-};
-
-var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
-  return scene.rexUI.add.BBCodeText(0, 0, "", {
-    fixedWidth: fixedWidth,
-    fixedHeight: fixedHeight,
-
-    fontSize: "20px",
-    wrap: {
-      mode: "word",
-      width: wrapWidth,
-    },
-    maxLines: 3,
-  });
-};
 function exitPuzzleRoom2() {
   music.stop();
   this.scene.start("StartScene", { x: 1200, y: 320 });
