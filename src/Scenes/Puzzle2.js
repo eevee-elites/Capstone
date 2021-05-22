@@ -1,7 +1,7 @@
 import "phaser";
-import { Game } from "phaser";
 import Player from "../Models/Player";
 import Animate from "../Models/Animate";
+import { TextBoxWithIcon } from "../Utilities/TextBox";
 const openingLine =
   "Sophie, help! We're stuck in this cage! I think you have to solve the puzzle to let us out.";
 const note =
@@ -73,6 +73,7 @@ export default class Puzzle2 extends Phaser.Scene {
     let greendollhitbox = this.add.rectangle(500, 400, 70, 132, 0x000000);
     let nurseDoll = this.add.rectangle(700, 600, 70, 70, 0xffffff);
     let note = this.add.rectangle(100, 600, 70, 70, 0x000000);
+    exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
     exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
 
     const map = this.make.tilemap({ key: "Puzzle2" });
@@ -167,7 +168,7 @@ export default class Puzzle2 extends Phaser.Scene {
       this
     );
     this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
-    this.physics.add.overlap(this.man, note, this.readNote, null, this);
+    this.physics.add.collider(this.man, note, this.readNote, null, this);
 
     //yes or no choices
     greenButton = this.add.image(400, 300, "greenButton");
@@ -246,6 +247,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   openingDialogue() {
     textOpen = true;
+    this.cameras.main.pan(640, 224, 5000);
     this.man.body.setVelocity(0);
     createTextBox(this, 100, 400, {
       wrapWidth: 500,
@@ -256,14 +258,8 @@ export default class Puzzle2 extends Phaser.Scene {
   }
 
   readNote() {
-    let enter = this.input.keyboard.addKey("ENTER");
-    if (enter.isDown && textOpen === false && last === false) {
-      textOpen = true;
-      createTextBox(this, 100, 400, {
-        wrapWidth: 500,
-        fixedWidth: 500,
-        fixedHeight: 65,
-      }).start(note, 50);
+    if (!textOpen && !last) {
+      let readnote = TextBoxWithIcon(this, "note", true, false).start(note, 50);
     }
   }
 
