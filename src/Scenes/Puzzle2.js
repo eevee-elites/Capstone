@@ -167,7 +167,13 @@ export default class Puzzle2 extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.overlap(this.man, nurseDoll, this.getScissors, null, this);
+    this.physics.add.collider(
+      this.man,
+      nurseDoll,
+      this.getScissors,
+      null,
+      this
+    );
 
     this.physics.add.collider(this.man, note, this.readNote, null, this);
 
@@ -247,15 +253,11 @@ export default class Puzzle2 extends Phaser.Scene {
   }
 
   openingDialogue() {
-    textOpen = true;
-    this.cameras.main.pan(440, 224, 3000);
-    this.man.body.setVelocity(0);
-    createTextBox(this, 100, 400, {
-      wrapWidth: 500,
-      fixedWidth: 500,
-      fixedHeight: 65,
-      imageName: "npc2",
-    }).start(openingLine, 50);
+    this.cameras.main.pan(340, 224, 3000);
+    let opening = TextBoxWithIcon(this, "icon", true, false).start(
+      openingLine,
+      50
+    );
   }
 
   readNote() {
@@ -265,22 +267,19 @@ export default class Puzzle2 extends Phaser.Scene {
   getScissors(man, doll) {
     console.log("text open?", textOpen);
     if (man.inventory.scissors === 0) {
-      let enter = this.input.keyboard.addKey("ENTER");
+      //let enter = this.input.keyboard.addKey("ENTER");
       nurse = true;
-      if (enter.isDown) {
+      if (nurse) {
         yesButton.visible = true;
         noButton.visible = true;
+        let needScissors = TextBoxWithIcon(this, "icon", true, false).start(
+          "The doll is clutching a pair of scissors...take them?",
+          50
+        );
 
-        textOpen = true;
-        const dialogue = createTextBox(this, 100, 400, {
-          wrapWidth: 500,
-          fixedWidth: 500,
-          fixedHeight: 65,
-        }).start("The doll is clutching a pair of scissors...take them?", 50);
         if (once === false) {
           once = true;
           yesButton.on("pointerdown", function () {
-            dialogue.destroy();
             yesButton.visible = false;
             noButton.visible = false;
 
@@ -292,15 +291,18 @@ export default class Puzzle2 extends Phaser.Scene {
         noButton.on("pointerdown", function () {
           yesButton.visible = false;
           noButton.visible = false;
-          dialogue.destroy();
         });
       }
     } else {
       if (!textOpen) {
         textOpen = true;
-        this.gotScissors();
+        let hasScissors = TextBoxWithIcon(this, "nurseDoll", true, false).start(
+          "You took my scissors!",
+          50
+        );
       }
     }
+    textOpen = false;
   }
   gotScissors() {
     let hasScissors = TextBoxWithIcon(this, "nurseDoll", true, false).start(
@@ -334,7 +336,7 @@ export default class Puzzle2 extends Phaser.Scene {
   choosedoll(man, doll, scene) {
     let enter = this.input.keyboard.addKey("ENTER");
 
-    if (enter.isDown && man.inventory.scissors === 0) {
+    if (enter.isDown && (man.inventory.scissors === 0 || dollsCut)) {
       blueButton.visible = true;
       greenButton.visible = true;
       redButton.visible = true;
@@ -395,7 +397,6 @@ export default class Puzzle2 extends Phaser.Scene {
           greenDoll.setTexture("greenDollCut");
         }
 
-        man.inventory.scissors = 0;
         console.log("used the scissors");
         yesButton.visible = false;
         noButton.visible = false;
