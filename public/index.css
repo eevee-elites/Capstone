@@ -1,0 +1,13 @@
+html {
+	background-color: black;
+}
+
+element.style {
+	margin-left: 552px;
+	margin-top: 3px;
+}
+canvas {
+	display: flex;
+	justify-content: space-evenly;
+	align-content: space-around;
+}

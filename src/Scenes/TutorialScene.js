@@ -3,13 +3,15 @@ import Player from "../Models/Player";
 import NPC from "../Models/NPC";
 import Animate from "../Models/Animate";
 import NPCAnimate from "../Models/NPCAnimate";
+import {TextBoxWithIcon} from "../Utilities/TextBox";
 
 const Greet =
 	'Hey! Come over here! Use your arrow keys or "W" "A" "S" "D" to move and press the "enter" key to interact with me';
 const TalkandPushingInstructions =
 	"This is how you can talk to me. You can also keep pressing to finish and close out our conversations...                 Did you make sure to leave the door open?                                                                             …                                                                                                                       You didn't?! Oh no! Did you get trapped in here too? Go find the key! I'm not strong enough, but I'm sure you are!   You have to push those nightstands to get the key!";
 const InventoryInstructions = 'Press " i " to see your inventory';
-const Leave = "Now that you have the key, you can leave. Go back to your friends!";
+const Leave =
+	"Now that you have the key, you can leave. Go back to your friends!";
 
 const COLOR_PRIMARY = 0x4e342e;
 const COLOR_LIGHT = 0x7b5e57;
@@ -64,13 +66,16 @@ export default class TutorialScene extends Phaser.Scene {
 		this.npc.body.setSize(30, 90, true);
 		// NPCAnimate(this, 'NPC', 0, 0, 0);
 		this.room1Key = this.physics.add.existing(
-			new NPC(this, 750, 200, "room1Key"),
+			new NPC(this, 770, 200, "room1Key"),
 			true
 		);
 		NPCAnimate(this, "room1Key", 0, 9, 10, -1);
 		this.collect = false;
 		this.room1Key.setVisible(false);
+		//table
+		this.movable = this.physics.add.staticSprite(678, 540, "drawer");
 		//collisions
+		this.physics.add.collider(this.movable, this.man);
 		this.physics.add.existing(npcHitBox, true);
 		this.physics.add.existing(exitHitBox, true);
 		this.physics.add.collider(this.npc, this.man);
@@ -246,21 +251,13 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 					if (letBoxesAppear) {
 						if (!madeBoxesAppear) {
 							madeBoxesAppear = true;
-							const staticRow6 = scene.physics.add.staticGroup({
-								key: "drawer",
-								repeat: 4,
-								setXY: {x: 650, y: 120, stepY: 80},
-								immovable: true,
-							});
-							const movable = scene.physics.add.sprite(650, 520, "drawer");
-							scene.physics.add.collider(staticRow6, scene.man);
+							scene.room1Key.setVisible(true);
+							const movable = scene.physics.add.sprite(678, 540, "drawer");
+							scene.movable.disableBody(true, true);
 							scene.physics.add.collider(movable, scene.collidingLayer);
 							scene.physics.add.collider(movable, scene.man);
-							scene.room1Key.setVisible(true);
-
-
 						}
-					} 
+					}
 				});
 				textOpen = !textOpen;
 
