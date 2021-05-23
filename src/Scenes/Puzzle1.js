@@ -12,6 +12,9 @@ let lock2Collected = false;
 let lock3Collected = false;
 let dialog = false;
 let reenter = false;
+let employ1;
+let employ2;
+let employ3;
 // let music;
 const Help =
   "SOPHIE!!! HELP! Come save us, you're trapped in this room too! BUT WE HAVE THE KEY TO THE DOOR! Press the sensors on the ground to unlock the door!!       I think that big red button is also a reset button!!!";
@@ -42,43 +45,10 @@ export default class Puzzle1 extends Phaser.Scene {
     const belowLayer = map
       .createLayer("Below", tileset, 0, 0)
       .setPipeline("Light2D");
-    switch (strikes) {
-      case 0:
-        this.add.image(256, 224, "employee");
-        this.add.image(384, 224, "employee");
-        this.add.image(512, 224, "employee");
-        this.add.sprite(640, 224, "NPC2");
-        break;
-      case 1:
-        this.add.image(256, 224, "dead");
-        this.add.image(384, 224, "employee");
-        this.add.image(512, 224, "employee");
-        this.add.sprite(640, 224, "NPC2");
-        break;
-      case 2:
-        this.add.image(256, 224, "dead");
-        this.add.image(384, 224, "dead");
-        this.add.image(512, 224, "employee");
-        this.add.sprite(640, 224, "NPC2");
-        break;
-      case 3:
-        this.add.image(256, 224, "dead");
-        this.add.image(384, 224, "dead");
-        this.add.image(512, 224, "dead");
-        this.add.sprite(640, 224, "NPC2");
-        break;
-      case 4:
-        strikes = 0;
-        unlocked = false;
-        lock1Collected = false;
-        lock2Collected = false;
-        lock3Collected = false;
-        dialog = false;
-        reenter = false;
-        this.scene.start("GameOver");
-      default:
-        console.log("somethin went wrong here");
-    }
+    employ1 = this.add.image(256, 224, "employee");
+    employ2 = this.add.image(384, 224, "employee");
+    employ3 = this.add.image(512, 224, "employee");
+    this.add.sprite(640, 224, "NPC2");
 
     this.collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
@@ -117,8 +87,9 @@ export default class Puzzle1 extends Phaser.Scene {
     this.physics.add.existing(this.lockedCage, true);
     this.physics.add.collider(this.man, this.lockedCage);
     //camera
-    this.cameras.main.setBounds(48, 0, 800, 900);
+    this.cameras.main.setBounds(48, 0, 800, 1000);
     this.cameras.main.startFollow(this.man);
+
     //lights
     this.lights.enable();
     this.lights.setAmbientColor(0x7b5e57);
@@ -160,7 +131,7 @@ export default class Puzzle1 extends Phaser.Scene {
         50
       );
       dialogue.setDepth(2);
-      this.cameras.main.pan(640, 224, 5000);
+      this.cameras.main.pan(140, 124, 3000);
     }
 
     this.input.keyboard.on(
@@ -182,6 +153,47 @@ export default class Puzzle1 extends Phaser.Scene {
       },
       this
     );
+    switch (strikes) {
+      case 0:
+        break;
+      case 1:
+        employ1.setTexture("dead");
+        TextBoxWithIcon(this, "NPC2icon", true, false).start(
+          "Everytime you reset the game one of us dies!",
+          50
+        );
+        break;
+      case 2:
+        employ1.setTexture("dead");
+        employ2.setTexture("dead");
+        this.cameras.main.shake(500);
+        TextBoxWithIcon(this, "NPC2icon", true, false).start(
+          "Aaaaaaaahhh!, You have to be careful!",
+          50
+        );
+        break;
+      case 3:
+        employ1.setTexture("dead");
+        employ2.setTexture("dead");
+        employ3.setTexture("dead");
+        this.cameras.main.shake(500);
+        TextBoxWithIcon(this, "NPC2icon", true, false).start(
+          "NOOOOO! I'm next, take it slow I dont want to die!",
+          50
+        );
+        break;
+      case 4:
+        strikes = 0;
+        unlocked = false;
+        lock1Collected = false;
+        lock2Collected = false;
+        lock3Collected = false;
+        dialog = false;
+        reenter = false;
+        this.scene.start("GameOver");
+      default:
+        console.log("somethin went wrong here");
+    }
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -251,6 +263,7 @@ function collectItem(man, key) {
 function reset() {
   strikes += 1;
   console.log("strikes", strikes);
+  this.cameras.main.shake(500);
   dialog = true;
   unlocked = false;
   lock1Collected = false;
