@@ -83,7 +83,7 @@ export default class Puzzle2 extends Phaser.Scene {
     employee1 = this.add.image(256, 224, "employee");
     employee2 = this.add.image(384, 224, "employee");
     employee3 = this.add.image(512, 224, "employee");
-    friend = this.add.sprite(640, 224, "NPC");
+    friend = this.add.sprite(640, 224, "NPC3");
     const collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
       .setPipeline("Light2D");
@@ -247,7 +247,7 @@ export default class Puzzle2 extends Phaser.Scene {
 
   openingDialogue() {
     this.cameras.main.pan(140, 124, 3000);
-    let opening = TextBoxWithIcon(this, "icon", true, false).start(
+    let opening = TextBoxWithIcon(this, "NPC3icon", true, false).start(
       openingLine,
       50
     );
@@ -264,10 +264,12 @@ export default class Puzzle2 extends Phaser.Scene {
       if (nurse) {
         yesButton.visible = true;
         noButton.visible = true;
-        let needScissors = TextBoxWithIcon(this, "icon", true, false).start(
-          "The doll is clutching a pair of scissors...take them?",
-          50
-        );
+        let needScissors = TextBoxWithIcon(
+          this,
+          "Protagicon",
+          true,
+          false
+        ).start("The doll is clutching a pair of scissors...take them?", 50);
         if (once === false) {
           once = true;
           yesButton.on("pointerdown", function () {
@@ -303,8 +305,8 @@ export default class Puzzle2 extends Phaser.Scene {
     textOpen = false;
   }
   letsGo() {
-    TextBoxWithIcon(this, "icon", true, false).start(
-      "we better get out of here quick",
+    TextBoxWithIcon(this, "NPC3icon", true, false).start(
+      "Alright you did it! We better get out of here quick!",
       50
     );
   }
@@ -392,17 +394,6 @@ export default class Puzzle2 extends Phaser.Scene {
     redButton.visible = true;
   }
 
-  // correct(scene) {
-  //   //rightClicked = false;
-  //   this.lockedCage.disableBody(true, true);
-  //   let correctChoice = TextBoxWithIcon(this, "icon", true, false).start(
-  //     "You did it! Let's go!",
-  //     50
-  //   );
-
-  //   scene.physics.add.existing(exitdoor, true);
-  // }
-
   penalty() {
     wrongCounter++;
     wrongClicked = false;
@@ -410,16 +401,16 @@ export default class Puzzle2 extends Phaser.Scene {
     noButton.visible = false;
 
     if (wrongCounter === 1) {
-      TextBoxWithIcon(this, "icon", true, false).start("aaaaaaaaa", 50);
+      TextBoxWithIcon(this, "NPC3icon", true, false).start("aaaaaaaaa", 50);
       employee1.setTexture("dead");
     } else if (wrongCounter === 2) {
-      TextBoxWithIcon(this, "icon", true, false).start(
+      TextBoxWithIcon(this, "NPC3icon", true, false).start(
         "aaaaaaaaa i'm fucking dead too",
         50
       );
       employee2.setTexture("dead");
     } else if (wrongCounter === 3) {
-      TextBoxWithIcon(this, "icon", true, false).start("anotha one", 50);
+      TextBoxWithIcon(this, "NPC3icon", true, false).start("anotha one", 50);
 
       employee3.setTexture("dead");
     } else if (wrongCounter === 4) {
@@ -428,6 +419,7 @@ export default class Puzzle2 extends Phaser.Scene {
       once = false;
       nurse = false;
       textOpen = false;
+      rightClicked = false;
       this.scene.start("GameOver");
     }
   }

@@ -155,7 +155,10 @@ export default class Puzzle1 extends Phaser.Scene {
     this.physics.add.overlap(this.man, lock3, collectlock3, null, this);
 
     if (!dialog && !reenter) {
-      let dialogue = TextBoxWithIcon(this, "NPC2", true, false).start(Help, 50);
+      let dialogue = TextBoxWithIcon(this, "NPC2icon", true, false).start(
+        Help,
+        50
+      );
       dialogue.setDepth(2);
       this.cameras.main.pan(640, 224, 5000);
     }
@@ -235,7 +238,7 @@ function collectlock3(man, lock3) {
 }
 function collectItem(man, key) {
   dialog = true;
-  TextBoxWithIcon(this, "NPC2", true, false).start(Thanks, 50);
+  TextBoxWithIcon(this, "NPC2icon", true, false).start(Thanks, 50);
   man.pickupItem(key.texture.key);
   key.disableBody(true, true);
   this.collected = true;
