@@ -6,11 +6,7 @@ const openingLine =
   "Sophie, help! We're stuck in this cage! I think you have to solve the puzzle to let us out.";
 const note =
   "Find the living among the dead. The answer will be revealed when blood is shed.";
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
 let textOpen = false;
-let last = false;
 let wrongCounter = 0;
 var yesButton;
 var noButton;
@@ -118,9 +114,6 @@ export default class Puzzle2 extends Phaser.Scene {
     this.physics.add.collider(this.man, redDoll);
     this.physics.add.collider(this.man, nurseDollImg);
     this.physics.add.collider(this.man, this.lockedCage);
-    // this.physics.add.collider(this.man, bluedollhitbox);
-    // this.physics.add.collider(this.man, greendollhitbox);
-    // this.physics.add.collider(this.man, reddollhitbox);
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     this.physics.add.overlap(this.man, exitdoor, exitPuzzleRoom2, null, this);
@@ -246,7 +239,7 @@ export default class Puzzle2 extends Phaser.Scene {
     }
 
     if (rightClicked) {
-      this.correct(this);
+      this.lockedCage.disableBody(true, true);
     }
     light.x = this.man.x + 35;
     light.y = this.man.y + 35;
@@ -267,7 +260,6 @@ export default class Puzzle2 extends Phaser.Scene {
   getScissors(man, doll) {
     console.log("text open?", textOpen);
     if (man.inventory.scissors === 0) {
-      //let enter = this.input.keyboard.addKey("ENTER");
       nurse = true;
       if (nurse) {
         yesButton.visible = true;
@@ -276,7 +268,6 @@ export default class Puzzle2 extends Phaser.Scene {
           "The doll is clutching a pair of scissors...take them?",
           50
         );
-
         if (once === false) {
           once = true;
           yesButton.on("pointerdown", function () {
@@ -311,27 +302,31 @@ export default class Puzzle2 extends Phaser.Scene {
     );
     textOpen = false;
   }
+  letsGo() {
+    TextBoxWithIcon(this, "icon", true, false).start(
+      "we better get out of here quick",
+      50
+    );
+  }
 
   choosedoll(man, doll, scene) {
     let enter = this.input.keyboard.addKey("ENTER");
-
+    if (rightClicked) {
+      this.letsGo();
+    }
     if (enter.isDown && (man.inventory.scissors === 0 || dollsCut)) {
-      blueButton.visible = true;
-      greenButton.visible = true;
-      redButton.visible = true;
+      this.seeButtons();
       let dollChoice = TextBoxWithoutIcon(this, true, false).start(
         "Which doll do you want to choose?",
         50
       );
 
       blueButton.on("pointerdown", function () {
-        this.scene.cameras.main.shake(500);
         blueButton.visible = false;
         greenButton.visible = false;
         redButton.visible = false;
+        this.scene.cameras.main.shake(500);
         wrongClicked = true;
-
-        //dialogue.destroy();
       });
 
       greenButton.on("pointerdown", function () {
@@ -340,19 +335,18 @@ export default class Puzzle2 extends Phaser.Scene {
         greenButton.visible = false;
         redButton.visible = false;
         wrongClicked = true;
-        //dialogue.destroy();
       });
       redButton.on("pointerdown", function () {
         blueButton.visible = false;
         greenButton.visible = false;
         redButton.visible = false;
-        if (dollsCut === true) {
+        if (dollsCut) {
           rightClicked = true;
+          this.scene.physics.add.existing(exitdoor, true);
         } else {
           this.scene.cameras.main.shake(500);
           wrongClicked = true;
         }
-        //dialogue.destroy();
       });
     } else if (enter.isDown && this.man.inventory.scissors > 0) {
       yesButton.setVisible(true);
@@ -361,7 +355,6 @@ export default class Puzzle2 extends Phaser.Scene {
         "Cut open the dolls?",
         50
       );
-
       yesButton.on("pointerdown", function () {
         dollsCut = true;
         if (red) {
@@ -377,27 +370,30 @@ export default class Puzzle2 extends Phaser.Scene {
         console.log("used the scissors");
         yesButton.visible = false;
         noButton.visible = false;
-        //dialogue.destroy();
       });
 
       noButton.on("pointerdown", function () {
         yesButton.visible = false;
         noButton.visible = false;
-        //dialogue.destroy();
       });
     }
   }
-
-  correct(scene) {
-    rightClicked = false;
-    this.lockedCage.disableBody(true, true);
-    let correctChoice = TextBoxWithIcon(this, "icon", true, false).start(
-      "You did it! Let's go!",
-      50
-    );
-
-    scene.physics.add.existing(exitdoor, true);
+  seeButtons() {
+    blueButton.visible = true;
+    greenButton.visible = true;
+    redButton.visible = true;
   }
+
+  // correct(scene) {
+  //   //rightClicked = false;
+  //   this.lockedCage.disableBody(true, true);
+  //   let correctChoice = TextBoxWithIcon(this, "icon", true, false).start(
+  //     "You did it! Let's go!",
+  //     50
+  //   );
+
+  //   scene.physics.add.existing(exitdoor, true);
+  // }
 
   penalty() {
     wrongCounter++;
@@ -405,22 +401,25 @@ export default class Puzzle2 extends Phaser.Scene {
     yesButton.visible = false;
     noButton.visible = false;
 
-    if (wrongCounter === 1 && !nurse) {
-      textOpen = true;
+    if (wrongCounter === 1) {
       TextBoxWithIcon(this, "icon", true, false).start("aaaaaaaaa", 50);
       employee1.setTexture("dead");
-    } else if (wrongCounter === 2 && !nurse) {
+    } else if (wrongCounter === 2) {
       TextBoxWithIcon(this, "icon", true, false).start(
         "aaaaaaaaa i'm fucking dead too",
         50
       );
       employee2.setTexture("dead");
-    } else if (wrongCounter === 3 && !nurse) {
+    } else if (wrongCounter === 3) {
       TextBoxWithIcon(this, "icon", true, false).start("anotha one", 50);
+
       employee3.setTexture("dead");
-    } else if (wrongCounter === 4 && !nurse) {
+    } else if (wrongCounter === 4) {
       wrongCounter = 0;
+      dollsCut = false;
       once = false;
+      nurse = false;
+      textOpen = false;
       this.scene.start("GameOver");
     }
   }

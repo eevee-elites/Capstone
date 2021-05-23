@@ -179,7 +179,6 @@ export default class Puzzle1 extends Phaser.Scene {
       },
       this
     );
-   
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -240,18 +239,6 @@ function collectItem(man, key) {
   man.pickupItem(key.texture.key);
   key.disableBody(true, true);
   this.collected = true;
-}
-function disableMovement() {
-  const cursors = this.input.keyboard.createCursorKeys();
-  const keyObjW = this.input.keyboard.addKey("W");
-  const keyObjA = this.input.keyboard.addKey("A");
-  const keyObjS = this.input.keyboard.addKey("S");
-  const keyObjD = this.input.keyboard.addKey("D");
-  cursors.enabled = false;
-  keyObjA.enabled = false;
-  keyObjD.enabled = false;
-  keyObjS.enabled = false;
-  keyObjW.enabled = false;
 }
 
 function reset() {
