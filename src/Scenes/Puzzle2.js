@@ -269,7 +269,10 @@ export default class Puzzle2 extends Phaser.Scene {
           "Protagicon",
           true,
           false
-        ).start("The doll is clutching a pair of scissors...take them?", 50);
+        ).start(
+          "Hmmm this doll is clutching a pair of scissors... Do I take them?",
+          50
+        );
         if (once === false) {
           once = true;
           yesButton.on("pointerdown", function () {
@@ -322,8 +325,8 @@ export default class Puzzle2 extends Phaser.Scene {
       !rightClicked
     ) {
       this.seeButtons();
-      let dollChoice = TextBoxWithoutIcon(this, true, false).start(
-        "Which doll do you want to choose?",
+      let dollChoice = TextBoxWithIcon(this, "Protagicon", true, false).start(
+        "Which doll do I choose?",
         50
       );
 
@@ -362,8 +365,8 @@ export default class Puzzle2 extends Phaser.Scene {
     ) {
       yesButton.setVisible(true);
       noButton.setVisible(true);
-      let cutOpen = TextBoxWithoutIcon(this, true, false).start(
-        "Cut open the dolls?",
+      let cutOpen = TextBoxWithIcon(this, "Protagicon", true, false).start(
+        "Should I cut open the dolls with the scissors?",
         50
       );
       yesButton.on("pointerdown", function () {
@@ -406,12 +409,15 @@ export default class Puzzle2 extends Phaser.Scene {
       employee1.setTexture("dead");
     } else if (wrongCounter === 2) {
       TextBoxWithIcon(this, "NPC3icon", true, false).start(
-        "aaaaaaaaa i'm fucking dead too",
+        "aaaaa you have to be careful with the mistakes",
         50
       );
       employee2.setTexture("dead");
     } else if (wrongCounter === 3) {
-      TextBoxWithIcon(this, "NPC3icon", true, false).start("anotha one", 50);
+      TextBoxWithIcon(this, "NPC3icon", true, false).start(
+        "Oh no this is it for me one more wrong choice and I'm dead",
+        50
+      );
 
       employee3.setTexture("dead");
     } else if (wrongCounter === 4) {
