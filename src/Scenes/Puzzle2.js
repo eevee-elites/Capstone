@@ -311,10 +311,14 @@ export default class Puzzle2 extends Phaser.Scene {
 
   choosedoll(man, doll, scene) {
     let enter = this.input.keyboard.addKey("ENTER");
-    if (rightClicked) {
+    if (enter.isDown && rightClicked) {
       this.letsGo();
     }
-    if (enter.isDown && (man.inventory.scissors === 0 || dollsCut)) {
+    if (
+      enter.isDown &&
+      (man.inventory.scissors === 0 || dollsCut) &&
+      !rightClicked
+    ) {
       this.seeButtons();
       let dollChoice = TextBoxWithoutIcon(this, true, false).start(
         "Which doll do you want to choose?",
@@ -348,7 +352,11 @@ export default class Puzzle2 extends Phaser.Scene {
           wrongClicked = true;
         }
       });
-    } else if (enter.isDown && this.man.inventory.scissors > 0) {
+    } else if (
+      enter.isDown &&
+      this.man.inventory.scissors > 0 &&
+      !rightClicked
+    ) {
       yesButton.setVisible(true);
       noButton.setVisible(true);
       let cutOpen = TextBoxWithoutIcon(this, true, false).start(
