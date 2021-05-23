@@ -107,7 +107,7 @@ export default class Puzzle2 extends Phaser.Scene {
       .setOrigin(0, 0);
 
     this.man.body.setSize(30, 10);
-
+    this.man.completed = data.completed;
     this.physics.add.collider(this.man, collidingLayer);
     this.physics.add.collider(this.man, blueDoll);
     this.physics.add.collider(this.man, greenDoll);
@@ -195,7 +195,7 @@ export default class Puzzle2 extends Phaser.Scene {
     noButton.visible = false;
     noButton.setScrollFactor(0);
     noButton.setInteractive();
-
+    console.log("puzz2 man", this.man);
     this.input.keyboard.on(
       "keydown-I",
       function () {
@@ -349,6 +349,7 @@ export default class Puzzle2 extends Phaser.Scene {
         if (dollsCut) {
           rightClicked = true;
           this.scene.physics.add.existing(exitdoor, true);
+          man.completed.puzzle2 = true;
         } else {
           this.scene.cameras.main.shake(500);
           wrongClicked = true;
@@ -427,5 +428,9 @@ export default class Puzzle2 extends Phaser.Scene {
 
 function exitPuzzleRoom2() {
   music.stop();
-  this.scene.start("StartScene", { x: 1200, y: 320 });
+  this.scene.start("StartScene", {
+    x: 1200,
+    y: 320,
+    completed: this.man.completed,
+  });
 }

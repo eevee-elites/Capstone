@@ -12,6 +12,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       scissors: 0,
       room1Key: 0,
     };
+    this.completed = {
+      puzzle1: false,
+      puzzle2: false,
+    };
   }
   // updates inventory when an item is picked up
   pickupItem(item) {

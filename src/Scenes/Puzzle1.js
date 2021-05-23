@@ -20,7 +20,7 @@ export default class Puzzle1 extends Phaser.Scene {
   constructor() {
     super("Puzzle1");
   }
-
+  init(data) {}
   preload() {
     this.load.scenePlugin({
       key: "rexuiplugin",
@@ -96,8 +96,8 @@ export default class Puzzle1 extends Phaser.Scene {
         .existing(new Player(this, 420, 700, "man"))
         .setOrigin(0, 0);
     }
-
-    this.man.body.setSize(58, 50).setOffset(0, 64);
+    console.log("puz1", this.man.completed);
+    this.man.body.setSize(55, 50).setOffset(0, 64);
     this.physics.add.collider(this.man, this.collidingLayer);
     this.man.setDepth(1);
 
@@ -200,14 +200,17 @@ export default class Puzzle1 extends Phaser.Scene {
   exitRoom() {
     if (this.collected) {
       this.music.stop();
-      // return this.scene.start("StartScene");
       unlocked = false;
       lock1Collected = false;
       lock2Collected = false;
       lock3Collected = false;
       dialog = false;
       reenter = false;
-      this.scene.start("StartScene", { x: 825, y: 320, completed1: true });
+      this.scene.start("StartScene", {
+        x: 825,
+        y: 320,
+        completed: this.man.completed,
+      });
     }
   }
 
@@ -241,6 +244,7 @@ function collectItem(man, key) {
   TextBoxWithIcon(this, "NPC2icon", true, false).start(Thanks, 50);
   man.pickupItem(key.texture.key);
   key.disableBody(true, true);
+  man.completed.puzzle1 = true;
   this.collected = true;
 }
 

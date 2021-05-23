@@ -12,10 +12,8 @@ let last = false;
 export default class StartScene extends Phaser.Scene {
   constructor() {
     super("StartScene");
-    let man, npc;
-    var anims;
   }
-  initialize() {
+  initialize(data) {
     function switchInventory() {
       Phaser.Scene.call(this, "Inventory");
     }
@@ -33,7 +31,6 @@ export default class StartScene extends Phaser.Scene {
     let hitBox = this.add.rectangle(100, 400, 40, 40, 0x000000);
     const puzzle1Room = this.add.rectangle(835, 300, 120, 40, 0x000000);
     const puzzle2Room = this.add.rectangle(1220, 300, 120, 40, 0x000000);
-    this.completed1 = data.completed1 || false;
     const EmptyRoom = this.add.rectangle(450, 300, 120, 40, 0x000000);
 
     this.physics.add.existing(puzzle1Room, true);
@@ -74,13 +71,14 @@ export default class StartScene extends Phaser.Scene {
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
     this.npc.body.setSize(30, 90, true);
-
+    console.log("man", this.man);
+    this.man.completed = data.completed;
     this.physics.add.existing(hitBox, true);
     this.physics.add.collider(this.npc, this.man);
     this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
     this.physics.add.collider(this.man, collidingLayer);
     this.physics.add.overlap(this.man, EmptyRoom, emptyEnter, null, this);
-
+    //this.man.completed.puzzle2 = data.completed2 || false;
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     //camera
     this.cameras.main.setBounds(48, 0, 3000, 700);
@@ -158,8 +156,8 @@ export default class StartScene extends Phaser.Scene {
   }
 }
 function enterPuzzleRoom1() {
-  if (!this.completed1) {
-    this.scene.start("Puzzle1");
+  if (!this.man.completed.puzzle1) {
+    this.scene.start("Puzzle1", { completed: this.man.completed });
   } else {
     TextBoxWithIcon(this, "icon", textOpen, last).start(
       "Wow I already completed this!",
@@ -168,8 +166,8 @@ function enterPuzzleRoom1() {
   }
 }
 function enterPuzzleRoom2() {
-  this.scene.start("Puzzle2");
+  this.scene.start("Puzzle2", { completed: this.man.completed });
 }
 function emptyEnter() {
-  this.scene.start("EmptyRoom1");
+  this.scene.start("EmptyRoom1", { completed: this.man.completed });
 }
