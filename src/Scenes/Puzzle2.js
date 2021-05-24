@@ -1,11 +1,11 @@
 import "phaser";
 import Player from "../Models/Player";
 import Animate from "../Models/Animate";
-import TextBoxWithoutIcon, { TextBoxWithIcon } from "../Utilities/TextBox";
+import TextBoxWithoutIcon, {TextBoxWithIcon} from "../Utilities/TextBox";
 const openingLine =
-  "Sophie, help! We're stuck in this cage! I think you have to solve the puzzle to let us out.";
+	"Sophie, help! We're stuck in this cage! I think you have to solve the puzzle to let us out.";
 const note =
-  "Find the living among the dead. The answer will be revealed when blood is shed.";
+	"Find the living among the dead. The answer will be revealed when blood is shed.";
 let textOpen = false;
 let wrongCounter = 0;
 var yesButton;
@@ -34,6 +34,31 @@ let music;
 let nurseDollImg;
 let deco; 
 let deco2;
+let deco3;
+let deco4;
+let deco5;
+let deco6;
+let deco7;
+let deco8;
+let deco9;
+let deco10;
+let deco11;
+let deco12;
+let deco13;
+let deco14;
+let deco15;
+let monster, wall1, wall2, wall3, wall4;
+let decoflipped;
+let decoflipped2;
+let decoflipped3;
+let decoflipped4;
+let decoflipped5;
+let decoflipped6;
+
+
+
+
+
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
@@ -82,11 +107,16 @@ export default class Puzzle2 extends Phaser.Scene {
     const belowLayer = map
       .createLayer("Below", tileset, 0, 0)
       .setPipeline("Light2D");
-
-    employee1 = this.add.image(256, 224, "employee");
-    employee2 = this.add.image(384, 224, "employee");
-    employee3 = this.add.image(512, 224, "employee");
-    friend = this.add.sprite(640, 224, "NPC3");
+      wall1 = this.add.image(240, 224, "wall");
+      employee1 = this.add.image(306, 224, "employee");
+      wall2 = this.add.image(370, 224, "wall");
+      employee2 = this.add.image(434, 224, "employee");
+      wall3 = this.add.image(500, 224, "wall");
+      employee3 = this.add.image(562, 224, "employee");
+      wall4 = this.add.image(630, 224, "wall");
+      monster = this.add.image(128, 224, "monster");
+      friend = this.add.sprite(690, 224, "NPC2");
+    
     const collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
       .setPipeline("Light2D");
@@ -99,8 +129,22 @@ export default class Puzzle2 extends Phaser.Scene {
     redDoll = this.add.image(400, 400, "redDoll");
     greenDoll = this.add.image(500, 400, "greenDoll");
     nurseDollImg = this.add.image(700, 600, "nurseDoll");
-    deco = this.add.image(285, 460, "deco");
-    deco2 = this.add.image(265, 440, "deco2").flipX(true)   //cage
+    
+    //decorations
+    decoflipped = this.add.image(420, 450, "decoflipped")   
+    deco = this.add.image(389, 460, "deco3");
+    deco2 = this.add.image(365, 450, "deco3")
+    deco3 = this.add.image(385, 460, "deco");
+    deco4 = this.add.image(405, 460, "deco2");
+    deco4.flipX = true
+    decoflipped2 = this.add.image(130, 660, "deco2flipped")
+    decoflipped3 = this.add.image(130, 360, "deco3flipped")   
+    decoflipped3.flipX = true
+
+    decoflipped4 = this.add.image(710, 640, "decoflipped")   
+
+
+    //cage
     this.lockedCage = this.physics.add.staticSprite(800, 256, "cage");
     this.physics.add.existing(this.lockedCage, true);
 
@@ -436,14 +480,14 @@ export default class Puzzle2 extends Phaser.Scene {
 }
 
 function exitPuzzleRoom2() {
-  music.stop();
-  if (this.man.completed.puzzle1 && this.man.completed.puzzle2) {
-    this.scene.start("Winner");
-  } else {
-    this.scene.start("StartScene", {
-      x: 1200,
-      y: 320,
-      completed: this.man.completed,
-    });
-  }
+	music.stop();
+	if (this.man.completed.puzzle1 && this.man.completed.puzzle2) {
+		this.scene.start("Winner");
+	} else {
+		this.scene.start("StartScene", {
+			x: 1200,
+			y: 320,
+			completed: this.man.completed,
+		});
+	}
 }
