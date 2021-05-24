@@ -106,6 +106,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("redDoll", "../assets/Red doll.png");
     this.load.image("redDollCut", "../assets/Red doll cut.png");
     this.load.image("nurseDoll", "../assets/Nurse doll.png");
+    this.load.image("noSciz", "../assets/noSciz.png");
     this.load.image("note", "../assets/Note.png");
     this.load.image("yesButton", "../assets/ui/Yes button.png");
     this.load.image("noButton", "../assets/ui/No button.png");

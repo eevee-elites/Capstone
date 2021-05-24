@@ -31,7 +31,7 @@ let employee3;
 let friend;
 let exitdoor;
 let music;
-
+let nurseDollImg;
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
@@ -95,7 +95,7 @@ export default class Puzzle2 extends Phaser.Scene {
     blueDoll = this.add.image(300, 400, "blueDoll");
     redDoll = this.add.image(400, 400, "redDoll");
     greenDoll = this.add.image(500, 400, "greenDoll");
-    let nurseDollImg = this.add.image(700, 600, "nurseDoll");
+    nurseDollImg = this.add.image(700, 600, "nurseDoll");
 
     //cage
     this.lockedCage = this.physics.add.staticSprite(800, 256, "cage");
@@ -278,7 +278,7 @@ export default class Puzzle2 extends Phaser.Scene {
           yesButton.on("pointerdown", function () {
             yesButton.visible = false;
             noButton.visible = false;
-
+            nurseDollImg.setTexture("noSciz");
             man.pickupItem("scissors");
             textOpen = false;
           });
