@@ -18,6 +18,7 @@ import OutsideScene from "./Scenes/OutsideScene";
 import LobbyScene from "./Scenes/LobbyScene";
 import EmptyRoom1 from "./Scenes/EmptyRoom1";
 import GameOverScene from "./Scenes/GameOverScene";
+import WinnerScene from "./Scenes/WinnerScene";
 
 class Game extends Phaser.Game {
   constructor() {
@@ -40,6 +41,7 @@ class Game extends Phaser.Game {
     this.scene.add("EmptyRoom1", EmptyRoom1);
     this.scene.add("Puzzle2", Puzzle2);
     this.scene.add("GameOver", GameOverScene);
+    this.scene.add("Winner", WinnerScene);
 
     this.scene.start("Boot");
   }

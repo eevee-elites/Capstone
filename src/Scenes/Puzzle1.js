@@ -66,10 +66,11 @@ export default class Puzzle1 extends Phaser.Scene {
         .existing(new Player(this, 420, 700, "man"))
         .setOrigin(0, 0);
     }
-    console.log("puz1", this.man.completed);
+
     this.man.body.setSize(55, 50).setOffset(0, 64);
     this.physics.add.collider(this.man, this.collidingLayer);
     this.man.setDepth(1);
+    this.man.completed = data.completed;
 
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     //puzzle
@@ -194,6 +195,7 @@ export default class Puzzle1 extends Phaser.Scene {
       default:
         console.log("somethin went wrong here");
     }
+    console.log("puz1", this.man.completed);
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -210,7 +212,7 @@ export default class Puzzle1 extends Phaser.Scene {
     );
   }
   exitRoom() {
-    if (this.collected) {
+    if (this.collected && !this.man.completed.puzzle2) {
       this.music.stop();
       unlocked = false;
       lock1Collected = false;
@@ -223,6 +225,9 @@ export default class Puzzle1 extends Phaser.Scene {
         y: 320,
         completed: this.man.completed,
       });
+    }
+    if (this.man.completed.puzzle1 && this.man.completed.puzzle2) {
+      this.scene.start("Winner");
     }
   }
 
@@ -269,7 +274,11 @@ function reset() {
   lock1Collected = false;
   lock2Collected = false;
   lock3Collected = false;
-  this.scene.start("Puzzle1", { x: this.man.x, y: this.man.y });
+  this.scene.start("Puzzle1", {
+    x: this.man.x,
+    y: this.man.y,
+    completed: this.man.completed,
+  });
   if (strikes > 3) {
     this.scene.start("GameOver");
   }

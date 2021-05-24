@@ -427,6 +427,7 @@ export default class Puzzle2 extends Phaser.Scene {
       nurse = false;
       textOpen = false;
       rightClicked = false;
+      
       this.scene.start("GameOver");
     }
   }
@@ -434,9 +435,13 @@ export default class Puzzle2 extends Phaser.Scene {
 
 function exitPuzzleRoom2() {
   music.stop();
-  this.scene.start("StartScene", {
-    x: 1200,
-    y: 320,
-    completed: this.man.completed,
-  });
+  if (this.man.completed.puzzle1 && this.man.completed.puzzle2) {
+    this.scene.start("Winner");
+  } else {
+    this.scene.start("StartScene", {
+      x: 1200,
+      y: 320,
+      completed: this.man.completed,
+    });
+  }
 }
