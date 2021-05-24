@@ -32,6 +32,8 @@ let friend;
 let exitdoor;
 let music;
 let nurseDollImg;
+let deco; 
+let deco2;
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
@@ -64,6 +66,7 @@ export default class Puzzle2 extends Phaser.Scene {
     music.setVolume(0.3);
     //tilemap
     //const exitdoor = this.add.rectangle(450, 800, 120, 40, 0x000000);
+   
     let bluedollhitbox = this.add.rectangle(300, 400, 70, 132, 0x000000);
     let reddollhitbox = this.add.rectangle(400, 400, 70, 132, 0x000000);
     let greendollhitbox = this.add.rectangle(500, 400, 70, 132, 0x000000);
@@ -96,8 +99,8 @@ export default class Puzzle2 extends Phaser.Scene {
     redDoll = this.add.image(400, 400, "redDoll");
     greenDoll = this.add.image(500, 400, "greenDoll");
     nurseDollImg = this.add.image(700, 600, "nurseDoll");
-
-    //cage
+    deco = this.add.image(285, 460, "deco");
+    deco2 = this.add.image(265, 440, "deco2").flipX(true)   //cage
     this.lockedCage = this.physics.add.staticSprite(800, 256, "cage");
     this.physics.add.existing(this.lockedCage, true);
 
