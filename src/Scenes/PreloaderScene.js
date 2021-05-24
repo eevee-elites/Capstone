@@ -117,6 +117,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("cage", "assets/LockedCage.png");
     this.load.image("icon", "assets/Iconnpc.png");
     this.load.image("drawer", "assets/drawer.png");
+    this.load.image("NPC", "assets/NPC.png");
     this.load.image("NPC2", "assets/NPC2.png");
     this.load.image("NPC3", "assets/NPC3.png");
     this.load.image("NPC2icon", "assets/NPC2icon.png");
@@ -140,10 +141,6 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.spritesheet("man", "assets/man.png", {
       frameWidth: 64,
       frameHeight: 128,
-    });
-    this.load.spritesheet("NPC", "assets/NPC.png", {
-      frameWidth: 80,
-      frameHeight: 130,
     });
     this.load.spritesheet("room1Key", "assets/key.png", {
       frameWidth: 28.5,

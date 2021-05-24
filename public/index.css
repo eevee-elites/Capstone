@@ -1,0 +1,30 @@
+html {
+	background-color: black;
+}
+img {
+	width: 40%;
+	height: 40%;
+}
+body {
+	display: flex;
+	justify-content: flex-start;
+	align-content: stretch;
+}
+canvas {
+	text-align: center;
+	position: absolute;
+	top: 5%;
+}
+h3,
+h2 {
+	color: white;
+	margin-left: 10%;
+}
+div {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.controls {
+	padding-left: 5%;
+}
