@@ -13,6 +13,7 @@ export default class Inventory extends Phaser.Scene {
   preload() {}
 
   create(data) {
+    this.add.image(300, 400, "Insidebag");
     this.inventoryPassed = data.inventory;
     const myInventory = [];
     console.log(" inventory data", data);

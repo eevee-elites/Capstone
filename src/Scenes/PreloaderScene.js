@@ -85,6 +85,11 @@ export default class PreloaderScene extends Phaser.Scene {
     // load assets needed in our game
 
     //load images
+    this.load.image("GameoverRed", "assets/GameOverRed.png");
+    this.load.image("GameoverGreen", "assets/GameOverGreen.png");
+    this.load.image("NPC3Scared", "assets/NPC3Scared.png");
+    this.load.image("NPC2Scared", "assets/NPC2Scared.png");
+    this.load.image("Insidebag", "assets/Insidebag.png");
     this.load.image("blueButton1", "assets/ui/blue_button02.png");
     this.load.image("blueButton2", "assets/ui/blue_button03.png");
     this.load.image("phaserLogo", "assets/logo.png");
