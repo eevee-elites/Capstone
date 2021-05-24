@@ -1,14 +1,15 @@
 import "phaser";
 import Button from "../Models/Buttons";
 
-export default class GameOverScene extends Phaser.Scene {
+export default class GameOverRedScene extends Phaser.Scene {
   constructor() {
-    super("GameOver");
+    super("GameOverRed");
   }
 
   preload() {}
 
   create() {
+    this.add.image(300, 400, "GameoverRed");
     this.add.text(350, 350, "Game Over!");
     const restartButton = new Button(400, 500, "Restart Game", this, () => {
       this.scene.start("StartScene");

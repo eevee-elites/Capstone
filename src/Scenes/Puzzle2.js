@@ -405,16 +405,16 @@ export default class Puzzle2 extends Phaser.Scene {
     noButton.visible = false;
 
     if (wrongCounter === 1) {
-      TextBoxWithIcon(this, "NPC3icon", true, false).start("aaaaaaaaa", 50);
+      TextBoxWithIcon(this, "NPC3Scared", true, false).start("aaaaaaaaa", 50);
       employee1.setTexture("dead");
     } else if (wrongCounter === 2) {
-      TextBoxWithIcon(this, "NPC3icon", true, false).start(
+      TextBoxWithIcon(this, "NPC3Scared", true, false).start(
         "aaaaa you have to be careful with the mistakes",
         50
       );
       employee2.setTexture("dead");
     } else if (wrongCounter === 3) {
-      TextBoxWithIcon(this, "NPC3icon", true, false).start(
+      TextBoxWithIcon(this, "NPC3Scared", true, false).start(
         "Oh no this is it for me one more wrong choice and I'm dead",
         50
       );
@@ -427,7 +427,7 @@ export default class Puzzle2 extends Phaser.Scene {
       nurse = false;
       textOpen = false;
       rightClicked = false;
-      this.scene.start("GameOver");
+      this.scene.start("GameOverRed");
     }
   }
 }

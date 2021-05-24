@@ -158,7 +158,7 @@ export default class Puzzle1 extends Phaser.Scene {
         break;
       case 1:
         employ1.setTexture("dead");
-        TextBoxWithIcon(this, "NPC2icon", true, false).start(
+        TextBoxWithIcon(this, "NPC2Scared", true, false).start(
           "Everytime you reset the game one of us dies!",
           50
         );
@@ -167,7 +167,7 @@ export default class Puzzle1 extends Phaser.Scene {
         employ1.setTexture("dead");
         employ2.setTexture("dead");
         this.cameras.main.shake(500);
-        TextBoxWithIcon(this, "NPC2icon", true, false).start(
+        TextBoxWithIcon(this, "NPC2Scared", true, false).start(
           "Aaaaaaaahhh!, You have to be careful!",
           50
         );
@@ -177,7 +177,7 @@ export default class Puzzle1 extends Phaser.Scene {
         employ2.setTexture("dead");
         employ3.setTexture("dead");
         this.cameras.main.shake(500);
-        TextBoxWithIcon(this, "NPC2icon", true, false).start(
+        TextBoxWithIcon(this, "NPC2Scared", true, false).start(
           "NOOOOO! I'm next, take it slow I dont want to die!",
           50
         );
@@ -190,7 +190,8 @@ export default class Puzzle1 extends Phaser.Scene {
         lock3Collected = false;
         dialog = false;
         reenter = false;
-        this.scene.start("GameOver");
+        this.gameOver();
+      //this.scene.start("GameOverGreen");
       default:
         console.log("somethin went wrong here");
     }
@@ -258,6 +259,9 @@ function collectItem(man, key) {
   key.disableBody(true, true);
   man.completed.puzzle1 = true;
   this.collected = true;
+}
+function gameOver() {
+  this.scene.start("GameOverGreen");
 }
 
 function reset() {
