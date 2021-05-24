@@ -12,12 +12,10 @@ let lock2Collected = false;
 let lock3Collected = false;
 let dialog = false;
 let reenter = false;
-let employ1;
-let employ2;
-let employ3;
+let employ1, employ2, employ3, monster, wall1, wall2, wall3, wall4;
 // let music;
 const Help =
-	"SOPHIE!!! HELP! Come save us, you're trapped in this room too! BUT WE HAVE THE KEY TO THE DOOR! Press the sensors on the ground to unlock the door!!       I think that big red button is also a reset button!!!";
+	"SOPHIE!!! You're trapped in this room too! BUT WE HAVE THE KEY TO THE DOOR!    Step on the sensors on the ground to unlock the cage and get us out! I think that big red button is also a reset button!";
 const Thanks = "Thanks for freeing us! Grab the key and lets goooo!";
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
@@ -45,11 +43,21 @@ export default class Puzzle1 extends Phaser.Scene {
 		const belowLayer = map
 			.createLayer("Below", tileset, 0, 0)
 			.setPipeline("Light2D");
-		employ1 = this.add.image(256, 224, "employee");
-		employ2 = this.add.image(384, 224, "employee");
-		employ3 = this.add.image(512, 224, "employee");
-		this.add.sprite(640, 224, "NPC2");
-
+		//behind cage
+		wall1 = this.add.image(240, 224, "wall");
+		employ1 = this.add.image(306, 224, "employee");
+		wall2 = this.add.image(370, 224, "wall");
+		employ2 = this.add.image(434, 224, "employee");
+		wall3 = this.add.image(500, 224, "wall");
+		employ3 = this.add.image(562, 224, "employee");
+		wall4 = this.add.image(630, 224, "wall");
+		monster = this.add.image(128, 224, "monster");
+		this.add.sprite(690, 224, "NPC2");
+		this.key = this.physics.add.existing(
+			new NPC(this, 750, 230, "room1Key"),
+			true
+		);
+		NPCAnimate(this, "room1Key", 0, 9, 10, -1);
 		this.collidingLayer = map
 			.createLayer("Colliding", tileset, 0, 0)
 			.setPipeline("Light2D");
@@ -67,7 +75,7 @@ export default class Puzzle1 extends Phaser.Scene {
 				.setOrigin(0, 0);
 		}
 
-		this.man.body.setSize(55, 50).setOffset(0, 64);
+		this.man.body.setSize(35, 50).setOffset(0, 64);
 		this.physics.add.collider(this.man, this.collidingLayer);
 		this.man.setDepth(1);
 		this.man.completed = data.completed;
@@ -89,18 +97,12 @@ export default class Puzzle1 extends Phaser.Scene {
 		this.physics.add.collider(this.man, this.lockedCage);
 		//camera
 		this.cameras.main.setBounds(48, 150, 900, 800);
-		// this.cameras.main.zoom(.5)
 
 		//lights
 		this.lights.enable();
 		this.lights.setAmbientColor(0x7b5e57);
 		light = this.lights.addLight(180, 80, 120);
 
-		this.key = this.physics.add.existing(
-			new NPC(this, 750, 200, "room1Key"),
-			true
-		);
-		NPCAnimate(this, "room1Key", 0, 9, 10, -1);
 		let resetBox = this.add.rectangle(60, 650, 20, 20, 0xa93226);
 		this.collected = false;
 		//music
@@ -162,6 +164,8 @@ export default class Puzzle1 extends Phaser.Scene {
 					"Everytime you reset the game one of us dies!",
 					50
 				);
+				wall1.setVisible(false);
+				monster.setX(240);
 				break;
 			case 2:
 				employ1.setTexture("dead");
@@ -171,6 +175,9 @@ export default class Puzzle1 extends Phaser.Scene {
 					"Aaaaaaaahhh!, You have to be careful!",
 					50
 				);
+				wall1.setVisible(false);
+				wall2.setVisible(false);
+				monster.setX(370);
 				break;
 			case 3:
 				employ1.setTexture("dead");
@@ -181,6 +188,10 @@ export default class Puzzle1 extends Phaser.Scene {
 					"NOOOOO! I'm next, take it slow I dont want to die!",
 					50
 				);
+				wall1.setVisible(false);
+				wall2.setVisible(false);
+				wall3.setVisible(false);
+				monster.setX(500);
 				break;
 			case 4:
 				strikes = 0;
@@ -190,11 +201,14 @@ export default class Puzzle1 extends Phaser.Scene {
 				lock3Collected = false;
 				dialog = false;
 				reenter = false;
+				wall1.setVisible(false);
+				wall2.setVisible(false);
+				wall3.setVisible(false);
+				wall4.setVisible(false);
 				this.scene.start("GameOverGreen");
 			default:
-				console.log("somethin went wrong here");
+				console.log("somethin went wrong here, or maybe you died");
 		}
-		console.log("puz1", this.man.completed);
 	}
 	wake(input, scene) {
 		this.input.keyboard.on(
@@ -266,7 +280,6 @@ function collectItem(man, key) {
 
 function reset() {
 	strikes += 1;
-	console.log("strikes", strikes);
 	this.cameras.main.shake(500);
 	dialog = true;
 	unlocked = false;
