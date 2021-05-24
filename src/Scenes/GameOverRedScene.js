@@ -12,7 +12,9 @@ export default class GameOverRedScene extends Phaser.Scene {
     this.add.image(400, 300, "GameoverRed");
     this.add.text(350, 350, "Game Over!");
     const restartButton = new Button(400, 500, "Restart Game", this, () => {
-      this.scene.start("StartScene");
+      this.scene.start("StartScene", {
+        complete: { puzzle1: false, puzzle2: false },
+      });
     });
   }
 }
