@@ -190,8 +190,7 @@ export default class Puzzle1 extends Phaser.Scene {
         lock3Collected = false;
         dialog = false;
         reenter = false;
-        this.gameOver();
-      //this.scene.start("GameOverGreen");
+        this.scene.start("GameOverGreen");
       default:
         console.log("somethin went wrong here");
     }
@@ -260,9 +259,6 @@ function collectItem(man, key) {
   man.completed.puzzle1 = true;
   this.collected = true;
 }
-function gameOver() {
-  this.scene.start("GameOverGreen");
-}
 
 function reset() {
   strikes += 1;
@@ -274,9 +270,6 @@ function reset() {
   lock2Collected = false;
   lock3Collected = false;
   this.scene.start("Puzzle1", { x: this.man.x, y: this.man.y });
-  if (strikes > 3) {
-    this.scene.start("GameOver");
-  }
 }
 
 function makePuzzle(key) {
