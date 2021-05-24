@@ -85,6 +85,11 @@ export default class PreloaderScene extends Phaser.Scene {
     // load assets needed in our game
 
     //load images
+    this.load.image("GameoverRed", "assets/GameOverRed.png");
+    this.load.image("GameoverGreen", "assets/GameOverGreen.png");
+    this.load.image("NPC3Scared", "assets/NPC3Scared.png");
+    this.load.image("NPC2Scared", "assets/NPC2Scared.png");
+    this.load.image("Insidebag", "assets/Insidebag.png");
     this.load.image("blueButton1", "assets/ui/blue_button02.png");
     this.load.image("blueButton2", "assets/ui/blue_button03.png");
     this.load.image("phaserLogo", "assets/logo.png");
@@ -114,6 +119,9 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("drawer", "assets/drawer.png");
     this.load.image("NPC2", "assets/NPC2.png");
     this.load.image("NPC3", "assets/NPC3.png");
+    this.load.image("NPC2icon", "assets/NPC2icon.png");
+    this.load.image("NPC3icon", "assets/NPC3icon.png");
+    this.load.image("Protagicon", "assets/Protagicon.png");
     this.load.image("car", "assets/car.png");
     this.load.image("arrow", "assets/arrow.png");
     this.load.image("employee", "assets/Hotel employee.png");
