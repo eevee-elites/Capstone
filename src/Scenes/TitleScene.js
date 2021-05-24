@@ -15,7 +15,9 @@ export default class TitleScene extends Phaser.Scene {
       this.scene.start("Tutorial");
     });
     const startButton = new Button(400, 450, "Skip Intro", this, () => {
-      this.scene.start("StartScene");
+      this.scene.start("StartScene", {
+        completed: { puzzle1: false, puzzle2: false },
+      });
     });
   }
 }

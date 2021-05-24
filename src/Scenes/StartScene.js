@@ -3,7 +3,7 @@ import Player from "../Models/Player";
 import NPC from "../Models/NPC";
 import Animate from "../Models/Animate";
 import { TextBoxWithIcon } from "../Utilities/TextBox";
-let light; 
+let light;
 var content =
   "Welcome to Haunted Hopper! Behind each door you will find the opportunity to save one of your friends but dont be fooled, each mistake you make will cost them their life";
 let textOpen = false;
@@ -12,10 +12,8 @@ let last = false;
 export default class StartScene extends Phaser.Scene {
   constructor() {
     super("StartScene");
-    let man, npc;
-    var anims;
   }
-  initialize() {
+  initialize(data) {
     function switchInventory() {
       Phaser.Scene.call(this, "Inventory");
     }
@@ -44,49 +42,52 @@ export default class StartScene extends Phaser.Scene {
 
     const tileset = map.addTilesetImage("Hallway", "tiles");
 
-    const belowLayer = map.createLayer("Below", tileset, 0, 0).setPipeline("Light2D");;
-    const collidingLayer = map.createLayer("Colliding", tileset, 0, 0).setPipeline("Light2D");;
+    const belowLayer = map
+      .createLayer("Below", tileset, 0, 0)
+      .setPipeline("Light2D");
+    const collidingLayer = map
+      .createLayer("Colliding", tileset, 0, 0)
+      .setPipeline("Light2D");
 
     collidingLayer.setCollisionByProperty({ collides: true });
     //map
 
-    this.add.text(425,170, 'Room 1', {color: 'black'})
-    this.add.text(805,170, 'Room 2', {color: 'black'})
-    this.add.text(1185,170, 'Room 3', {color: 'black'})
+    this.add.text(425, 170, "Room 1", { color: "black" });
+    this.add.text(805, 170, "Room 2", { color: "black" });
+    this.add.text(1185, 170, "Room 3", { color: "black" });
 
-
-
-    if (data.x){
-    console.log('data', data)
-			this.man = this.physics.add
-				.existing(new Player(this, data.x, data.y, "man"))
-				.setOrigin(0, 0);}
-		else {
-			this.man = this.physics.add
-				.existing(new Player(this, 200, 400, "man"))
-				.setOrigin(0, 0);
-		}
-		this.man.body.setSize(32, 32, true);
+    if (data.x) {
+      console.log("data", data);
+      this.man = this.physics.add
+        .existing(new Player(this, data.x, data.y, "man"))
+        .setOrigin(0, 0);
+    } else {
+      this.man = this.physics.add
+        .existing(new Player(this, 200, 400, "man"))
+        .setOrigin(0, 0);
+    }
+    this.man.body.setSize(32, 32, true);
 
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
     this.npc.body.setSize(30, 90, true);
-
+    console.log("man", this.man);
+    this.man.completed = data.completed;
     this.physics.add.existing(hitBox, true);
     this.physics.add.collider(this.npc, this.man);
     this.physics.add.overlap(this.man, hitBox, this.sayHello, null, this);
     this.physics.add.collider(this.man, collidingLayer);
     this.physics.add.overlap(this.man, EmptyRoom, emptyEnter, null, this);
-
+    //this.man.completed.puzzle2 = data.completed2 || false;
     Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
     //camera
     this.cameras.main.setBounds(48, 0, 3000, 700);
     this.cameras.main.startFollow(this.man, true);
 
     //lights
-		this.lights.enable();
-		this.lights.setAmbientColor(0x7b5e57);
-		light = this.lights.addLight(180, 80, 120);
+    this.lights.enable();
+    this.lights.setAmbientColor(0x7b5e57);
+    light = this.lights.addLight(180, 80, 120);
 
     this.physics.add.collider(this.man, collidingLayer);
     this.physics.add.overlap(
@@ -143,7 +144,7 @@ export default class StartScene extends Phaser.Scene {
   update() {
     this.man.update(this);
     light.x = this.man.x + 35;
-		light.y = this.man.y + 35;
+    light.y = this.man.y + 35;
   }
 
   sayHello(man, pika) {
@@ -155,11 +156,18 @@ export default class StartScene extends Phaser.Scene {
   }
 }
 function enterPuzzleRoom1() {
-  this.scene.start("Puzzle1");
+  if (!this.man.completed.puzzle1) {
+    this.scene.start("Puzzle1", { completed: this.man.completed });
+  } else {
+    TextBoxWithIcon(this, "icon", textOpen, last).start(
+      "Wow I already completed this!",
+      50
+    );
+  }
 }
 function enterPuzzleRoom2() {
-  this.scene.start("Puzzle2");
+  this.scene.start("Puzzle2", { completed: this.man.completed });
 }
 function emptyEnter() {
-  this.scene.start("EmptyRoom1");
+  this.scene.start("EmptyRoom1", { completed: this.man.completed });
 }
