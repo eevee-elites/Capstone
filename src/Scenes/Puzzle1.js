@@ -160,10 +160,9 @@ export default class Puzzle1 extends Phaser.Scene {
 				break;
 			case 1:
 				employ1.setTexture("dead");
-				TextBoxWithIcon(this, "NPC2Scared", true, false).start(
-					"Everytime you reset the game one of us dies!",
-					50
-				);
+				TextBoxWithIcon(this, "NPC2Scared", true, false)
+					.start("Everytime you reset the game one of us dies!", 50)
+					.setDepth(2);
 				wall1.setVisible(false);
 				monster.setX(240);
 				break;
@@ -171,10 +170,9 @@ export default class Puzzle1 extends Phaser.Scene {
 				employ1.setTexture("dead");
 				employ2.setTexture("dead");
 				this.cameras.main.shake(500);
-				TextBoxWithIcon(this, "NPC2Scared", true, false).start(
-					"Aaaaaaaahhh!, You have to be careful!",
-					50
-				);
+				TextBoxWithIcon(this, "NPC2Scared", true, false)
+					.start("Aaaaaaaahhh!, You have to be careful!", 50)
+					.setDepth(2);
 				wall1.setVisible(false);
 				wall2.setVisible(false);
 				monster.setX(370);
@@ -184,10 +182,9 @@ export default class Puzzle1 extends Phaser.Scene {
 				employ2.setTexture("dead");
 				employ3.setTexture("dead");
 				this.cameras.main.shake(500);
-				TextBoxWithIcon(this, "NPC2Scared", true, false).start(
-					"NOOOOO! I'm next, take it slow I dont want to die!",
-					50
-				);
+				TextBoxWithIcon(this, "NPC2Scared", true, false)
+					.start("NOOOOO! I'm next, take it slow I dont want to die!", 50)
+					.setDepth(2);
 				wall1.setVisible(false);
 				wall2.setVisible(false);
 				wall3.setVisible(false);
