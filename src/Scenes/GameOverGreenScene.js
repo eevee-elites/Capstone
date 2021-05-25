@@ -13,7 +13,7 @@ export default class GameOverGreenScene extends Phaser.Scene {
     this.add.text(550, 0, "Game Over!").setFontSize(30);
     const restartButton = new Button(630, 80, "Restart Game", this, () => {
       this.scene.start("StartScene", {
-        complete: { puzzle1: false, puzzle2: false },
+        completed: { puzzle1: false, puzzle2: false },
       });
     });
   }

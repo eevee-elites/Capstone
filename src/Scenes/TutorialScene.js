@@ -8,7 +8,7 @@ import {TextBoxWithIcon} from "../Utilities/TextBox";
 const Greet =
 	'Hey! Come over here! Use your arrow keys or "W" "A" "S" "D" to move and press the "enter" key to interact with me';
 const TalkandPushingInstructions =
-	"This is how you can talk to me. You can also keep pressing to finish and close out our conversations...                 Did you make sure to leave the door open?                                                                             …                                                                                                                       You didn't?! Oh no! Did you get trapped in here too? Go find the key! I'm not strong enough, but I'm sure you are!   You have to push those nightstands to get the key!";
+	"This is how you can talk to me. You can also keep pressing to finish and close out our conversations...                 Did you make sure to leave the door open?                                                                             …                                                                                                                       You didn't?! Oh no! Did you get trapped in here too? Go get the key by pushing the nightstand! \nI'm not strong enough, but I'm sure you are!";
 const InventoryInstructions = 'Press " i " to see your inventory';
 const Leave =
 	"Now that you have the key, you can leave. Go back to your friends!";

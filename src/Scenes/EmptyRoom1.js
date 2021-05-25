@@ -36,7 +36,6 @@ export default class EmptyRoom1 extends Phaser.Scene {
       .existing(new Player(this, 450, 650, "man"))
       .setOrigin(0, 0);
     this.man.body.setSize(32, 32, true);
-    console.log("emty man", this.man);
     this.physics.add.collider(this.man, collidingLayer);
     this.physics.add.overlap(this.man, exitBox, this.exitRoom, null, this);
     this.man.completed = data.completed;

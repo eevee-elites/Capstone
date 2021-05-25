@@ -68,50 +68,49 @@ export default class IntroScene extends Phaser.Scene {
 	openingdialogue1() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "man", this.reply1).start(Finally, 50);
+			this.TextBoxWithIcon(this, "Protagicon", this.reply1).start(Finally, 50);
 		}
 	}
 	reply1() {
-		console.log("textopen", textOpen, "last", last);
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "NPC2", this.reply2).start(Reply1, 50);
+			this.TextBoxWithIcon(this, "NPC2icon", this.reply2).start(Reply1, 50);
 		}
 	}
 	reply2() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "NPC3", this.reply3).start(Reply2, 50);
+			this.TextBoxWithIcon(this, "NPC3icon", this.reply3).start(Reply2, 50);
 		}
 	}
 	reply3() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "man", this.reply4).start(Reply3, 50);
+			this.TextBoxWithIcon(this, "Protagicon", this.reply4).start(Reply3, 50);
 		}
 	}
 	reply4() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "NPC2", this.reply5).start(Reply4, 50);
+			this.TextBoxWithIcon(this, "NPC2icon", this.reply5).start(Reply4, 50);
 		}
 	}
 	reply5() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "NPC3", this.reply6).start(Reply5, 50);
+			this.TextBoxWithIcon(this, "NPC3icon", this.reply6).start(Reply5, 50);
 		}
 	}
 	reply6() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "NPC2", this.reply7).start(Reply6, 50);
+			this.TextBoxWithIcon(this, "NPC2icon", this.reply7).start(Reply6, 50);
 		}
 	}
 	reply7() {
 		if (textOpen === false && last === false) {
 			textOpen = true;
-			this.TextBoxWithIcon(this, "man", null).start(Reply7, 50);
+			this.TextBoxWithIcon(this, "Protagicon", null).start(Reply7, 50);
 		}
 		go = true;
 	}

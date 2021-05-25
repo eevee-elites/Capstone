@@ -36,17 +36,7 @@ let deco;
 let deco2;
 let deco3;
 let deco4;
-let deco5;
-let deco6;
-let deco7;
-let deco8;
-let deco9;
-let deco10;
-let deco11;
-let deco12;
-let deco13;
-let deco14;
-let deco15;
+
 let monster, wall1, wall2, wall3, wall4;
 let decoflipped;
 let decoflipped2;
@@ -239,7 +229,6 @@ export default class Puzzle2 extends Phaser.Scene {
     noButton.visible = false;
     noButton.setScrollFactor(0);
     noButton.setInteractive();
-    console.log("puzz2 man", this.man);
     this.input.keyboard.on(
       "keydown-I",
       function () {
@@ -303,7 +292,6 @@ export default class Puzzle2 extends Phaser.Scene {
   }
 
   getScissors(man, doll) {
-    console.log("text open?", textOpen);
     if (man.inventory.scissors === 0) {
       nurse = true;
       if (nurse) {
@@ -429,7 +417,6 @@ export default class Puzzle2 extends Phaser.Scene {
           greenDoll.setTexture("greenDollCut");
         }
 
-        console.log("used the scissors");
         yesButton.visible = false;
         noButton.visible = false;
       });
@@ -457,7 +444,7 @@ export default class Puzzle2 extends Phaser.Scene {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start("H-Help! This thing is attacking us!", 50);
       employee1.setTexture("dead");
       wall1.setVisible(false)
-      monster.x += 100
+      monster.x += 120
     } else if (wrongCounter === 2) {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start(
         "Sophie, be careful with your mistakes! The monster's getting closer!",
@@ -473,7 +460,7 @@ export default class Puzzle2 extends Phaser.Scene {
         "I think I'm next - help, Sophie!",
         50
       );
-      monster.x += 100
+      monster.x += 120
 
       wall1.setVisible(false)
       wall2.setVisible(false)
@@ -485,7 +472,7 @@ export default class Puzzle2 extends Phaser.Scene {
       wall2.setVisible(false)
       wall3.setVisible(false)
       wall4.setVisible(false)
-      monster.x += 100
+      monster.x += 120
 
       wrongCounter = 0;
       dollsCut = false;

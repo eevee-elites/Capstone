@@ -59,7 +59,7 @@ export default class LobbyScene extends Phaser.Scene {
 		textOpen = true;
 		openingTextBox = TextBoxWithIcon(
 			this,
-			"HotelEmployee",
+			"bellhopscared",
 			textOpen,
 			last
 		).start(Attention, 50);
@@ -76,6 +76,8 @@ export default class LobbyScene extends Phaser.Scene {
 	}
 	startScene() {
 		this.lights.setAmbientColor(0xffffff);
-		this.scene.start("StartScene");
+		this.scene.start("StartScene", {
+			completed: { puzzle1: false, puzzle2: false },
+		  });
 	}
 }
