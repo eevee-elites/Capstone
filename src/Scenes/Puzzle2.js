@@ -54,7 +54,7 @@ let decoflipped3;
 let decoflipped4;
 let decoflipped5;
 let decoflipped6;
-
+let counter = 0;
 
 
 
@@ -115,7 +115,7 @@ export default class Puzzle2 extends Phaser.Scene {
       employee3 = this.add.image(562, 224, "employee");
       wall4 = this.add.image(630, 224, "wall");
       monster = this.add.image(128, 224, "monster");
-      friend = this.add.sprite(690, 224, "NPC2");
+      friend = this.add.sprite(690, 224, "NPC3");
     
     const collidingLayer = map
       .createLayer("Colliding", tileset, 0, 0)
@@ -263,6 +263,7 @@ export default class Puzzle2 extends Phaser.Scene {
       },
       this
     );
+   
   }
   wake(input, scene) {
     this.input.keyboard.on(
@@ -278,7 +279,7 @@ export default class Puzzle2 extends Phaser.Scene {
       this
     );
   }
-
+ 
   update() {
     this.man.update(this);
     if (wrongClicked) {
@@ -378,6 +379,7 @@ export default class Puzzle2 extends Phaser.Scene {
       );
 
       blueButton.on("pointerdown", function () {
+        counter += 1
         blueButton.visible = false;
         greenButton.visible = false;
         redButton.visible = false;
@@ -386,6 +388,7 @@ export default class Puzzle2 extends Phaser.Scene {
       });
 
       greenButton.on("pointerdown", function () {
+        counter+= 1
         this.scene.cameras.main.shake(500);
         blueButton.visible = false;
         greenButton.visible = false;
@@ -403,6 +406,7 @@ export default class Puzzle2 extends Phaser.Scene {
         } else {
           this.scene.cameras.main.shake(500);
           wrongClicked = true;
+          counter+=1
         }
       });
     } else if (
@@ -439,6 +443,7 @@ export default class Puzzle2 extends Phaser.Scene {
       });
     }
   }
+
   seeButtons() {
     blueButton.visible = true;
     greenButton.visible = true;
@@ -454,20 +459,31 @@ export default class Puzzle2 extends Phaser.Scene {
     if (wrongCounter === 1) {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start("aaaaaaaaa", 50);
       employee1.setTexture("dead");
+      wall1.setVisible(false)
     } else if (wrongCounter === 2) {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start(
         "aaaaa you have to be careful with the mistakes",
         50
       );
+      wall1.setVisible(false)
+      wall2.setVisible(false)
       employee2.setTexture("dead");
     } else if (wrongCounter === 3) {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start(
         "Oh no this is it for me one more wrong choice and I'm dead",
         50
       );
+      wall1.setVisible(false)
+      wall2.setVisible(false)
+      wall3.setVisible(false)
 
       employee3.setTexture("dead");
     } else if (wrongCounter === 4) {
+      wall1.setVisible(false)
+      wall2.setVisible(false)
+      wall3.setVisible(false)
+      wall4.setVisible(false)
+
       wrongCounter = 0;
       dollsCut = false;
       once = false;
