@@ -405,17 +405,17 @@ export default class Puzzle2 extends Phaser.Scene {
 		noButton.visible = false;
 
 		if (wrongCounter === 1) {
-			TextBoxWithIcon(this, "NPC3Scared", true, false).start("aaaaaaaaa", 50);
+			TextBoxWithIcon(this, "NPC3Scared", true, false).start("H-Help! This thing is attacking us!", 50);
 			employee1.setTexture("dead");
 		} else if (wrongCounter === 2) {
 			TextBoxWithIcon(this, "NPC3Scared", true, false).start(
-				"aaaaa you have to be careful with the mistakes",
+				"Sophie, be careful with your mistakes! The monster's getting closer!",
 				50
 			);
 			employee2.setTexture("dead");
 		} else if (wrongCounter === 3) {
 			TextBoxWithIcon(this, "NPC3Scared", true, false).start(
-				"Oh no this is it for me one more wrong choice and I'm dead",
+				"I think I'm next - help, Sophie!",
 				50
 			);
 

@@ -15,8 +15,8 @@ let reenter = false;
 let employ1, employ2, employ3, monster, wall1, wall2, wall3, wall4;
 // let music;
 const Help =
-	"SOPHIE!!! You're trapped in this room too! BUT WE HAVE THE KEY TO THE DOOR!    Step on the sensors on the ground to unlock the cage and get us out! I think that big red button is also a reset button!";
-const Thanks = "Thanks for freeing us! Grab the key and lets goooo!";
+	"SOPHIE! HELP! We have the key to get out of the room, but we can't leave this cage! Press the sensors on the ground to get us out of here! \n\n\nThe red button could help you if you're stuck...but it looks dangerous. Be careful when you it.";
+const Thanks = "Thanks for freeing us! Grab the key and let's go'!";
 export default class Puzzle1 extends Phaser.Scene {
 	constructor() {
 		super("Puzzle1");
@@ -161,7 +161,7 @@ export default class Puzzle1 extends Phaser.Scene {
 			case 1:
 				employ1.setTexture("dead");
 				TextBoxWithIcon(this, "NPC2Scared", true, false)
-					.start("Everytime you reset the game one of us dies!", 50)
+					.start("Be careful with that reset button! This thing attacked us when you pressed it!", 50)
 					.setDepth(2);
 				wall1.setVisible(false);
 				monster.setX(240);
@@ -171,7 +171,7 @@ export default class Puzzle1 extends Phaser.Scene {
 				employ2.setTexture("dead");
 				this.cameras.main.shake(500);
 				TextBoxWithIcon(this, "NPC2Scared", true, false)
-					.start("Aaaaaaaahhh!, You have to be careful!", 50)
+					.start("You have to be careful!", 50)
 					.setDepth(2);
 				wall1.setVisible(false);
 				wall2.setVisible(false);
@@ -183,7 +183,7 @@ export default class Puzzle1 extends Phaser.Scene {
 				employ3.setTexture("dead");
 				this.cameras.main.shake(500);
 				TextBoxWithIcon(this, "NPC2Scared", true, false)
-					.start("NOOOOO! I'm next, take it slow I dont want to die!", 50)
+					.start("NOOOOO! I'm next...take it slow, I don't want to die!", 50)
 					.setDepth(2);
 				wall1.setVisible(false);
 				wall2.setVisible(false);
