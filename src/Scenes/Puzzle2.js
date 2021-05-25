@@ -46,9 +46,6 @@ let decoflipped5;
 let decoflipped6;
 let counter = 0;
 
-
-
-
 export default class Puzzle2 extends Phaser.Scene {
   constructor() {
     super("Puzzle2");
