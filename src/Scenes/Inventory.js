@@ -6,7 +6,7 @@ export default class Inventory extends Phaser.Scene {
   }
 
   initialize(data) {
-    console.log(data);
+
     Phaser.Scene.call(this, "Inventory");
   }
 
@@ -16,7 +16,7 @@ export default class Inventory extends Phaser.Scene {
     this.add.image(400, 400, "Insidebag");
     this.inventoryPassed = data.inventory;
     const myInventory = [];
-    console.log(" inventory data", data);
+
 
     for (const key in this.inventoryPassed) {
       if (this.inventoryPassed[key] != 0) {

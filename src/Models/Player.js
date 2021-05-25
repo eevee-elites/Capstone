@@ -19,7 +19,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     switch (item) {
       case "room1Key":
         this.inventory.room1Key += 1;
-        console.log("room1 key collected");
+
         break;
       case "scissors":
         this.inventory.scissors += 1;

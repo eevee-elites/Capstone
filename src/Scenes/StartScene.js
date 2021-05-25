@@ -57,7 +57,6 @@ export default class StartScene extends Phaser.Scene {
     this.add.text(1185, 170, "Room 3", { color: "black" });
 
     if (data.x) {
-      console.log("data", data);
       this.man = this.physics.add
         .existing(new Player(this, data.x, data.y, "man"))
         .setOrigin(0, 0);
@@ -71,7 +70,6 @@ export default class StartScene extends Phaser.Scene {
     this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
 
     this.npc.body.setSize(30, 90, true);
-    console.log("man", this.man);
     this.man.completed = data.completed;
     this.physics.add.existing(hitBox, true);
     this.physics.add.collider(this.npc, this.man);
@@ -160,7 +158,7 @@ function enterPuzzleRoom1() {
     this.scene.start("Puzzle1", { completed: this.man.completed });
   } else {
     TextBoxWithIcon(this, "Protagicon", textOpen, last).start(
-      "I already saved my friend no need to get stuck in that maze!",
+      "I already saved my friend. No need to get stuck in that maze!",
       50
     );
   }
@@ -170,7 +168,7 @@ function enterPuzzleRoom2() {
     this.scene.start("Puzzle2", { completed: this.man.completed });
   } else {
     TextBoxWithIcon(this, "Protagicon", textOpen, last).start(
-      "I saved my friend from here and those dolls creep me out I'm not going back in there!",
+      "I saved my friend from here and those dolls creep me out. I'm not going back in there!",
       50
     );
   }
