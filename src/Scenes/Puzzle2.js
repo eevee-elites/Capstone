@@ -141,7 +141,7 @@ export default class Puzzle2 extends Phaser.Scene {
     decoflipped3 = this.add.image(130, 360, "deco3flipped")   
     decoflipped3.flipX = true
 
-    decoflipped4 = this.add.image(710, 640, "decoflipped")   
+    decoflipped4 = this.add.image(750, 340, "decoflipped")   
 
 
     //cage
