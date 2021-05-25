@@ -13,7 +13,7 @@ export default class Inventory extends Phaser.Scene {
   preload() {}
 
   create(data) {
-    this.add.image(300, 400, "Insidebag");
+    this.add.image(400, 400, "Insidebag");
     this.inventoryPassed = data.inventory;
     const myInventory = [];
     console.log(" inventory data", data);
@@ -23,15 +23,15 @@ export default class Inventory extends Phaser.Scene {
         myInventory.push(key);
       }
     }
-    let x = 100;
-    let y = 100;
+    let x = 320;
+    let y = 400;
     myInventory.forEach((item) => {
       this.add.image(x, y, item);
       x += 100;
     });
 
     this.add.text(310, 0, "INVENTORY").setFontSize(30);
-    this.add.text(270, 580, "Press 'i' to return to game");
+    this.add.text(270, 40, "Press 'i' to return to game");
 
     this.input.keyboard.on(
       "keydown-I",

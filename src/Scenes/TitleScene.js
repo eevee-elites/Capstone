@@ -6,11 +6,11 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("logo", "assets/bootTitle.png");
+    //this.load.image("title", "assets/Title.png");
   }
 
   create() {
-    this.add.image(400, 300, "logo");
+    this.add.image(400, 300, "title");
     const tutorialButton = new Button(400, 350, "Play Intro", this, () => {
       this.scene.start("Tutorial");
     });
