@@ -460,11 +460,14 @@ export default class Puzzle2 extends Phaser.Scene {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start("aaaaaaaaa", 50);
       employee1.setTexture("dead");
       wall1.setVisible(false)
+      monster.x += 100
     } else if (wrongCounter === 2) {
       TextBoxWithIcon(this, "NPC3Scared", true, false).start(
         "aaaaa you have to be careful with the mistakes",
         50
       );
+      monster.x += 100
+
       wall1.setVisible(false)
       wall2.setVisible(false)
       employee2.setTexture("dead");
@@ -473,6 +476,8 @@ export default class Puzzle2 extends Phaser.Scene {
         "Oh no this is it for me one more wrong choice and I'm dead",
         50
       );
+      monster.x += 100
+
       wall1.setVisible(false)
       wall2.setVisible(false)
       wall3.setVisible(false)
@@ -483,6 +488,7 @@ export default class Puzzle2 extends Phaser.Scene {
       wall2.setVisible(false)
       wall3.setVisible(false)
       wall4.setVisible(false)
+      monster.x += 100
 
       wrongCounter = 0;
       dollsCut = false;
