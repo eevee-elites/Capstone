@@ -13,13 +13,11 @@ const InventoryInstructions = 'Press " i " to see your inventory';
 const Leave =
 	"Now that you have the key, you can leave. Go back to your friends!";
 
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
 let textOpen = false;
 let last = false;
 let madeBoxesAppear = false;
 let light;
+let collect = false;
 
 export default class TutorialScene extends Phaser.Scene {
 	constructor() {
@@ -56,21 +54,19 @@ export default class TutorialScene extends Phaser.Scene {
 			.setPipeline("Light2D");
 
 		this.collidingLayer.setCollisionByProperty({collides: true});
-		// man key & npc
+		// man
 		this.man = new Player(this, 400, 700, "man").setOrigin(0, 0);
-
 		Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
 		this.man.body.setSize(32, 32, true);
+		//npc
 		this.npc = this.physics.add.existing(new NPC(this, 100, 400, "NPC"), true);
-
 		this.npc.body.setSize(30, 90, true);
-		// NPCAnimate(this, 'NPC', 0, 0, 0);
+		//key
 		this.room1Key = this.physics.add.existing(
 			new NPC(this, 770, 200, "room1Key"),
 			true
 		);
 		NPCAnimate(this, "room1Key", 0, 9, 10, -1);
-		this.collect = false;
 		this.room1Key.setVisible(false);
 		//table
 		this.movable = this.physics.add.staticSprite(678, 540, "drawer");
@@ -91,22 +87,17 @@ export default class TutorialScene extends Phaser.Scene {
 			null,
 			this
 		);
-		// starting dialogue
-		textOpen = true;
-		createTextBox(this, 100, 400, {
-			wrapWidth: 500,
-			fixedWidth: 500,
-			fixedHeight: 65,
-		}).start(Greet, 50);
-
 		this.physics.add.overlap(npcHitBox, this.man, this.sayHello, null, this);
 		this.physics.add.overlap(exitHitBox, this.man, this.exitRoom, null, this);
+		// starting dialogue
+		textOpen = true;
+		createTextBox(this).start(Greet, 50);
 
 		//lights
 		this.lights.enable();
 		this.lights.setAmbientColor(0x7b5e57);
 		light = this.lights.addLight(180, 80, 120);
-
+		//inventory
 		this.input.keyboard.on(
 			"keydown-I",
 			function () {
@@ -125,16 +116,12 @@ export default class TutorialScene extends Phaser.Scene {
 			function () {
 				this.wake(this.input, this.scene);
 				textOpen = true;
-				createTextBox(this, 100, 400, {
-					wrapWidth: 500,
-					fixedWidth: 500,
-					fixedHeight: 65,
-				}).start(Leave, 50);
+				createTextBox(this).start(Leave, 50);
 			},
 			this
 		);
 	}
-	wake(input, scene) {
+	wake() {
 		this.input.keyboard.on(
 			"keydown-I",
 			function () {
@@ -156,66 +143,41 @@ export default class TutorialScene extends Phaser.Scene {
 		light.y = this.man.y + 35;
 	}
 	exitRoom() {
-		if (this.collect) {
+		if (collect) {
 			return this.scene.start("Intro", {finishedTutorial: true});
 		}
 	}
 	collectKey(man, item) {
 		item.disableBody(true, true);
 		man.pickupItem(item.texture.key);
-		this.collect = true;
+		collect = true;
 		textOpen = true;
-		createTextBox(
-			this,
-			100,
-			400,
-			{
-				wrapWidth: 500,
-				fixedWidth: 500,
-				fixedHeight: 65,
-			},
-			true
-		).start(InventoryInstructions, 50);
+		createTextBox(this).start(InventoryInstructions, 50);
 	}
 
 	sayHello() {
 		let enter = this.input.keyboard.addKey("ENTER");
 		if (enter.isDown && textOpen === false && last === false) {
 			textOpen = true;
-			createTextBox(
-				this,
-				100,
-				400,
-				{
-					wrapWidth: 500,
-					fixedWidth: 500,
-					fixedHeight: 65,
-				},
-				true
-			).start(TalkandPushingInstructions, 50);
+			createTextBox(this, true).start(TalkandPushingInstructions, 50);
 		}
 	}
 }
-const GetValue = Phaser.Utils.Objects.GetValue;
-var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
-	var wrapWidth = GetValue(config, "wrapWidth", 0);
-	var fixedWidth = GetValue(config, "fixedWidth", 0);
-	var fixedHeight = GetValue(config, "fixedHeight", 0);
-
+function createTextBox(scene, letBoxesAppear = false) {
 	var textBox = scene.rexUI.add
 		.textBox({
-			x: x,
-			y: y,
+			x: 100,
+			y: 400,
 
 			background: scene.rexUI.add
-				.roundRectangle(0, 0, 2, 2, 20, COLOR_PRIMARY)
-				.setStrokeStyle(2, COLOR_LIGHT)
+				.roundRectangle(0, 0, 2, 2, 20, 0x4e342e)
+				.setStrokeStyle(2, 0x7b5e57)
 				.setVisible(true),
 
 			icon: scene.add.image(0, 0, "icon"),
-			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
+			text: getBBcodeText(scene, 500, 500, 65),
 
-			action: scene.add.image(0, 0, "nextPage").setTint(COLOR_LIGHT),
+			action: scene.add.image(0, 0, "nextPage").setTint(0x7b5e57),
 
 			space: {
 				left: 20,
@@ -251,9 +213,13 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 					if (letBoxesAppear) {
 						if (!madeBoxesAppear) {
 							madeBoxesAppear = true;
+							//set key visible
 							scene.room1Key.setVisible(true);
+							//make last box movable
 							const movable = scene.physics.add.sprite(678, 540, "drawer");
+							//disable old box
 							scene.movable.disableBody(true, true);
+							//collisons
 							scene.physics.add.collider(movable, scene.collidingLayer);
 							scene.physics.add.collider(movable, scene.man);
 						}
@@ -268,7 +234,7 @@ var createTextBox = function (scene, x, y, config, letBoxesAppear = false) {
 	);
 
 	return textBox;
-};
+}
 
 var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
 	return scene.rexUI.add.BBCodeText(0, 0, "", {
