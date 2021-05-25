@@ -90,7 +90,7 @@ export default class StartScene extends Phaser.Scene {
     light = this.lights.addLight(180, 80, 120);
 
     this.physics.add.collider(this.man, collidingLayer);
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.man,
       puzzle1Room,
       enterPuzzleRoom1,
@@ -98,7 +98,7 @@ export default class StartScene extends Phaser.Scene {
       this
     );
 
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.man,
       puzzle2Room,
       enterPuzzleRoom2,
@@ -159,14 +159,21 @@ function enterPuzzleRoom1() {
   if (!this.man.completed.puzzle1) {
     this.scene.start("Puzzle1", { completed: this.man.completed });
   } else {
-    TextBoxWithIcon(this, "icon", textOpen, last).start(
-      "Wow I already completed this!",
+    TextBoxWithIcon(this, "Protagicon", textOpen, last).start(
+      "I already saved my friend no need to get stuck in that maze!",
       50
     );
   }
 }
 function enterPuzzleRoom2() {
-  this.scene.start("Puzzle2", { completed: this.man.completed });
+  if (!this.man.completed.puzzle2) {
+    this.scene.start("Puzzle2", { completed: this.man.completed });
+  } else {
+    TextBoxWithIcon(this, "Protagicon", textOpen, last).start(
+      "I saved my friend from here and those dolls creep me out I'm not going back in there!",
+      50
+    );
+  }
 }
 function emptyEnter() {
   this.scene.start("EmptyRoom1", { completed: this.man.completed });

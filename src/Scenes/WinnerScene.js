@@ -8,6 +8,6 @@ export default class WinnerScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.add.text(350, 350, "YOU WIN!");
+    this.add.image(400, 300, "win");
   }
 }
