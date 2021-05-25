@@ -115,5 +115,5 @@ export default class TesterScene extends Phaser.Scene {
 function collectItem(man, item) {
   man.pickupItem(item.texture.key);
   item.disableBody(true, true);
-  console.log(man.inventory);
+
 }

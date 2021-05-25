@@ -12,7 +12,4 @@ export default class Button {
 	}
 }
 
-// // Then later in one of your scenes, create a new button:
-// const button = new Button(0, 0, 'Start Game', this, () =>
-// 	console.log('game is started')
-// );
+

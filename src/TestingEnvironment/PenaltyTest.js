@@ -62,13 +62,8 @@ export default class PenaltyTest extends Phaser.Scene {
   penalty() {
     wrongCounter++;
     wrongClicked = false;
-
-    if (wrongCounter === 1) {
-      console.log("strike one");
-    } else if (wrongCounter === 2) {
-      console.log("strike two");
-    } else if (wrongCounter === 3) {
-      console.log("strike three");
+    
+    if (wrongCounter === 3) {
       this.scene.switch("Title");
     }
   }

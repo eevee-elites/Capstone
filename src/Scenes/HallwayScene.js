@@ -49,7 +49,7 @@ export default class HallwayScene extends Phaser.Scene {
 		this.physics.add.collider(this.man, HotelEmployee);
 		this.physics.add.overlap(exitBox, this.man, this.exitLobby, null, this);
 		//Dialogue
-		TextBoxWithIcon(this, "HotelEmployee", true, false).start(content, 50);
+		TextBoxWithIcon(this, "bellhopicon", true, false).start(content, 50);
 	}
 	update() {
 		this.man.update(this);

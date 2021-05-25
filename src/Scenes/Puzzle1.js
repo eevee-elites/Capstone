@@ -15,10 +15,8 @@ let reenter = false;
 let employ1, employ2, employ3, monster, wall1, wall2, wall3, wall4;
 // let music;
 const Help =
-
-	"SOPHIE! HELP! We have the key to get out of the room, but we can't leave this cage! Press the sensors on the ground to get us out of here! \n\n\nThe red button could help you if you're stuck...but it looks dangerous. Be careful when you it.";
-const Thanks = "Thanks for freeing us! Grab the key and let's go'!";
-
+"SOPHIE! HELP! We have the key to get out of the room, but we can't leave this cage! Press the sensors on the ground to get us out of here! \n\n\nThe red button could help you if you're stuck...but it looks dangerous. Be careful when you it.";
+const Thanks = "Thanks for freeing us! Grab the key and let’s go!";
 export default class Puzzle1 extends Phaser.Scene {
   constructor() {
     super("Puzzle1");
@@ -33,9 +31,6 @@ export default class Puzzle1 extends Phaser.Scene {
   }
 
   create(data) {
-    // music = this.sound.add("dollroom", true);
-    // music.play();
-    // music.setVolume(0.3);
     //exit
     let exitBox = this.add.rectangle(450, 850, 100, 100, 0x000000);
     //map
@@ -138,112 +133,110 @@ export default class Puzzle1 extends Phaser.Scene {
       // this.cameras.main.pan(140, 124, 3000);
     }
 
-
-		this.input.keyboard.on(
-			"keydown-I",
-			function () {
-				this.scene.transition({
-					target: "Inventory",
-					duration: 10,
-					data: {inventory: this.man.inventory, scene: "Puzzle1"},
-					sleep: true,
-				});
-			},
-			this
-		);
-		this.events.on(
-			Phaser.Scenes.Events.WAKE,
-			function () {
-				this.wake(this.input, this.scene);
-			},
-			this
-		);
-		switch (strikes) {
-			case 0:
-				break;
-			case 1:
-				employ1.setTexture("dead");
-				TextBoxWithIcon(this, "NPC2Scared", true, false)
-					.start("Be careful with that reset button! This thing attacked us when you pressed it!", 50)
-					.setDepth(2);
-				wall1.setVisible(false);
-				monster.setX(240);
-				break;
-			case 2:
-				employ1.setTexture("dead");
-				employ2.setTexture("dead");
-				this.cameras.main.shake(500);
-				TextBoxWithIcon(this, "NPC2Scared", true, false)
-					.start("You have to be careful!", 50)
-					.setDepth(2);
-				wall1.setVisible(false);
-				wall2.setVisible(false);
-				monster.setX(370);
-				break;
-			case 3:
-				employ1.setTexture("dead");
-				employ2.setTexture("dead");
-				employ3.setTexture("dead");
-				this.cameras.main.shake(500);
-				TextBoxWithIcon(this, "NPC2Scared", true, false)
-					.start("NOOOOO! I'm next...take it slow, I don't want to die!", 50)
-					.setDepth(2);
-				wall1.setVisible(false);
-				wall2.setVisible(false);
-				wall3.setVisible(false);
-				monster.setX(500);
-				break;
-			case 4:
-				strikes = 0;
-				unlocked = false;
-				lock1Collected = false;
-				lock2Collected = false;
-				lock3Collected = false;
-				dialog = false;
-				reenter = false;
-				wall1.setVisible(false);
-				wall2.setVisible(false);
-				wall3.setVisible(false);
-				wall4.setVisible(false);
-				this.scene.start("GameOverGreen");
-			default:
-				console.log("somethin went wrong here, or maybe you died");
-		}
-	}
-	wake(input, scene) {
-		this.input.keyboard.on(
-			"keydown-I",
-			function () {
-				this.scene.transition({
-					target: "Inventory",
-					duration: 10,
-					data: {inventory: this.man.inventory, scene: "Puzzle1"},
-					sleep: true,
-				});
-			},
-			this
-		);
-	}
-	exitRoom() {
-		if (this.collected && !this.man.completed.puzzle2) {
-			this.music.stop();
-			unlocked = false;
-			lock1Collected = false;
-			lock2Collected = false;
-			lock3Collected = false;
-			dialog = false;
-			reenter = false;
-			this.scene.start("StartScene", {
-				x: 825,
-				y: 320,
-				completed: this.man.completed,
-			});
-		}
-		if (this.man.completed.puzzle1 && this.man.completed.puzzle2) {
-			this.scene.start("Winner");
-		}
-	}
-
+    this.input.keyboard.on(
+      "keydown-I",
+      function () {
+        this.scene.transition({
+          target: "Inventory",
+          duration: 10,
+          data: { inventory: this.man.inventory, scene: "Puzzle1" },
+          sleep: true,
+        });
+      },
+      this
+    );
+    this.events.on(
+      Phaser.Scenes.Events.WAKE,
+      function () {
+        this.wake(this.input, this.scene);
+      },
+      this
+    );
+    switch (strikes) {
+      case 0:
+        break;
+      case 1:
+        employ1.setTexture("dead");
+        TextBoxWithIcon(this, "NPC2Scared", true, false)
+          .start("Be careful with that reset button! This thing attacked us when you pressed it!", 50)
+          .setDepth(2);
+        wall1.setVisible(false);
+        monster.setX(240);
+        break;
+      case 2:
+        employ1.setTexture("dead");
+        employ2.setTexture("dead");
+        this.cameras.main.shake(500);
+        TextBoxWithIcon(this, "NPC2Scared", true, false)
+          .start("You have to be careful!", 50)
+          .setDepth(2);
+        wall1.setVisible(false);
+        wall2.setVisible(false);
+        monster.setX(370);
+        break;
+      case 3:
+        employ1.setTexture("dead");
+        employ2.setTexture("dead");
+        employ3.setTexture("dead");
+        this.cameras.main.shake(500);
+        TextBoxWithIcon(this, "NPC2Scared", true, false)
+          .start("NOOOOO! I'm next...take it slow, I don't want to die!", 50)
+          .setDepth(2);
+        wall1.setVisible(false);
+        wall2.setVisible(false);
+        wall3.setVisible(false);
+        monster.setX(500);
+        break;
+      case 4:
+        strikes = 0;
+        unlocked = false;
+        lock1Collected = false;
+        lock2Collected = false;
+        lock3Collected = false;
+        dialog = false;
+        reenter = false;
+        wall1.setVisible(false);
+        wall2.setVisible(false);
+        wall3.setVisible(false);
+        wall4.setVisible(false);
+        this.scene.start("GameOverGreen");
+      default:
+        console.log("somethin went wrong here, or maybe you died");
+    }
+  }
+  wake(input, scene) {
+    this.input.keyboard.on(
+      "keydown-I",
+      function () {
+        this.scene.transition({
+          target: "Inventory",
+          duration: 10,
+          data: { inventory: this.man.inventory, scene: "Puzzle1" },
+          sleep: true,
+        });
+      },
+      this
+    );
+  }
+  exitRoom() {
+    if (this.collected && !this.man.completed.puzzle2) {
+      this.music.stop();
+      unlocked = false;
+      lock1Collected = false;
+      lock2Collected = false;
+      lock3Collected = false;
+      dialog = false;
+      reenter = false;
+      this.scene.start("StartScene", {
+        x: 825,
+        y: 320,
+        completed: this.man.completed,
+      });
+    }
+    if (this.man.completed.puzzle1 && this.man.completed.puzzle2) {
+      this.scene.start("Winner");
+    }
+  }
 
   update() {
     this.man.update(this);
