@@ -37,7 +37,7 @@ export default class LobbyScene extends Phaser.Scene {
 			.createLayer("Tile Layer 2", tileset, 0, 0)
 			.setPipeline("Light2D");
 		//man
-		this.man = this.physics.add.existing(new Player(this, 100, 550, "man"));
+		this.man = this.physics.add.existing(new Player(this, 700, 550, "man"));
 		//NPC
 		this.HotelEmployee = this.physics.add.staticSprite(
 			520,
@@ -51,8 +51,6 @@ export default class LobbyScene extends Phaser.Scene {
 		this.lights.enable();
 		this.lights.setAmbientColor(0x434242);
 		this.lights.addLight(this.man.x + 35, this.man.y + 35, 120);
-		// light.x = this.man.x + 35;
-		// light.y = this.man.y + 35;
 
 		this.attentionDialogue(this.cameras.main);
 	}
@@ -72,12 +70,12 @@ export default class LobbyScene extends Phaser.Scene {
 	monsterDialogue() {
 		openingTextBox.setVisible(false);
 		TextBoxWithoutIcon(this, textOpen, last).start(Monster, 50);
-		// this.lights.disable();
 		this.lights.setAmbientColor(0x970404);
 		this.HotelEmployee.disableBody(true, true);
 		this.input.keyboard.once("keydown-ENTER", this.startScene, this);
 	}
 	startScene() {
+		this.lights.setAmbientColor(0xffffff);
 		this.scene.start("StartScene");
 	}
 }
