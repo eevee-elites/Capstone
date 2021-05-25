@@ -163,11 +163,7 @@ export default class TutorialScene extends Phaser.Scene {
 		}
 	}
 }
-var createTextBox = function (scene, letBoxesAppear = false) {
-	var wrapWidth = 500;
-	var fixedWidth = 500;
-	var fixedHeight = 65;
-
+function createTextBox(scene, letBoxesAppear = false) {
 	var textBox = scene.rexUI.add
 		.textBox({
 			x: 100,
@@ -179,7 +175,7 @@ var createTextBox = function (scene, letBoxesAppear = false) {
 				.setVisible(true),
 
 			icon: scene.add.image(0, 0, "icon"),
-			text: getBBcodeText(scene, wrapWidth, fixedWidth, fixedHeight),
+			text: getBBcodeText(scene, 500, 500, 65),
 
 			action: scene.add.image(0, 0, "nextPage").setTint(0x7b5e57),
 
@@ -238,7 +234,7 @@ var createTextBox = function (scene, letBoxesAppear = false) {
 	);
 
 	return textBox;
-};
+}
 
 var getBBcodeText = function (scene, wrapWidth, fixedWidth, fixedHeight) {
 	return scene.rexUI.add.BBCodeText(0, 0, "", {
