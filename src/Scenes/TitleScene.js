@@ -1,13 +1,10 @@
 import Button from "../Models/Buttons";
 
 export default class TitleScene extends Phaser.Scene {
-  constructor() {
-    super("Title");
-  }
-
-  preload() {
-    //this.load.image("title", "assets/Title.png");
-  }
+	constructor() {
+		super("Title");
+	}
+  preload() {}
 
   create() {
     this.add.image(400, 300, "title");

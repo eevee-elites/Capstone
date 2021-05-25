@@ -3,8 +3,6 @@ import Player from "../Models/Player";
 import Animate from "../Models/Animate";
 import {TextBoxWithIcon} from "../Utilities/TextBox";
 
-let textOpen = false;
-let last = false;
 const content = "The exit is to your left";
 
 export default class HallwayScene extends Phaser.Scene {
@@ -27,21 +25,15 @@ export default class HallwayScene extends Phaser.Scene {
 		this.physics.add.existing(exitBox, true);
 		//map
 		const map = this.make.tilemap({key: "map"});
-
 		const tileset = map.addTilesetImage("Hallway", "tiles");
-
-		const belowLayer = map.createLayer("Below", tileset, 0, 0);
+		map.createLayer("Below", tileset, 0, 0);
 		const collidingLayer = map.createLayer("Colliding", tileset, 0, 0);
 		collidingLayer.setCollisionByProperty({collides: true});
-
+		//arrow
+		const arrow = this.physics.add.staticSprite(200, 150, "arrow");
 		//man
 		this.man = this.physics.add.existing(new Player(this, 400, 350, "man"));
 		Animate(this, "man", 4, 7, 8, 11, 12, 15, 0, 3, 0);
-		this.physics.add.collider(this.man, collidingLayer);
-
-		//camera
-		this.cameras.main.setBounds(48, 10, 3000, 700);
-		this.cameras.main.startFollow(this.man, true);
 
 		//NPC
 		const HotelEmployee = this.physics.add.staticSprite(
@@ -49,17 +41,20 @@ export default class HallwayScene extends Phaser.Scene {
 			350,
 			"HotelEmployee"
 		);
-		//arrow
-		const arrow = this.physics.add.staticSprite(200, 150, "arrow");
+		//camera
+		this.cameras.main.setBounds(48, 10, 3000, 700);
+		this.cameras.main.startFollow(this.man, true);
+		//collisions
+		this.physics.add.collider(this.man, collidingLayer);
 		this.physics.add.collider(this.man, HotelEmployee);
-		textOpen = true;
-		TextBoxWithIcon(this, "HotelEmployee", textOpen, last).start(content, 50);
-		this.physics.add.overlap(exitBox, this.man, this.exitOutside, null, this);
+		this.physics.add.overlap(exitBox, this.man, this.exitLobby, null, this);
+		//Dialogue
+		TextBoxWithIcon(this, "HotelEmployee", true, false).start(content, 50);
 	}
 	update() {
 		this.man.update(this);
 	}
-	exitOutside() {
-		this.scene.start("Outside");
+	exitLobby() {
+		this.scene.start("Lobby");
 	}
 }
