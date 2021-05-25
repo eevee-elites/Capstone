@@ -108,6 +108,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("redDoll", "../assets/Red doll.png");
     this.load.image("redDollCut", "../assets/Red doll cut.png");
     this.load.image("nurseDoll", "../assets/Nurse doll.png");
+    this.load.image("noSciz", "../assets/noSciz.png");
     this.load.image("note", "../assets/Note.png");
     this.load.image("yesButton", "../assets/ui/Yes button.png");
     this.load.image("noButton", "../assets/ui/No button.png");
@@ -118,6 +119,14 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("tiles", "../assets/Room spritesheet.png");
     this.load.image("cage", "assets/LockedCage.png");
     this.load.image("icon", "assets/Iconnpc.png");
+    this.load.image("deco", "assets/deco.png");
+    this.load.image("deco2", "assets/deco2.png");
+    this.load.image("deco3", "assets/deco3.png");
+    this.load.image("decoflipped", "assets/decoflipped.png");
+    this.load.image("deco2flipped", "assets/deco2flipped.png");
+    this.load.image("deco3flipped", "assets/deco3flipped.png");
+
+
     this.load.image("drawer", "assets/drawer.png");
     this.load.image("NPC", "assets/NPC.png");
     this.load.image("NPC2", "assets/NPC2.png");
@@ -127,7 +136,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image("Protagicon", "assets/Protagicon.png");
     this.load.image("car", "assets/car.png");
     this.load.image("monster", "assets/monster.png");
-    this.load.image("wall", "assets/wall.png");
+		this.load.image("wall", "assets/wall.png");
     this.load.image("arrow", "assets/arrow.png");
     this.load.image("employee", "assets/Hotel employee.png");
     this.load.image("dead", "assets/Dead.png");
