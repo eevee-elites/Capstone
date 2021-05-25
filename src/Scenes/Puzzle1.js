@@ -16,7 +16,7 @@ let employ1, employ2, employ3, monster, wall1, wall2, wall3, wall4;
 // let music;
 const Help =
 
-	"SOPHIE! HELP! We have the key to get out of the room, but we can't leave this cage! Press the sensors on the ground to get us out of here! \n\n\nThe red button could help you if you're stuck...but it looks dangerous. Be careful when you it.";
+	"SOPHIE! HELP! We have the key to get out of the room, but we can't leave this cage! Press the sensors on the ground to get us out of here! \n\n\nThe red button could help you if you're stuck...but it looks dangerous. Be careful when you use it.";
 const Thanks = "Thanks for freeing us! Grab the key and let's go'!";
 
 export default class Puzzle1 extends Phaser.Scene {
