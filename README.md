@@ -1,6 +1,6 @@
 # Haunted Hopper
 
-Play Now: https://haunted-hopper.herokuapp.com/
+Play Now: [https://haunted-hopper.herokuapp.com/](https://hauntedhoppers-abc443482f59.herokuapp.com/)
 
 ## About this game
 An annual trip to the famous MineCon Convention turns out to be a horrific suprise.
